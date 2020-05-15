@@ -1,12 +1,20 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title>Web Application main index html file</title>
     <script src="lib/jquery/dist/jquery.js"></script>
     <script src="js/directoriesHandler.js"></script>
 </head>
+
 <body>
+    Příkazy pro zprovoznění: <br>
+    cd WebApplication <br>
+    dotnet restore <br>
+    dotnet run <br>
+    Pak funguje adresa <a href="https://localhost:5001/index.html">https://localhost:5001/index.html</a>
+
     <div id="firstDiv"></div>
     <div id="secondDiv"></div>
     <script type="text/javascript">
@@ -15,7 +23,7 @@
         $('#firstDiv').html(a);
 
         a = dh.getItems();
-
     </script>
 </body>
+
 </html>

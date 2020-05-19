@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Application;
+using Application.Directories;
+using Application.IoC;
+using Infrastructure.IoC;
+using Domain.IoC;
 
 namespace WebApplication
 {
@@ -25,7 +28,9 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddApplications();
+            services.RegisterApplications();
+            services.RegisterDomainServices();
+            services.RegisterInfrastructureServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

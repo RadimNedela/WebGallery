@@ -5,10 +5,5 @@ namespace DomainTests
     [TestFixture]
     public class DirectoryContentTests
     {
-        [Test]
-        public void FalseTest()
-        {
-            Assert.That(false);
-        }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Domain.Dtos;
 using Domain.Services;
 
 namespace Application.Directories
@@ -11,9 +13,9 @@ namespace Application.Directories
             _directoryContentBuilder = directoryContentBuilder;
         }
 
-        public string VratCosik()
+        public IEnumerable<DirectoryElementDto> GetDirectoryContent(string path)
         {
-            return _directoryContentBuilder.VratCosik();
+            return _directoryContentBuilder.GetDirectoryContent(path);
         }
     }
 }

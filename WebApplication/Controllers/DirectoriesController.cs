@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { _application.VratCosik(), "value2" };
+            return _application.GetDirectoryContent("").Select(dto => dto.FileName);
         }
 
         // GET api/<controller>/5

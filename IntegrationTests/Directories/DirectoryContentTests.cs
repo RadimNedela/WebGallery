@@ -1,3 +1,6 @@
+using System.Linq;
+using Application.Directories;
+using Domain.Dtos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -9,48 +12,48 @@ namespace IntegrationTests.Directories
     [TestFixture]
     public class DirectoryContentTests
     {
-        [Test]
-        public void DirectoryContentApp_IsResolvable()
+        private IServiceCollection CreateServiceCollection()
         {
             var confBuilder = new ConfigurationBuilder();
-            var target = new Startup(confBuilder.Build());
+            var startup = new Startup(confBuilder.Build());
             IServiceCollection services = new ServiceCollection();
 
-            target.ConfigureServices(services);
+            startup.ConfigureServices(services);
             services.AddTransient<DirectoriesController>();
 
-            var serviceProvider = services.BuildServiceProvider();
-
-            var controller = serviceProvider.GetService<DirectoriesController>();
-            Assert.IsNotNull(controller);
+            return services;
         }
 
-        // [TestMethod]
-        // public void ConfigureServices_RegistersDependenciesCorrectly()
-        // {
-        //     //  Arrange
+        [Test]
+        public void DirectoriesController_IsResolvable()
+        {
+            using (var serviceProvider = CreateServiceCollection().BuildServiceProvider())
+            {
+                var controller = serviceProvider.GetService<DirectoriesController>();
+                Assert.IsNotNull(controller);
+            }
+        }
 
-        //     //  Setting up the stuff required for Configuration.GetConnectionString("DefaultConnection")
-        //     Mock<IConfigurationSection> configurationSectionStub = new Mock<IConfigurationSection>();
-        //     configurationSectionStub.Setup(x => x["DefaultConnection"]).Returns("TestConnectionString");
-        //     Mock<Microsoft.Extensions.Configuration.IConfiguration> configurationStub = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-        //     configurationStub.Setup(x => x.GetSection("ConnectionStrings")).Returns(configurationSectionStub.Object);
+        [Test]
+        public void GetDirectoryContent_ValidTestPath_Returns2Directories()
+        {
+            using (var serviceProvider = CreateServiceCollection().BuildServiceProvider())
+            {
+                var application = serviceProvider.GetService<IDirectoryContentApplication>();
+                var content = application.GetDirectoryContent(@"../../../../TestPictures");
+                Assert.That(content.Where(el => el.GetType().IsEquivalentTo(typeof(DirectoryInfoDto))).Count(), Is.EqualTo(2));
+            }
+        }
 
-        //     IServiceCollection services = new ServiceCollection();
-        //     var target = new Startup(configurationStub.Object);
-
-        //     //  Act
-
-        //     target.ConfigureServices(services);
-        //     //  Mimic internal asp.net core logic.
-        //     services.AddTransient<TestController>();
-
-        //     //  Assert
-
-        //     var serviceProvider = services.BuildServiceProvider();
-
-        //     var controller = serviceProvider.GetService<TestController>();
-        //     Assert.IsNotNull(controller);
-        // }
+        [Test]
+        public void GetDirectoryContent_ValidTestPath_Returns0Files()
+        {
+            using (var serviceProvider = CreateServiceCollection().BuildServiceProvider())
+            {
+                var application = serviceProvider.GetService<IDirectoryContentApplication>();
+                var content = application.GetDirectoryContent(@"../../../../TestPictures");
+                Assert.That(content.Where(el => el.GetType().IsEquivalentTo(typeof(FileInfoDto))).Count(), Is.EqualTo(1));
+            }
+        }
     }
 }

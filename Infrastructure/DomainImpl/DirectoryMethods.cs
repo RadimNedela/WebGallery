@@ -9,8 +9,13 @@ namespace Infrastructure.DomainImpl
         public IEnumerable<string> GetFileNames(string directoryName)
         {
             var files = Directory.GetFiles(directoryName);
-            return null;
+            return files;
         }
 
+        public IEnumerable<string> GetDirectories(string directoryName)
+        {
+            var directories = Directory.GetDirectories(directoryName);
+            return directories;
+        }
     }
 }

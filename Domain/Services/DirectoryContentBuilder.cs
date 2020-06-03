@@ -8,17 +8,19 @@ namespace Domain.Services
     public class DirectoryContentBuilder
     {
         private readonly IDirectoryMethods _directoryMethods;
+        private readonly FileInfoBuilder _fileInfoBuilder;
 
-        public DirectoryContentBuilder(IDirectoryMethods directoryMethods)
+        public DirectoryContentBuilder(IDirectoryMethods directoryMethods, FileInfoBuilder fileInfoBuilder)
         {
             _directoryMethods = directoryMethods;
+            _fileInfoBuilder = fileInfoBuilder;
         }
 
         public IEnumerable<DirectoryElementDto> GetDirectoryContent(string path)
         {
             var fileNames = _directoryMethods.GetFileNames(path);
             var dirNames = _directoryMethods.GetDirectories(path);
-            var files = fileNames.Select(fn => new FileInfoDto() { FileName = fn });
+            var files = fileNames.Select(fn => _fileInfoBuilder.UsingPath(fn).Build());
             var directories = dirNames.Select(dn => new DirectoryInfoDto() { FileName = dn });
 
             return ((IEnumerable<DirectoryElementDto>)directories).Union(files);

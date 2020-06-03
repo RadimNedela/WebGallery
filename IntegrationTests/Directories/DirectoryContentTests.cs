@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Application.Directories;
 using Domain.Dtos;
@@ -39,7 +40,7 @@ namespace IntegrationTests.Directories
         {
             using (var serviceProvider = CreateServiceCollection().BuildServiceProvider())
             {
-                var application = serviceProvider.GetService<IDirectoryContentApplication>();
+                var application = serviceProvider.GetService<DirectoryContentApplication>();
                 var content = application.GetDirectoryContent(@"../../../../TestPictures");
                 Assert.That(content.Where(el => el.GetType().IsEquivalentTo(typeof(DirectoryInfoDto))).Count(), Is.EqualTo(2));
             }
@@ -50,9 +51,41 @@ namespace IntegrationTests.Directories
         {
             using (var serviceProvider = CreateServiceCollection().BuildServiceProvider())
             {
-                var application = serviceProvider.GetService<IDirectoryContentApplication>();
+                var application = serviceProvider.GetService<DirectoryContentApplication>();
                 var content = application.GetDirectoryContent(@"../../../../TestPictures");
-                Assert.That(content.Where(el => el.GetType().IsEquivalentTo(typeof(FileInfoDto))).Count(), Is.EqualTo(1));
+                Assert.That(content.Where(el => el.GetType().IsEquivalentTo(typeof(FileInfoDto))).Count(), Is.EqualTo(0));
+            }
+        }
+
+        [Test]
+        public void GetRecursivelyDirectoryContent_ReturnsAll7Files()
+        {
+            using (var serviceProvider = CreateServiceCollection().BuildServiceProvider())
+            {
+                var list = RecurseIntoDirectories(serviceProvider);
+                Assert.That(list.Count(), Is.EqualTo(7));
+            }
+        }
+
+        private IEnumerable<DirectoryElementDto> RecurseIntoDirectories(ServiceProvider serviceProvider)
+        {
+            var application = serviceProvider.GetService<DirectoryContentApplication>();
+            var content = application.GetDirectoryContent(@"../../../../TestPictures");
+            IEnumerable<DirectoryElementDto> list = new List<DirectoryElementDto>();
+            foreach (var dir in content)
+            {
+                list = list.Union(application.GetDirectoryContent(dir.FileName));
+            }
+            return list;
+        }
+
+        [Test]
+        public void GetRecursivelyDirectoryContent_All7FilesAreDisplayable()
+        {
+            using (var serviceProvider = CreateServiceCollection().BuildServiceProvider())
+            {
+                var list = RecurseIntoDirectories(serviceProvider);
+                Assert.That(list.Count(dedto => dedto is FileInfoDto && ((FileInfoDto)dedto).IsDisplayableAsImage), Is.EqualTo(7));
             }
         }
     }

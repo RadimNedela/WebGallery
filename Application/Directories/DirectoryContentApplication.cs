@@ -4,7 +4,7 @@ using Domain.Services;
 
 namespace Application.Directories
 {
-    public class DirectoryContentApplication : IDirectoryContentApplication
+    public class DirectoryContentApplication
     {
         private readonly DirectoryContentBuilder _directoryContentBuilder;
 

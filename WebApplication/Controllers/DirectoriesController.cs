@@ -25,7 +25,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet("getImage/{hash}")]
-        public async Task<FileStreamResult> GetImage(string hash)
+        public FileStreamResult GetImage(string hash)
         {
             var fileName = _physicalFileApplication.GetFileName(hash);
             new FileExtensionContentTypeProvider().TryGetContentType(fileName, out string mimeType);
@@ -36,7 +36,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet("getFileStream")]
-        public async Task<FileStreamResult> DownloadAsync()
+        public FileStreamResult DownloadAsync()
         {
             var fileName = "/home/radim/Source/WebGalery/TestPictures/Duha/2017-08-20-Duha0367.JPG";
             new FileExtensionContentTypeProvider().TryGetContentType(fileName, out string mimeType);

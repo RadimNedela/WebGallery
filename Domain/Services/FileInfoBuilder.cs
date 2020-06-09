@@ -1,9 +1,17 @@
 using Domain.Dtos;
+using Domain.InfrastructureInterfaces;
 
 namespace Domain.Services
 {
     public class FileInfoBuilder
     {
+        private readonly IHasher _hasher;
+
+        public FileInfoBuilder(IHasher hasher)
+        {
+            _hasher = hasher;
+        }
+
         public class Inner
         {
             FileInfoBuilder _outer;
@@ -23,7 +31,10 @@ namespace Domain.Services
             {
                 var retVal = new FileInfoDto { FileName = _path };
                 if (_path.ToUpper().EndsWith(".JPG"))
+                {
                     retVal.IsDisplayableAsImage = true;
+                    retVal.Checksum = _outer._hasher.GetImageHash(_path);
+                }
                 return retVal;
             }
         }

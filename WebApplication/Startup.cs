@@ -12,6 +12,7 @@ using Application.Directories;
 using Application.IoC;
 using Infrastructure.IoC;
 using Domain.IoC;
+using Infrastructure.MySqlDb;
 
 namespace WebApplication
 {

@@ -1,0 +1,44 @@
+sudo mysql -u root
+mysql> USE mysql;
+mysql> create user 'radim'@'localhost' identified by '';
+mysql> grant all privileges on *.* to 'radim'@'localhost';
+mysql> update user set plugin='auth_socket' where user='radim';
+mysql> flush privileges;
+mysql> exit
+service mysql restart
+mysql
+mysql> create database galery;
+mysql> use galery;
+mysql> create user 'galeryAdmin'@'localhost' identified by 'galeryAdminPassword';
+mysql> grant all privileges on *.* to 'galeryAdmin'@'localhost';
+
+
+
+mysqldump galery > databaseDump.sql
+
+backup the entire database
+
+    mysqldump -uroot -p db_name > /home/bob/my.sql
+
+backup single table
+
+    mysqldump -uroot -p db_name table_name > /home/bob/table.sql
+
+backup only database structure,
+
+    mysqldump -uroot -p db_name -d > /home/bob/structure.sql
+
+backup only database data
+
+    mysqldump -uroot -p db_name -t > /home/bob/data.sql
+
+
+How to execute the exported sql file? See the following
+
+    mysql -uroot -p db_name < /home/bob/my.sql
+
+another way, Log into mysql, then
+
+    mysql> use db_name;
+
+    mysql> source /home/bob/my.sql;

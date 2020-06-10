@@ -16,28 +16,55 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `HashedElements`
+-- Table structure for table `Hashed`
 --
 
-DROP TABLE IF EXISTS `HashedElements`;
+DROP TABLE IF EXISTS `Hashed`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `HashedElements` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `Hash` text NOT NULL,
-  PRIMARY KEY (`ID`)
+CREATE TABLE `Hashed` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Hash` varchar(767) NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `IX_Hashed_Hash` (`Hash`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `HashedElements`
+-- Table structure for table `Location`
 --
 
-LOCK TABLES `HashedElements` WRITE;
-/*!40000 ALTER TABLE `HashedElements` DISABLE KEYS */;
-INSERT INTO `HashedElements` VALUES (1,'abcdefghijklmn');
-/*!40000 ALTER TABLE `HashedElements` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `Location`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Location` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Directory` text,
+  `FileName` text,
+  `HashedId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_Location_HashedId` (`HashedId`),
+  CONSTRAINT `FK_Location_Hashed_HashedId` FOREIGN KEY (`HashedId`) REFERENCES `Hashed` (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Tag`
+--
+
+DROP TABLE IF EXISTS `Tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Tag` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` text,
+  `Description` text,
+  `HashedId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_Tag_HashedId` (`HashedId`),
+  CONSTRAINT `FK_Tag_Hashed_HashedId` FOREIGN KEY (`HashedId`) REFERENCES `Hashed` (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -48,4 +75,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-07 13:58:25
+-- Dump completed on 2020-06-10 22:58:33

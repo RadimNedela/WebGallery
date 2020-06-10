@@ -1,12 +1,12 @@
 using System.Linq;
-using Domain.Elements;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.MySqlDb
 {
     public class MySqlDbContext : DbContext
     {
-        public DbSet<HashedElement> HashedElements { get; set; }
+        public DbSet<Hashed> Hashed { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -17,9 +17,10 @@ namespace Infrastructure.MySqlDb
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<HashedElement>(entity =>
+            modelBuilder.Entity<Hashed>(entity =>
             {
-                entity.HasKey(e => e.ID);
+                entity.HasIndex(e => e.Hash).IsUnique();
+                // entity.HasKey(e => e.ID);
                 entity.Property(e => e.Hash).IsRequired();
             });
             // modelBuilder.Entity<Publisher>(entity =>

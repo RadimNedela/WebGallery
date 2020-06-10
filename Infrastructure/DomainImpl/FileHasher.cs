@@ -9,6 +9,12 @@ namespace Infrastructure.DomainImpl
 {
     public class FileHasher : IHasher
     {
+        public bool CanHandlePath(string path)
+        {
+            var upper = path.ToUpper();
+            return upper.EndsWith(".JPG") || upper.EndsWith(".JPEG");
+        }
+
         public string GetImageHash(string path)
         {
             var image = Image.FromFile(path);

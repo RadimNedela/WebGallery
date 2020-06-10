@@ -1,16 +1,14 @@
-using Domain.Elements;
+using Domain.Entities;
 using Infrastructure.DomainImpl;
 using Infrastructure.MySqlDb;
-using IntegrationTests.IoC;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace IntegrationTests.DBTests
 {
     [TestFixture]
-    public class HashedElementsDbTests
+    public class HashedEntityDbTests
     {
         public static readonly ILoggerFactory MyLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });
@@ -27,35 +25,32 @@ namespace IntegrationTests.DBTests
         }
 
         // [Test]
-        // public void FirstOne()
+        // public void JustCreateTheDatabase()
         // {
         //     using (var context = new TestDbContext())
         //     {
         //         context.Database.EnsureCreated();
-        //         var element = new HashedElement() { Hash = "abcdefghijklmno" };
-        //         context.HashedElements.Add(element);
-        //         context.SaveChanges();
         //     }
         // }
 
-        HashedElement testElement;
-
-        private void AddTestHashedElementToDb()
+        Hashed testElement;
+        public const string testElementHash = "TestElementHashValue";
+        private void AddTestHashedEntityToDb()
         {
             using (var context = new TestDbContext())
             {
-                testElement = new HashedElement() { Hash = "TestHashToAddToDB" };
-                context.HashedElements.Add(testElement);
+                testElement = new Hashed() { Hash = testElementHash };
+                context.Hashed.Add(testElement);
                 context.SaveChanges();
                 context.DetachAllEntities();
             }
         }
 
-        private void RemoveTestHashedElementFromDb()
+        private void RemoveTestHashedEntityFromDb()
         {
             using (var context = new TestDbContext())
             {
-                context.HashedElements.Remove(testElement);
+                context.Hashed.Remove(testElement);
                 context.SaveChanges();
                 context.DetachAllEntities();
             }
@@ -64,15 +59,15 @@ namespace IntegrationTests.DBTests
         [Test]
         public void GetExistingHashedElement_WillReturnIt()
         {
-            AddTestHashedElementToDb();
+            AddTestHashedEntityToDb();
             using (var context = new TestDbContext())
             {
-                var repo = new HashedElementsRepository(context);
-                var fromDb = repo.GetHashedElement("TestHashToAddToDB");
+                var repo = new HashedEntitiesRepository(context);
+                var fromDb = repo.GetHashedEntity(testElementHash);
                 Assert.That(fromDb, Is.Not.Null);
-                Assert.That(fromDb.Hash, Is.EqualTo("TestHashToAddToDB"));
+                Assert.That(fromDb.Hash, Is.EqualTo(testElementHash));
             }
-            RemoveTestHashedElementFromDb();
+            RemoveTestHashedEntityFromDb();
         }
     }
 }

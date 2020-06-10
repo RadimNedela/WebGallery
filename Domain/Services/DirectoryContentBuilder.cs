@@ -20,10 +20,9 @@ namespace Domain.Services
         {
             var fileNames = _directoryMethods.GetFileNames(path);
             var dirNames = _directoryMethods.GetDirectories(path);
-            var files = fileNames.Select(fn => _fileInfoBuilder.UsingPath(fn).Build());
-            var directories = dirNames.Select(dn => new DirectoryInfoDto() { FileName = dn });
-
-            return ((IEnumerable<DirectoryElementDto>)directories).Union(files);
+            var files = fileNames.Select(fn => _fileInfoBuilder.UsingPath(fn).Build().GetFileInfoDto());
+            IEnumerable<DirectoryElementDto> directories = dirNames.Select(dn => new DirectoryInfoDto() { FileName = dn });
+            return directories.Union(files);
         }
     }
 }

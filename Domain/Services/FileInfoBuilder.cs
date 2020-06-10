@@ -1,4 +1,6 @@
-using Domain.Dtos;
+using System;
+using Domain.Elements;
+using Domain.Entities;
 using Domain.InfrastructureInterfaces;
 
 namespace Domain.Services
@@ -6,10 +8,12 @@ namespace Domain.Services
     public class FileInfoBuilder
     {
         private readonly IHasher _hasher;
+        private readonly IHashedEntitiesRepository _hashedRepository;
 
-        public FileInfoBuilder(IHasher hasher)
+        public FileInfoBuilder(IHasher hasher, IHashedEntitiesRepository hashedRepository)
         {
             _hasher = hasher;
+            _hashedRepository = hashedRepository;
         }
 
         public class Inner
@@ -21,27 +25,63 @@ namespace Domain.Services
             }
 
             private string _path;
+            private Hashed _hashed;
+
             public Inner UsingPath(string path)
             {
                 _path = path;
                 return this;
             }
 
-            public FileInfoDto Build()
+            public HashedElement Build()
             {
-                var retVal = new FileInfoDto { FileName = _path };
-                if (_path.ToUpper().EndsWith(".JPG"))
-                {
-                    retVal.IsDisplayableAsImage = true;
-                    retVal.Checksum = _outer._hasher.GetImageHash(_path);
-                }
-                return retVal;
+                if (!string.IsNullOrWhiteSpace(_path))
+                    return _outer.Build(_path);
+                //else if (_hashed != null)
+                return _outer.Build(_hashed);
+            }
+
+            internal Inner UsingHashed(Hashed hashed)
+            {
+                _hashed = hashed;
+                return this;
             }
         }
 
-        public Inner UsingPath(string path)
+        public Inner UsingPath(string path) => new Inner(this).UsingPath(path);
+
+        public Inner UsingHashed(Hashed hashed) => new Inner(this).UsingHashed(hashed);
+
+        public HashedElement Build(Hashed hashed)
         {
-            return new Inner(this).UsingPath(path);
+            var retVal = new HashedElement()
+            {
+                ID = hashed.Id,
+                Hash = hashed.Hash
+                //Locations
+            };
+            return retVal;
+        }
+
+        public HashedElement Build(string _path)
+        {
+            string hash = null;
+            if (_hasher.CanHandlePath(_path))
+                hash = _hasher.GetImageHash(_path);
+
+            HashedElement retVal = null;
+            if (!string.IsNullOrWhiteSpace(hash))
+            {
+                var hashed = _hashedRepository.GetHashedEntity(hash);
+                if (hashed != null) retVal = UsingHashed(hashed).Build();
+            }
+
+            if (retVal == null)
+                retVal = new HashedElement() { Hash = hash };
+
+            retVal.AddPath(_path);
+
+            return retVal;
         }
     }
 }

@@ -7,8 +7,8 @@ namespace Domain.IoC
     {
         public static void RegisterDomainServices(this IServiceCollection services)
         {
-            services.AddSingleton<DirectoryContentBuilder, DirectoryContentBuilder>();
-            services.AddSingleton<FileInfoBuilder, FileInfoBuilder>();
+            services.AddScoped<DirectoryContentBuilder, DirectoryContentBuilder>();
+            services.AddScoped<HashedElementBuilder, HashedElementBuilder>();
         }
     }
 }

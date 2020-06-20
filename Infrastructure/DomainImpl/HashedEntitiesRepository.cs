@@ -14,7 +14,12 @@ namespace Infrastructure.DomainImpl
             _dbContext = dbContext;
         }
 
-        public Hashed GetHashedEntity(string hash)
+        public void Add(Hashed hashed)
+        {
+            _dbContext.Hashed.Add(hashed);
+        }
+
+        public Hashed Get(string hash)
         {
             return _dbContext.Hashed.SingleOrDefault(he => he.Hash == hash);
         }

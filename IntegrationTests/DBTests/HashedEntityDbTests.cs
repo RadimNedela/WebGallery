@@ -37,13 +37,11 @@ namespace IntegrationTests.DBTests
         public const string testElementHash = "TestElementHashValue";
         private void AddTestHashedEntityToDb()
         {
-            using (var context = new TestDbContext())
-            {
-                testElement = new Hashed() { Hash = testElementHash };
-                context.Hashed.Add(testElement);
-                context.SaveChanges();
-                context.DetachAllEntities();
-            }
+            testElement = new Hashed() { Hash = testElementHash };
+            using var context = new TestDbContext();
+            context.Hashed.Add(testElement);
+            context.SaveChanges();
+            context.DetachAllEntities();
         }
 
         private void RemoveTestHashedEntityFromDb()
@@ -63,7 +61,7 @@ namespace IntegrationTests.DBTests
             using (var context = new TestDbContext())
             {
                 var repo = new HashedEntitiesRepository(context);
-                var fromDb = repo.GetHashedEntity(testElementHash);
+                var fromDb = repo.Get(testElementHash);
                 Assert.That(fromDb, Is.Not.Null);
                 Assert.That(fromDb.Hash, Is.EqualTo(testElementHash));
             }

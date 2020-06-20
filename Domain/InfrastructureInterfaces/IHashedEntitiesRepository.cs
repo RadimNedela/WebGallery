@@ -4,6 +4,8 @@ namespace Domain.InfrastructureInterfaces
 {
     public interface IHashedEntitiesRepository
     {
-        Hashed GetHashedEntity(string hash);
+        Hashed Get(string hash);
+
+        void Add(Hashed hashed);
     }
 }

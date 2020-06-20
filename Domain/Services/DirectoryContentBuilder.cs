@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Dtos;
+using Domain.Elements;
 using Domain.InfrastructureInterfaces;
 
 namespace Domain.Services
@@ -8,20 +9,20 @@ namespace Domain.Services
     public class DirectoryContentBuilder
     {
         private readonly IDirectoryMethods _directoryMethods;
-        private readonly FileInfoBuilder _fileInfoBuilder;
+        private readonly HashedElementBuilder _hashedElementBuilder;
 
-        public DirectoryContentBuilder(IDirectoryMethods directoryMethods, FileInfoBuilder fileInfoBuilder)
+        public DirectoryContentBuilder(IDirectoryMethods directoryMethods, HashedElementBuilder hashedElementBuilder)
         {
             _directoryMethods = directoryMethods;
-            _fileInfoBuilder = fileInfoBuilder;
+            _hashedElementBuilder = hashedElementBuilder;
         }
 
-        public IEnumerable<DirectoryElementDto> GetDirectoryContent(string path)
+        public IEnumerable<HashedElement> GetDirectoryContent(string path)
         {
             var fileNames = _directoryMethods.GetFileNames(path);
             var dirNames = _directoryMethods.GetDirectories(path);
-            var files = fileNames.Select(fn => _fileInfoBuilder.UsingPath(fn).Build().GetFileInfoDto());
-            IEnumerable<DirectoryElementDto> directories = dirNames.Select(dn => new DirectoryInfoDto() { FileName = dn });
+            var files = fileNames.Select(fn => _hashedElementBuilder.UsingFilePath(fn).Build());
+            var directories = dirNames.Select(dn => _hashedElementBuilder.UsingDirectory(dn).Build());
             return directories.Union(files);
         }
     }

@@ -7,8 +7,8 @@ namespace Application.IoC
     {
         public static void RegisterApplications(this IServiceCollection services)
         {
-            services.AddSingleton<DirectoryContentApplication, DirectoryContentApplication>();
-            services.AddSingleton<PhysicalFileApplication, PhysicalFileApplication>();
+            services.AddScoped<DirectoryContentApplication, DirectoryContentApplication>();
+            services.AddScoped<PhysicalFileApplication, PhysicalFileApplication>();
         }
     }
 }

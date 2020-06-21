@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Domain.Dtos;
+using Domain.Elements;
 using Domain.Services;
 
 namespace Application.Directories
@@ -15,7 +17,8 @@ namespace Application.Directories
 
         public IEnumerable<DirectoryElementDto> GetDirectoryContent(string path)
         {
-            return _directoryContentBuilder.GetDirectoryContent(path);
+            IEnumerable<HashedElement> hashed = _directoryContentBuilder.GetDirectoryContent(path);
+            return hashed.Select(he => he.ToDirectoryElementDto());
         }
     }
 }

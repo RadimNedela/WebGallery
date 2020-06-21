@@ -44,16 +44,16 @@ namespace Domain.Elements
 
         private Hashed _hashed;
 
-        private List<string> locations;
+        private List<Location> locations;
         private List<string> tags;
 
         public string Hash { get; private set; }
         public string Type { get; private set; }
-        public List<string> Locations
+        public List<Location> Locations
         {
             get
             {
-                if (locations == null) locations = new List<string>();
+                if (locations == null) locations = new List<Location>();
                 return locations;
             }
             private set => locations = value;
@@ -72,7 +72,7 @@ namespace Domain.Elements
         {
             get
             {
-                string path = Locations?.FirstOrDefault();
+                string path = Locations.First().Path;
                 if (!string.IsNullOrWhiteSpace(path))
                 {
                     string upper = path.ToUpper();
@@ -81,19 +81,26 @@ namespace Domain.Elements
                 return false;
             }
         }
-        public void AddPath(string path)
+
+        public DirectoryElementDto ToDirectoryElementDto ()
         {
-            if (!Locations.Contains(path))
-                Locations.Add(path);
+            DirectoryElementDto dto = new DirectoryElementDto() { FileName = Locations.First().Path };
+            return dto;
         }
 
-        public FileInfoDto GetFileInfoDto()
+        public void AddPath(string path)
+        {
+            if (!Locations.Any(l => l.Path == path))
+                Locations.Add(new Location() { Path = path });
+        }
+
+        public FileInfoDto ToFileInfoDto()
         {
             var retVal = new FileInfoDto()
             {
                 Checksum = Hash,
                 IsDisplayableAsImage = IsDisplayableAsImage,
-                FileName = Locations?.FirstOrDefault()
+                FileName = Locations.First().Path
             };
             return retVal;
         }

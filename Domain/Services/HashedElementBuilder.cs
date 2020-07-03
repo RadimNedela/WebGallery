@@ -5,71 +5,79 @@ using Domain.InfrastructureInterfaces;
 
 namespace Domain.Services
 {
-    public class HashedElementBuilder
+    public interface IBuilder<out T>
     {
+        T Build();
+    }
+
+    public class HashedElementBuilder : IBuilder<HashedElement>
+    {
+        private class Inner
+        {
+            public string path;
+            public Hashed hashed;
+            public string directory;
+        }
+
         private readonly IHasher _hasher;
         private readonly IHashedEntitiesRepository _hashedRepository;
+        private Inner _parameters;
 
         public HashedElementBuilder(IHasher hasher, IHashedEntitiesRepository hashedRepository)
         {
             _hasher = hasher;
             _hashedRepository = hashedRepository;
+            Clean();
         }
 
-        public class Inner
+        private void Clean()
         {
-            HashedElementBuilder _outer;
-            internal Inner(HashedElementBuilder outer)
-            {
-                _outer = outer;
-            }
-
-            private string _path;
-            private Hashed _hashed;
-            private string _directory;
-
-            public Inner UsingFilePath(string path)
-            {
-                _path = path;
-                return this;
-            }
-
-            public Inner UsingDirectory(string directory)
-            {
-                _directory = directory;
-                return this;
-            }
-
-            public HashedElement Build()
-            {
-                if (!string.IsNullOrWhiteSpace(_path))
-                    return _outer.BuildHashedFile(_path);
-                else if (_hashed != null)
-                    return _outer.BuildFromExisting(_hashed);
-                else if (!string.IsNullOrWhiteSpace(_directory))
-                    return _outer.BuildDirectory(_directory);
-                throw new NotImplementedException();
-            }
-
-            internal Inner UsingHashed(Hashed hashed)
-            {
-                _hashed = hashed;
-                return this;
-            }
+            _parameters = new Inner();
         }
 
-        public Inner UsingDirectory(string directoryName) => new Inner(this).UsingDirectory(directoryName);
+        public HashedElementBuilder UsingFilePath(string path)
+        {
+            _parameters.path = path;
+            return this;
+        }
 
-        public Inner UsingFilePath(string path) => new Inner(this).UsingFilePath(path);
+        public HashedElementBuilder UsingDirectory(string directory)
+        {
+            _parameters.directory = directory;
+            return this;
+        }
 
-        public Inner UsingHashed(Hashed hashed) => new Inner(this).UsingHashed(hashed);
+        public HashedElementBuilder UsingHashed(Hashed hashed)
+        {
+            _parameters.hashed = hashed;
+            return this;
+        }
 
-        public HashedElement BuildFromExisting(Hashed hashed)
+        public HashedElement Build()
+        {
+            HashedElement retVal = null;
+            
+            if (!string.IsNullOrWhiteSpace(_parameters.path))
+                retVal = BuildHashedFile(_parameters.path);
+            else if (_parameters.hashed != null)
+                retVal = BuildFromExisting(_parameters.hashed);
+            else if (!string.IsNullOrWhiteSpace(_parameters.directory))
+                retVal = BuildDirectory(_parameters.directory);
+
+            Clean();
+
+            if (retVal == null)
+                throw new NotImplementedException();
+
+            return retVal;
+        }
+
+        private HashedElement BuildFromExisting(Hashed hashed)
         {
             return new HashedElement(_hashedRepository).InitializeFrom(hashed);
         }
 
-        public HashedElement BuildDirectory(string directoryPath)
+        private HashedElement BuildDirectory(string directoryPath)
         {
             string hash = _hasher.ComputeDirectoryHash(directoryPath);
             var hashed = _hashedRepository.Get(hash);
@@ -85,7 +93,7 @@ namespace Domain.Services
             return retVal;
         }
 
-        public HashedElement BuildHashedFile(string filePath)
+        private HashedElement BuildHashedFile(string filePath)
         {
             string hash = _hasher.ComputeFileContentHash(filePath);
             var hashed = _hashedRepository.Get(hash);

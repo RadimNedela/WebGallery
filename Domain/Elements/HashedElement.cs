@@ -45,7 +45,7 @@ namespace Domain.Elements
         private Hashed _hashed;
 
         private List<Location> locations;
-        private List<string> tags;
+        private List<Tag> tags;
 
         public string Hash { get; private set; }
         public string Type { get; private set; }
@@ -58,11 +58,11 @@ namespace Domain.Elements
             }
             private set => locations = value;
         }
-        public List<string> Tags
+        public List<Tag> Tags
         {
             get
             {
-                if (tags == null) tags = new List<string>();
+                if (tags == null) tags = new List<Tag>();
                 return tags;
             }
             private set => tags = value;

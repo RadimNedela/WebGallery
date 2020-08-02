@@ -7,7 +7,7 @@ using System.Linq;
 namespace DomainTests
 {
     [TestFixture]
-    public class DirectoryContentTests
+    public class DirectoryContentBuilderTests
     {
         [Test]
         public void GetDirectoryContent_ValidPath_ReturnsCorrectNumberOfPictures()
@@ -45,7 +45,7 @@ namespace DomainTests
             hasher.ComputeFileContentHash(Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(0)}Hash");
 
             var hashedEntitiesRepostiory = Substitute.For<IHashedEntitiesRepository>();
-            var hashedElementBuilder = new HashedElementBuilder(hasher, hashedEntitiesRepostiory);
+            var hashedElementBuilder = new BinderBuilder(hasher, hashedEntitiesRepostiory);
             return new DirectoryContentBuilder(directoryMethods, hashedElementBuilder);
         }
     }

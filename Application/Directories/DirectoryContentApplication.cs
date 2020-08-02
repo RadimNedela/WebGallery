@@ -15,7 +15,7 @@ namespace Application.Directories
             _directoryContentBuilder = directoryContentBuilder;
         }
 
-        public IEnumerable<DirectoryElementDto> GetDirectoryContent(string path)
+        public ContentDto GetDirectoryContent(string path)
         {
             IEnumerable<HashedElement> hashed = _directoryContentBuilder.GetDirectoryContent(path);
             return hashed.Select(he => he.ToDirectoryElementDto());

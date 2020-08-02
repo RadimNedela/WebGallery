@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Domain.Elements
 {
-    public class Tag
+    public class LocationElement
     {
-        public string Label { get; set; }
+        public string Path { get; set; }
     }
 }

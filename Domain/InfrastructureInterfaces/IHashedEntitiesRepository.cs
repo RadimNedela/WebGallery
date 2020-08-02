@@ -1,11 +1,11 @@
-using Domain.Entities;
+using Domain.DbEntities;
 
 namespace Domain.InfrastructureInterfaces
 {
     public interface IHashedEntitiesRepository
     {
-        Hashed Get(string hash);
+        HashedEntity Get(string hash);
 
-        void Add(Hashed hashed);
+        void Add(HashedEntity hashed);
     }
 }

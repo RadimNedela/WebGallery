@@ -1,21 +1,16 @@
 using System;
 using Domain.Elements;
-using Domain.Entities;
+using Domain.DbEntities;
 using Domain.InfrastructureInterfaces;
 
 namespace Domain.Services
 {
-    public interface IBuilder<out T>
-    {
-        T Build();
-    }
-
-    public class HashedElementBuilder : IBuilder<HashedElement>
+    public class HashedElementBuilder
     {
         private class Inner
         {
             public string path;
-            public Hashed hashed;
+            public HashedEntity hashed;
             public string directory;
         }
 
@@ -47,7 +42,7 @@ namespace Domain.Services
             return this;
         }
 
-        public HashedElementBuilder UsingHashed(Hashed hashed)
+        public HashedElementBuilder UsingHashed(HashedEntity hashed)
         {
             _parameters.hashed = hashed;
             return this;
@@ -72,7 +67,7 @@ namespace Domain.Services
             return retVal;
         }
 
-        private HashedElement BuildFromExisting(Hashed hashed)
+        private HashedElement BuildFromExisting(HashedEntity hashed)
         {
             return new HashedElement(_hashedRepository).InitializeFrom(hashed);
         }

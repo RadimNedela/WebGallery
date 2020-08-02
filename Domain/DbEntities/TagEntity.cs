@@ -1,6 +1,8 @@
-namespace Domain.Entities
+using System.Collections;
+
+namespace Domain.DbEntities
 {
-    public class Tag
+    public abstract class TagEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

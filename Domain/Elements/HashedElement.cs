@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Dtos;
-using Domain.Entities;
+using Domain.DbEntities;
 using Domain.InfrastructureInterfaces;
 
 namespace Domain.Elements
@@ -34,7 +34,7 @@ namespace Domain.Elements
             return this;
         }
 
-        internal HashedElement InitializeFrom(Hashed hashed)
+        internal HashedElement InitializeFrom(HashedEntity hashed)
         {
             Hash = hashed.Hash;
             _hashed = hashed;
@@ -42,27 +42,27 @@ namespace Domain.Elements
             return this;
         }
 
-        private Hashed _hashed;
+        private HashedEntity _hashed;
 
-        private List<Location> locations;
-        private List<Tag> tags;
+        private List<LocationElement> locations;
+        private List<TagElement> tags;
 
         public string Hash { get; private set; }
         public string Type { get; private set; }
-        public List<Location> Locations
+        public List<LocationElement> Locations
         {
             get
             {
-                if (locations == null) locations = new List<Location>();
+                if (locations == null) locations = new List<LocationElement>();
                 return locations;
             }
             private set => locations = value;
         }
-        public List<Tag> Tags
+        public List<TagElement> Tags
         {
             get
             {
-                if (tags == null) tags = new List<Tag>();
+                if (tags == null) tags = new List<TagElement>();
                 return tags;
             }
             private set => tags = value;
@@ -91,7 +91,7 @@ namespace Domain.Elements
         public void AddPath(string path)
         {
             if (!Locations.Any(l => l.Path == path))
-                Locations.Add(new Location() { Path = path });
+                Locations.Add(new LocationElement() { Path = path });
         }
 
         public FileInfoDto ToFileInfoDto()

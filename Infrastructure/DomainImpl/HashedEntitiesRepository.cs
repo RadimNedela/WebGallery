@@ -1,7 +1,8 @@
 using System.Linq;
-using Domain.Entities;
+using Domain.DbEntities;
 using Domain.InfrastructureInterfaces;
 using Infrastructure.MySqlDb;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DomainImpl
 {
@@ -14,14 +15,23 @@ namespace Infrastructure.DomainImpl
             _dbContext = dbContext;
         }
 
-        public void Add(Hashed hashed)
+        public void Add(HashedEntity hashed)
         {
-            _dbContext.Hashed.Add(hashed);
+            _dbContext.Hashes.Add(hashed);
         }
 
-        public Hashed Get(string hash)
+        public HashedEntity Get(string hash)
         {
-            return _dbContext.Hashed.SingleOrDefault(he => he.Hash == hash);
+            return _dbContext.Hashes
+                .Where(h => h.Hash == hash)
+                    .Include(he => he.Locations)
+                        .ThenInclude(l => l.Location)
+                        .ThenInclude(l => l.Tags)
+                        .ThenInclude(t => t.Tag)
+                    .Include(he => he.Tags)
+                        .ThenInclude(t => t.Tag)
+                    .FirstOrDefault();
+
         }
     }
 }

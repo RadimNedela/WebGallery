@@ -4,7 +4,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System.Linq;
 
-namespace DomainTests
+namespace UnitTests.Domain
 {
     [TestFixture]
     public class DirectoryContentBuilderTests
@@ -44,9 +44,9 @@ namespace DomainTests
             var hasher = Substitute.For<IHasher>();
             hasher.ComputeFileContentHash(Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(0)}Hash");
 
-            var hashedEntitiesRepostiory = Substitute.For<IHashedEntitiesRepository>();
-            var hashedElementBuilder = new BinderBuilder(hasher, hashedEntitiesRepostiory);
-            return new DirectoryContentBuilder(directoryMethods, hashedElementBuilder);
+            //var hashedEntitiesRepostiory = Substitute.For<IHashedEntitiesRepository>();
+            //var hashedElementBuilder = new BinderBuilder(hasher, hashedEntitiesRepostiory);
+            return new DirectoryContentBuilder(directoryMethods, hasher);
         }
     }
 }

@@ -15,10 +15,10 @@ namespace Application.Directories
             _directoryContentBuilder = directoryContentBuilder;
         }
 
-        public ContentDto GetDirectoryContent(string path)
+        public DisplayableInfoDto GetDirectoryContent(string path)
         {
             IEnumerable<HashedElement> hashed = _directoryContentBuilder.GetDirectoryContent(path);
-            return hashed.Select(he => he.ToDirectoryElementDto());
+            return hashed.ToDisplayableInfoDto();
         }
     }
 }

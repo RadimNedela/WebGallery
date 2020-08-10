@@ -45,8 +45,8 @@ namespace Infrastructure.DomainImpl
             using (MemoryStream stream = new MemoryStream())
             {
                 image.Save(stream, ImageFormat.Bmp);
-                stream.Close();
                 hash = ComputeHash(stream);
+                stream.Close();
             }
             return hash;
         }

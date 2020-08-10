@@ -53,7 +53,7 @@ namespace WebApplication.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return _directoryContentApplication.GetDirectoryContent("").Select(dto => dto.FileName);
+            return _directoryContentApplication.GetDirectoryContent("").Contents.Select(dc => dc.Label);
         }
 
         // GET api/<controller>/5

@@ -94,15 +94,5 @@ namespace IntegrationTests.Directories
             }
             return list;
         }
-
-        //[Test]
-        //public void GetRecursivelyDirectoryContent_All8FilesAreDisplayable()
-        //{
-        //    using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
-        //    {
-        //        var list = RecurseIntoDirectories(serviceProvider);
-        //        Assert.That(list.Count(dedto => dedto is FileInfoDto && ((FileInfoDto)dedto).IsDisplayableAsImage), Is.EqualTo(8));
-        //    }
-        //}
     }
 }

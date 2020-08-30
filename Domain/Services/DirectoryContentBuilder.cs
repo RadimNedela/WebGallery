@@ -43,8 +43,8 @@ namespace Domain.Services
             string extension = System.IO.Path.GetExtension(path).ToLower();
             switch (extension)
             {
-                case "jpg":
-                case "jpeg":
+                case ".jpg":
+                case ".jpeg":
                     return ContentElement.ImageType;
                 default:
                     return ContentElement.UnknownType;

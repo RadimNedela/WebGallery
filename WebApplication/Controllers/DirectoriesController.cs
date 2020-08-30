@@ -27,11 +27,9 @@ namespace WebApplication.Controllers
         [HttpGet("getImage/{hash}")]
         public FileStreamResult GetImage(string hash)
         {
-            var fileName = _physicalFileApplication.GetFileName(hash);
+            var stream = _physicalFileApplication.GetStream(hash);
+
             new FileExtensionContentTypeProvider().TryGetContentType(fileName, out string mimeType);
-
-            var stream = System.IO.File.OpenRead(fileName);
-
             return new FileStreamResult(stream, new Microsoft.Net.Http.Headers.MediaTypeHeaderValue(mimeType));
         }
 

@@ -1,3 +1,4 @@
+using Domain.Elements;
 using Domain.InfrastructureInterfaces;
 using Domain.Services;
 using NSubstitute;
@@ -27,6 +28,15 @@ namespace UnitTests.Domain
             var content = contentBuilder.GetDirectoryContent(TestDirectory).First();
 
             Assert.That(content.Hash, Contains.Substring("2018-01-24-Chopok0335.JPGHash"));
+        }
+
+        [Test]public void JpgElement_IsImageType()
+        {
+            DirectoryContentBuilder contentBuilder = CreateContentBuilder();
+
+            var content = contentBuilder.GetDirectoryContent(TestDirectory).First();
+
+            Assert.That(content.Type, Is.EqualTo(ContentElement.ImageType));
         }
 
         public const string TestDirectory = "Test directory - chopok";

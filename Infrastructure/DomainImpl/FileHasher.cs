@@ -55,7 +55,10 @@ namespace Infrastructure.DomainImpl
         {
             using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
             {
-                return Convert.ToBase64String(sha1.ComputeHash(stream));
+                byte[] hash = sha1.ComputeHash(stream);
+                //return Convert.ToBase64String(hash);
+                //return System.Text.Encoding.ASCII.GetString(hash);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
         }
 

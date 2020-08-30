@@ -16,11 +16,11 @@ namespace Infrastructure.DomainImpl
             return upper.EndsWith(".JPG") || upper.EndsWith(".JPEG");
         }
 
-        public string ComputeFileContentHash(string path)
+        public string ComputeFileContentHash(Stream stream, string path)
         {
             if (IsSupportedImage(path))
-                return ImageHash(path);
-            return OtherFileHash(path);
+                return ImageHash(stream);
+            return OtherFileHash(stream);
         }
 
         public string ComputeDirectoryHash(string directoryPath)
@@ -28,25 +28,22 @@ namespace Infrastructure.DomainImpl
             return ComputeHash(Encoding.UTF8.GetBytes(directoryPath));
         }
 
-        private string OtherFileHash(string path)
+        private string OtherFileHash(Stream stream)
         {
             string hash;
-            using (var stream = new FileStream(path, FileMode.Open))
-            {
-                hash = ComputeHash(stream);
-            }
+            hash = ComputeHash(stream);
             return hash;
         }
 
-        private string ImageHash(string path)
+        private string ImageHash(Stream inputStream)
         {
-            var image = Image.FromFile(path);
+            var image = Image.FromStream(inputStream);
             string hash;
-            using (MemoryStream stream = new MemoryStream())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                image.Save(stream, ImageFormat.Bmp);
-                hash = ComputeHash(stream);
-                stream.Close();
+                image.Save(memoryStream, ImageFormat.Bmp);
+                hash = ComputeHash(memoryStream);
+                memoryStream.Close();
             }
             return hash;
         }

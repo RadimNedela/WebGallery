@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using Domain.Dtos;
@@ -12,30 +13,42 @@ namespace Domain.Services
     {
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
+        private readonly ElementsMemoryStorage _elementsMemoryStorage;
 
-        public DirectoryContentBuilder(IDirectoryMethods directoryMethods, IHasher hasher)
+        public DirectoryContentBuilder(IDirectoryMethods directoryMethods, IHasher hasher, ElementsMemoryStorage elementsMemoryStorage)
         {
             _directoryMethods = directoryMethods;
             _hasher = hasher;
+            _elementsMemoryStorage = elementsMemoryStorage;
         }
 
         public IEnumerable<HashedElement> GetDirectoryContent(string path)
         {
             var fileNames = _directoryMethods.GetFileNames(path);
             var dirNames = _directoryMethods.GetDirectories(path);
-            var files = fileNames.Select(fn => CreateFileContentElement(fn));
+            BinderElement directoryBinder = CreateDirectoryBinder(path);
+            var files = fileNames.Select(fn => CreateFileContentElement(fn, directoryBinder));
             var directories = dirNames.Select(dn => CreateDirectoryBinder(dn));
             return directories.Union(files);
         }
 
-        private HashedElement CreateFileContentElement(string path)
+        private HashedElement CreateFileContentElement(string path, BinderElement directoryBinder)
         {
-            return new ContentElement()
+            Stream stream = _directoryMethods.GetStream(path);
+            var theElement = new ContentElement()
             {
-                Hash = _hasher.ComputeFileContentHash(path),
-                Label = GetFileName(path),
-                Type = GetFileType(path)
+                ContentStream = stream,
+                Hash = _hasher.ComputeFileContentHash(stream, path),
+                Label = Path.GetFileName(path),
+                Type = GetFileType(path),
+                Binders = new List<BinderElement>
+                {
+                    directoryBinder
+                }
             };
+
+            _elementsMemoryStorage.Add(theElement);
+            return theElement;
         }
 
         private string GetFileType(string path)
@@ -51,12 +64,7 @@ namespace Domain.Services
             }
         }
 
-        private string GetFileName(string path)
-        {
-            return System.IO.Path.GetFileName(path);
-        }
-
-        private HashedElement CreateDirectoryBinder(string path)
+        private BinderElement CreateDirectoryBinder(string path)
         {
             return new BinderElement()
             {

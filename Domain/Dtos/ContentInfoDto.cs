@@ -6,9 +6,8 @@ using System.Text;
 
 namespace Domain.Dtos
 {
-    public class ContentDto : HashedElementDto
+    public class ContentInfoDto : HashedElementDto
     {
-        public Stream Content { get; set; }
-        public string FileName { get => Label; set => Label = value; }
+        public string FileName { get; set; }
     }
 }

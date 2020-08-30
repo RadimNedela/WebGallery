@@ -3,6 +3,7 @@ using Domain.InfrastructureInterfaces;
 using Domain.Services;
 using NSubstitute;
 using NUnit.Framework;
+using System.IO;
 using System.Linq;
 
 namespace UnitTests.Domain
@@ -30,7 +31,8 @@ namespace UnitTests.Domain
             Assert.That(content.Hash, Contains.Substring("2018-01-24-Chopok0335.JPGHash"));
         }
 
-        [Test]public void JpgElement_IsImageType()
+        [Test]
+        public void JpgElement_IsImageType()
         {
             DirectoryContentBuilder contentBuilder = CreateContentBuilder();
 
@@ -52,11 +54,9 @@ namespace UnitTests.Domain
             });
 
             var hasher = Substitute.For<IHasher>();
-            hasher.ComputeFileContentHash(Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(0)}Hash");
+            hasher.ComputeFileContentHash(Arg.Any<Stream>(), Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(1)}Hash");
 
-            //var hashedEntitiesRepostiory = Substitute.For<IHashedEntitiesRepository>();
-            //var hashedElementBuilder = new BinderBuilder(hasher, hashedEntitiesRepostiory);
-            return new DirectoryContentBuilder(directoryMethods, hasher);
+            return new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage());
         }
     }
 }

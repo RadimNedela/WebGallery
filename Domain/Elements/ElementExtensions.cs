@@ -11,7 +11,7 @@ namespace Domain.Elements
         public static DisplayableInfoDto ToDisplayableInfoDto(this IEnumerable<HashedElement> hashedElements)
         {
             List<BinderDto> binders = hashedElements.Where(he => he is BinderElement).Select(he => ((BinderElement)he).ToBinderDto()).ToList();
-            List<ContentDto> contents = hashedElements.Where(he => he is ContentElement).Select(he => ((ContentElement)he).ToContentDto()).ToList();
+            List<ContentInfoDto> contents = hashedElements.Where(he => he is ContentElement).Select(he => ((ContentElement)he).ToContentInfoDto()).ToList();
 
             DisplayableInfoDto dto = new DisplayableInfoDto()
             {

@@ -1,3 +1,5 @@
+using Domain.Dtos;
+using Domain.Services;
 using System;
 using System.IO;
 
@@ -5,16 +7,22 @@ namespace Application.Directories
 {
     public class PhysicalFileApplication
     {
-        public Stream GetStream(string hash)
+        private readonly ElementsMemoryStorage _elementsMemoryStorage;
+
+        public PhysicalFileApplication (ElementsMemoryStorage elementsMemoryStorage)
         {
-            var fileName = GetFileName(hash);
-            var stream = System.IO.File.OpenRead(fileName);
-            return stream;
+            _elementsMemoryStorage = elementsMemoryStorage;
         }
 
-        private string GetFileName(string hash)
+        public BinaryContentDto GetContent(string hash)
         {
-            return "/home/radim/Source/WebGalery/TestPictures/Duha/2017-08-20-Duha0367.JPG";
+            var element = _elementsMemoryStorage.Get(hash);
+            if (element == null)
+            {
+                // get it somehow from database 
+                throw new NotImplementedException();
+            }
+            return element.ToBinaryContentDto();
         }
     }
 }

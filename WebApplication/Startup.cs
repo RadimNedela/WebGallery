@@ -18,6 +18,8 @@ namespace WebApplication
 {
     public class Startup
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -37,6 +39,7 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            log.Info("Configure");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,6 +63,7 @@ namespace WebApplication
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            log.Info("/Configure");
         }
     }
 }

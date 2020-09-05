@@ -1,0 +1,30 @@
+﻿.headerArea {
+    grid-area: header;
+}
+
+.menuArea {
+    grid-area: menu;
+}
+
+.mainArea {
+    grid-area: main;
+}
+
+.rightArea {
+    grid-area: right;
+}
+
+.footerArea {
+    grid-area: footer;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-areas: 
+        'header header header header header header' 
+        'menu main main main right right' 
+        'menu footer footer footer footer footer';
+    grid-gap: 10px;
+    /*background-color: #2196F3;*/
+    padding: 10px;
+}

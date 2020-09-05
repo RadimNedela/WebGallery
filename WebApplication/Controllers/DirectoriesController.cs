@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Directories;
+using Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApplication.Controllers
 {
     [Route("api/[controller]")]
     public class DirectoriesController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private DirectoryContentApplication _directoryContentApplication;
         private PhysicalFileApplication _physicalFileApplication;
 
@@ -23,6 +24,19 @@ namespace WebApplication.Controllers
             _directoryContentApplication = directoryContentApplication;
             _physicalFileApplication = physicalFileApplication;
         }
+
+        [HttpGet("getDirectoryContent")]
+        public DisplayableInfoDto GetDirectoryContent(string directoryName)
+        {
+            log.Info($"GetDirectoryContent {directoryName}");
+            var retVal = _directoryContentApplication.GetDirectoryContent(directoryName);
+            log.Info(retVal);
+            return retVal;
+        }
+
+
+
+
 
         [HttpGet("getImage/{hash}")]
         public FileStreamResult GetImage(string hash)

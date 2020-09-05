@@ -51,7 +51,7 @@ namespace IntegrationTests.Directories
             {
                 var application = serviceProvider.GetService<DirectoryContentApplication>();
                 var content = application.GetDirectoryContent(TestPicturesPath);
-                Assert.That(content.Contents.Count(), Is.EqualTo(0));
+                Assert.That(content.ContentInfos.Count(), Is.EqualTo(0));
             }
         }
 
@@ -73,7 +73,7 @@ namespace IntegrationTests.Directories
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
                 var application = serviceProvider.GetService<DirectoryContentApplication>();
-                var list = application.GetDirectoryContent(TestPicturesInnerPath).Contents.ToArray();
+                var list = application.GetDirectoryContent(TestPicturesInnerPath).ContentInfos.ToArray();
                 var first = list.First(dto => dto.Label.EndsWith(DoubledPictureName1));
                 var second = list.First(dto => dto.Label.EndsWith(DoubledPictureName2));
                 Assert.That(first.Hash, Is.EqualTo(second.Hash));
@@ -96,7 +96,7 @@ namespace IntegrationTests.Directories
             IEnumerable<ContentInfoDto> list = new List<ContentInfoDto>();
             foreach (var dir in content.Binders)
             {
-                list = list.Union(application.GetDirectoryContent(dir.Label).Contents);
+                list = list.Union(application.GetDirectoryContent(dir.Label).ContentInfos);
             }
             return list;
         }
@@ -108,7 +108,7 @@ namespace IntegrationTests.Directories
             {
                 var dirApp = serviceProvider.GetService<DirectoryContentApplication>();
                 var dc = dirApp.GetDirectoryContent(TestPicturesInnerPath);
-                var hash = dc.Contents.First(c => c.FileName.EndsWith(DoubledPictureName1)).Hash;
+                var hash = dc.ContentInfos.First(c => c.FileName.EndsWith(DoubledPictureName1)).Hash;
 
                 var application = serviceProvider.GetService<PhysicalFileApplication>();
                 var content = application.GetContent(hash);

@@ -1,24 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Application.Directories;
 using Application.IoC;
 using Infrastructure.IoC;
 using Domain.IoC;
-using Infrastructure.MySqlDb;
+using Domain.Logging;
 
 namespace WebApplication
 {
     public class Startup
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger log = new Log4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public Startup(IConfiguration configuration)
         {
@@ -39,7 +33,7 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            log.Info("Configure");
+            log.Begin("Configure");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -63,7 +57,7 @@ namespace WebApplication
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            log.Info("/Configure");
+            log.End("Configure");
         }
     }
 }

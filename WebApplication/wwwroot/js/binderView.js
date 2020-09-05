@@ -8,8 +8,22 @@
         DH.getDirectoryContent(directory)
             .then(function (data) {
                 var binders = data.binders;
-                var contents = data.contents;
+                var contentInfos = data.contentInfos;
+
+                showBinders(binders);
+                showContentInfos(contentInfos);
             });
+    }
+
+
+    function showBinders(arrayOfBinders) {
+        if (Commons.emptyArray(arrayOfBinders)) return;
+        var a = "asdf";
+    }
+
+    function showContentInfos(arrayOfContentInfos) {
+        if (Commons.emptyArray(arrayOfContentInfos)) return;
+        var b = "asdf";
     }
 
     return {

@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using Domain.Dtos;
 using Domain.Elements;
 using Domain.InfrastructureInterfaces;
+using Domain.Logging;
 
 namespace Domain.Services
 {
@@ -22,14 +23,15 @@ namespace Domain.Services
             _elementsMemoryStorage = elementsMemoryStorage;
         }
 
-        public IEnumerable<HashedElement> GetDirectoryContent(string path)
+        public IList<HashedElement> GetDirectoryContent(string path)
         {
             var fileNames = _directoryMethods.GetFileNames(path);
             var dirNames = _directoryMethods.GetDirectories(path);
             BinderElement directoryBinder = CreateDirectoryBinder(path);
             var files = fileNames.Select(fn => CreateFileContentElement(fn, directoryBinder));
             var directories = dirNames.Select(dn => CreateDirectoryBinder(dn));
-            return directories.Union(files);
+
+            return directories.Union(files).ToList();
         }
 
         private HashedElement CreateFileContentElement(string path, BinderElement directoryBinder)

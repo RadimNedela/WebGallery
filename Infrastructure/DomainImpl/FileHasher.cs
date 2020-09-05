@@ -5,11 +5,14 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Domain.InfrastructureInterfaces;
+using Domain.Logging;
 
 namespace Infrastructure.DomainImpl
 {
     public class FileHasher : IHasher
     {
+        private static readonly ISimpleLogger log = new Log4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public bool IsSupportedImage(string path)
         {
             var upper = path.ToUpper();
@@ -18,9 +21,16 @@ namespace Infrastructure.DomainImpl
 
         public string ComputeFileContentHash(Stream stream, string path)
         {
+            log.Begin($"{nameof(ComputeFileContentHash)}.{path}");
+
+            string retVal = null;
             if (IsSupportedImage(path))
-                return ImageHash(stream);
-            return OtherFileHash(stream);
+                retVal = ImageHash(stream);
+            else 
+            retVal = OtherFileHash(stream);
+
+            log.End($"{nameof(ComputeFileContentHash)}.{path}");
+            return retVal;
         }
 
         public string ComputeDirectoryHash(string directoryPath)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Directories;
 using Domain.Dtos;
+using Domain.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -12,8 +13,7 @@ namespace WebApplication.Controllers
     [Route("api/[controller]")]
     public class DirectoriesController : Controller
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private static readonly ISimpleLogger log = new Log4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private DirectoryContentApplication _directoryContentApplication;
         private PhysicalFileApplication _physicalFileApplication;
 
@@ -65,7 +65,7 @@ namespace WebApplication.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return _directoryContentApplication.GetDirectoryContent("").Contents.Select(dc => dc.Label);
+            return _directoryContentApplication.GetDirectoryContent("").ContentInfos.Select(dc => dc.Label);
         }
 
         // GET api/<controller>/5

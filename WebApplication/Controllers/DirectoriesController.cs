@@ -35,22 +35,31 @@ namespace WebApplication.Controllers
         }
 
 
-
-
-
         [HttpGet("getImage/{hash}")]
-        public FileStreamResult GetImage(string hash)
+        public string GetImage(string hash)
         {
             var content = _physicalFileApplication.GetContent(hash);
-
-            new FileExtensionContentTypeProvider().TryGetContentType(content.FileName, out string mimeType);
-            return new FileStreamResult(content.Content, new Microsoft.Net.Http.Headers.MediaTypeHeaderValue(mimeType));
+            byte[] b = System.IO.File.ReadAllBytes(content.FilePath);
+            return "data:image/png;base64," + Convert.ToBase64String(b);
         }
+
+
+        //[HttpGet("getImage/{hash}")]
+        //public FileStreamResult GetImage(string hash)
+        //{
+        //    var content = _physicalFileApplication.GetContent(hash);
+
+        //    new FileExtensionContentTypeProvider().TryGetContentType(content.FilePath, out string mimeType);
+        //    var stream = System.IO.File.OpenRead(content.FilePath);
+
+        //    return new FileStreamResult(stream, new Microsoft.Net.Http.Headers.MediaTypeHeaderValue(mimeType));
+        //}
 
         [HttpGet("getFileStream")]
         public FileStreamResult DownloadAsync()
         {
-            var fileName = "/home/radim/Source/WebGalery/TestPictures/Duha/2017-08-20-Duha0367.JPG";
+            //var fileName = "/home/radim/Source/WebGalery/TestPictures/Duha/2017-08-20-Duha0367.JPG";
+            var fileName = "d:\\Sources\\WebGallery\\TestPictures\\Duha\\2017-08-20-Duha0367.JPG";
             new FileExtensionContentTypeProvider().TryGetContentType(fileName, out string mimeType);
 
             var stream = System.IO.File.OpenRead(fileName);

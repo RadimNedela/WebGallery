@@ -39,7 +39,7 @@ namespace Domain.Services
             Stream stream = _directoryMethods.GetStream(path);
             var theElement = new ContentElement()
             {
-                ContentStream = stream,
+                FileFullPath = path,
                 Hash = _hasher.ComputeFileContentHash(stream, path),
                 Label = Path.GetFileName(path),
                 Type = GetFileType(path),

@@ -14,7 +14,7 @@ namespace Application.Directories
             _elementsMemoryStorage = elementsMemoryStorage;
         }
 
-        public BinaryContentDto GetContent(string hash)
+        public ContentInfoDto GetContent(string hash)
         {
             var element = _elementsMemoryStorage.Get(hash);
             if (element == null)
@@ -22,7 +22,7 @@ namespace Application.Directories
                 // get it somehow from database 
                 throw new NotImplementedException();
             }
-            return element.ToBinaryContentDto();
+            return element.ToContentInfoDto();
         }
     }
 }

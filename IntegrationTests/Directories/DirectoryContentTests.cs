@@ -61,7 +61,7 @@ namespace IntegrationTests.Directories
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
                 var list = RecurseIntoDirectories(serviceProvider);
-                Assert.That(list.Count(), Is.EqualTo(8));
+                Assert.That(list.Count(), Is.EqualTo(9));
             }
         }
 
@@ -108,12 +108,12 @@ namespace IntegrationTests.Directories
             {
                 var dirApp = serviceProvider.GetService<DirectoryContentApplication>();
                 var dc = dirApp.GetDirectoryContent(TestPicturesInnerPath);
-                var hash = dc.ContentInfos.First(c => c.FileName.EndsWith(DoubledPictureName1)).Hash;
+                var hash = dc.ContentInfos.First(c => c.FilePath.EndsWith(DoubledPictureName1)).Hash;
 
                 var application = serviceProvider.GetService<PhysicalFileApplication>();
                 var content = application.GetContent(hash);
                 Assert.That(content, Is.Not.Null);
-                Assert.That(content.Content, Is.Not.Null);
+                Assert.That(content.FilePath, Is.Not.Null);
             }
         }
 

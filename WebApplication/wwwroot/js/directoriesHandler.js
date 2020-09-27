@@ -6,7 +6,12 @@
         return $.getJSON(uri + "/getDirectoryContent", { directoryName: directoryName });
     }
 
+    function getImage(hash) {
+        return $.getJSON(uri + "/getImage/" + hash);
+    }
+
     return {
-        getDirectoryContent: getDirectoryContent
+        getDirectoryContent: getDirectoryContent,
+        getImage: getImage,
     }
 }

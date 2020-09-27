@@ -16,10 +16,30 @@
     <div id="GridContainer" class="grid-container">
         <div id="HeaderDiv" class="headerArea">Header</div>
         <div id="MenuDiv" class="menuArea">
-            <button onclick="BinderViewObject.parseDirectoryContent();">ASDF</button>
+            <button onclick="BinderViewObject.parseDirectoryContent();">ParseDir</button>
+            <br />
+            <button onclick="BinderViewObject.getImage();">GetImage</button>
+            <br />
+            <input id="MainImageMaxWidthInput" name="MainImageMaxWidthInput" type="number" min="800" max="8000" value="1600" />
+            <br />
         </div>
-        <div id="MainDiv" class="mainArea">Main</div>
-        <div id="RightDiv" class="rightArea">Right</div>
+        <div id="MainDiv" class="mainArea">
+            <img id="MainImage" src="" />
+        </div>
+        <div id="RightDiv" class="rightArea">
+            <table id="RightTable">
+                <thead>
+                    <tr>
+                        <th>Hash</th>
+                        <th>Type</th>
+                        <th>Label</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
         <div id="FooterDiv" class="footerArea">Footer</div>
     </div>
 

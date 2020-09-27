@@ -11,32 +11,19 @@ namespace Domain.Elements
         public const string ImageType = "Image";
         public const string UnknownType = "Unknown";
 
-        public Stream ContentStream { get; internal set; }
+        public string FileFullPath { get; internal set; }
 
         public IList<BinderElement> Binders { get; set; }
 
         protected void InitializeDto(ContentInfoDto dto)
         {
             base.InitializeDto(dto);
-            dto.FileName = Label;
-        }
-
-        protected void InitializeDto(BinaryContentDto dto)
-        {
-            InitializeDto((ContentInfoDto)dto);
-            dto.Content = ContentStream;
+            dto.FilePath = FileFullPath;
         }
 
         public ContentInfoDto ToContentInfoDto()
         {
             var dto = new ContentInfoDto();
-            InitializeDto(dto);
-            return dto;
-        }
-
-        public BinaryContentDto ToBinaryContentDto()
-        {
-            var dto = new BinaryContentDto();
             InitializeDto(dto);
             return dto;
         }

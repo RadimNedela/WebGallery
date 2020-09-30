@@ -31,7 +31,7 @@ namespace Domain.Services
             var files = fileNames.Select(fn => CreateFileContentElement(fn, directoryBinder));
             var directories = dirNames.Select(dn => CreateDirectoryBinder(dn));
 
-            return directories.Union(files).ToList();
+            return directories.Union(files.Distinct()).ToList();
         }
 
         private HashedElement CreateFileContentElement(string path, BinderElement directoryBinder)

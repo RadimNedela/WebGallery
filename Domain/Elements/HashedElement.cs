@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domain.Dtos;
-using Domain.DbEntities;
-using Domain.InfrastructureInterfaces;
 
 namespace Domain.Elements
 {
@@ -18,6 +14,18 @@ namespace Domain.Elements
             dto.Hash = Hash;
             dto.Type = Type;
             dto.Label = Label;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is HashedElement he)
+                return Hash.Equals(he.Hash);
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return -1545866855 + EqualityComparer<string>.Default.GetHashCode(Hash);
         }
     }
 }

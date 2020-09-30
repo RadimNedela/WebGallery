@@ -3,8 +3,9 @@
     var DH = DirectoriesHandler();
     const uri = 'api/Directories';
 
-    function parseDirectoryContent(directory) {
-        directory = "d:\\Sources\\WebGallery\\TestPictures\\Duha\\";
+    function parseDirectoryContent() {
+        var directory = $("#DirectoryNameInput").val();
+        if (!directory) directory = "d:\\Sources\\WebGallery\\TestPictures\\Duha\\";
         DH.getDirectoryContent(directory)
             .then(function (data) {
                 var binders = data.binders;
@@ -35,19 +36,21 @@
 
     function addHashedElementDtoInfoRow($table, dto) {
         var $tr = $table.find('tbody:last').append('<tr>');
-        $tr.append('<td>' + dto.hash + '</td>');
+        var hashTd = $('<td>' + dto.hash + '</td>');
+        hashTd.click({ hash: dto.hash }, getImage);
+        $tr.append(hashTd);
         $tr.append('<td>' + dto.type + '</td>');
         $tr.append('<td>' + dto.label + '</td>');
     }
 
-    function getImage() {
-        hash = '133800811c196fce8cd5d18c6fd6a4fbb821b614';
+    function getImage(event) {
+        var hash = event.data.hash;
+        if (!hash) hash = '133800811c196fce8cd5d18c6fd6a4fbb821b614';
         DH.getImage(hash)
             .done(function (data) {
-                var a = 1;
+                $("#MainImage").attr('src', data.responseText);
             })
             .fail(function (nevim) {
-                var b = 2;
                 $("#MainImage").attr('src', nevim.responseText);
             });
     }
@@ -60,13 +63,8 @@
 
     $(function () {
         $("#MainImageMaxWidthInput").on('input', mainImageMaxWidthChanged);
+        $("#ParseDirectoryButton").click(parseDirectoryContent);
     });
-
-    return {
-        parseDirectoryContent: parseDirectoryContent,
-        getImage: getImage,
-        mainImageMaxWidthChanged: mainImageMaxWidthChanged,
-    }
 }
 
-var BinderViewObject = BinderView();
+BinderView();

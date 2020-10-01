@@ -19,11 +19,5 @@ namespace Infrastructure.DomainImpl
             var directories = Directory.GetDirectories(directoryName);
             return directories;
         }
-
-        public Stream GetStream(string path)
-        {
-            Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
-            return stream;
-        }
     }
 }

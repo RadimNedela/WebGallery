@@ -8,7 +8,5 @@ namespace Domain.InfrastructureInterfaces
         IEnumerable<string> GetFileNames(string directoryName);
 
         IEnumerable<string> GetDirectories(string directoryName);
-
-        Stream GetStream(string path);
     }
 }

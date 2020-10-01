@@ -36,46 +36,25 @@ namespace Domain.Services
 
         private HashedElement CreateFileContentElement(string path, BinderElement directoryBinder)
         {
-            Stream stream = _directoryMethods.GetStream(path);
-            var theElement = new ContentElement()
-            {
-                FileFullPath = path,
-                Hash = _hasher.ComputeFileContentHash(stream, path),
-                Label = Path.GetFileName(path),
-                Type = GetFileType(path),
-                Binders = new List<BinderElement>
-                {
-                    directoryBinder
-                }
-            };
+            var hash = _hasher.ComputeFileContentHash(path);
 
-            _elementsMemoryStorage.Add(theElement);
-            return theElement;
-        }
+            var theElement = _elementsMemoryStorage.Get(hash);
 
-        private string GetFileType(string path)
-        {
-            string extension = System.IO.Path.GetExtension(path).ToLower();
-            switch (extension)
+            if (theElement == null)
             {
-                case ".jpg":
-                case ".jpeg":
-                    return ContentElement.ImageType;
-                default:
-                    return ContentElement.UnknownType;
+                theElement = new ContentElement(hash, directoryBinder, path);
+                _elementsMemoryStorage.Add(theElement);
             }
+            else
+            {
+                theElement.AddLastSeenFilePosition(path, directoryBinder);
+            }
+            return theElement;
         }
 
         private BinderElement CreateDirectoryBinder(string path)
         {
-            return new BinderElement()
-            {
-                Hash = null,
-                Binders = null,
-                Contents = null,
-                Label = path,
-                Type = BinderElement.DirectoryType
-            };
+            return new BinderElement(_hasher.ComputeDirectoryHash(path), BinderTypeEnum.DirectoryType, path);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace UnitTests.Domain
             });
 
             var hasher = Substitute.For<IHasher>();
-            hasher.ComputeFileContentHash(Arg.Any<Stream>(), Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(1)}Hash");
+            hasher.ComputeFileContentHash(Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(0)}Hash");
 
             return new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage());
         }

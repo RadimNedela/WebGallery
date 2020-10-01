@@ -5,9 +5,16 @@ namespace Domain.Elements
 {
     public abstract class HashedElement
     {
-        public string Hash { get; internal set; }
-        public string Type { get; internal set; }
-        public string Label { get; internal set; }
+        public string Hash { get; private set; }
+        public string Type { get; private set; }
+        public string Label { get; private set; }
+
+        protected void Initialize(string hash, string type, string label)
+        {
+            Hash = hash;
+            Type = type;
+            Label = label;
+        }
 
         protected void InitializeDto(HashedElementDto dto)
         {

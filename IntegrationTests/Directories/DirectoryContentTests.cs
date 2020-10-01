@@ -6,6 +6,8 @@ using System.Linq;
 using System.Timers;
 using Application.Directories;
 using Domain.Dtos;
+using Domain.Elements;
+using Domain.Services;
 using IntegrationTests.IoC;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,7 +63,7 @@ namespace IntegrationTests.Directories
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
                 var list = RecurseIntoDirectories(serviceProvider);
-                Assert.That(list.Count(), Is.EqualTo(9));
+                Assert.That(list.Count(), Is.EqualTo(8));
             }
         }
 
@@ -72,11 +74,13 @@ namespace IntegrationTests.Directories
             t.Start();
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
-                var application = serviceProvider.GetService<DirectoryContentApplication>();
-                var list = application.GetDirectoryContent(TestPicturesInnerPath).ContentInfos.ToArray();
-                var first = list.First(dto => dto.Label.EndsWith(DoubledPictureName1));
-                var second = list.First(dto => dto.Label.EndsWith(DoubledPictureName2));
-                Assert.That(first.Hash, Is.EqualTo(second.Hash));
+                var directoryContentBuilder = serviceProvider.GetService<DirectoryContentBuilder>();
+                IList<HashedElement> list = directoryContentBuilder.GetDirectoryContent(TestPicturesInnerPath);
+                var first = list.First(he => he.Label.EndsWith(DoubledPictureName1));
+
+                ContentElement ce = first as ContentElement;
+                Assert.That(ce.AttributedBinders.Count(), Is.EqualTo(2));
+
                 Console.WriteLine($"The hash is {first.Hash}");
                 string s = "";
                 foreach (var dto in list)
@@ -108,7 +112,7 @@ namespace IntegrationTests.Directories
             {
                 var dirApp = serviceProvider.GetService<DirectoryContentApplication>();
                 var dc = dirApp.GetDirectoryContent(TestPicturesInnerPath);
-                var hash = dc.ContentInfos.First(c => c.FilePath.EndsWith(DoubledPictureName1)).Hash;
+                var hash = dc.ContentInfos.First(c => c.FilePath.EndsWith(DoubledPictureName2)).Hash;
 
                 var application = serviceProvider.GetService<PhysicalFileApplication>();
                 var content = application.GetContent(hash);

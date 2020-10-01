@@ -1,16 +1,16 @@
 ﻿using Domain.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Elements
 {
     public class BinderElement : HashedElement
     {
-        public const string DirectoryType = "Directory";
+        public BinderTypeEnum BinderType { get; private set; }
 
-        public IList<BinderElement> Binders { get; set; }
-        public IList<ContentElement> Contents { get; set; }
+        public BinderElement(string hash, BinderTypeEnum type, string label) 
+        {
+            base.Initialize(hash, type.ToString(), label);
+            BinderType = type;
+        }
 
         public BinderDto ToBinderDto()
         {

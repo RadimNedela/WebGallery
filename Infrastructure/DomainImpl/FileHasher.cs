@@ -19,9 +19,10 @@ namespace Infrastructure.DomainImpl
             return upper.EndsWith(".JPG") || upper.EndsWith(".JPEG");
         }
 
-        public string ComputeFileContentHash(Stream stream, string path)
+        public string ComputeFileContentHash(string path)
         {
             log.Begin($"{nameof(ComputeFileContentHash)}.{path}");
+            Stream stream = GetStream(path);
 
             string retVal = null;
             if (IsSupportedImage(path))
@@ -31,6 +32,12 @@ namespace Infrastructure.DomainImpl
 
             log.End($"{nameof(ComputeFileContentHash)}.{path}");
             return retVal;
+        }
+
+        public Stream GetStream(string path)
+        {
+            Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
+            return stream;
         }
 
         public string ComputeDirectoryHash(string directoryPath)

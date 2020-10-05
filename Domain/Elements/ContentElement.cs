@@ -15,7 +15,7 @@ namespace Domain.Elements
         public IEnumerable<BinderElement> Binders => binders;
         public IEnumerable<AttributedBinder> AttributedBinders => attributedBinders;
 
-        public ContentElement(string hash, BinderElement directoryBinder, string fullFilePath)
+        internal ContentElement(string hash, BinderElement directoryBinder, string fullFilePath)
         {
             string type = GetFileType(fullFilePath);
             string fileName = Path.GetFileName(fullFilePath);

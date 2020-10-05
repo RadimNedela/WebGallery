@@ -43,7 +43,7 @@ namespace UnitTests.Domain
 
         public const string TestDirectory = "Test directory - chopok";
 
-        private static DirectoryContentBuilder CreateContentBuilder()
+        public static DirectoryContentBuilder CreateContentBuilder()
         {
             var directoryMethods = Substitute.For<IDirectoryMethods>();
             directoryMethods.GetFileNames(TestDirectory).Returns(new string[] {

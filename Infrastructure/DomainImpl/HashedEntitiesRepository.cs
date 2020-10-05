@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DomainImpl
 {
-    public class HashedEntitiesRepository : IHashedEntitiesRepository
+    public class HashedEntitiesRepository : IContentEntityRepository
     {
         private readonly MySqlDbContext _dbContext;
 
@@ -15,23 +15,20 @@ namespace Infrastructure.DomainImpl
             _dbContext = dbContext;
         }
 
-        public void Add(HashedEntity hashed)
+        public void Add(ContentEntity contentEntity)
         {
-            _dbContext.Hashes.Add(hashed);
+            _dbContext.Contents.Add(contentEntity);
         }
 
-        public HashedEntity Get(string hash)
+        public ContentEntity Get(string hash)
         {
-            return _dbContext.Hashes
+            return _dbContext.Contents
                 .Where(h => h.Hash == hash)
-                    .Include(he => he.Locations)
-                        .ThenInclude(l => l.Location)
-                        .ThenInclude(l => l.Tags)
-                        .ThenInclude(t => t.Tag)
-                    .Include(he => he.Tags)
-                        .ThenInclude(t => t.Tag)
+                    .Include(ce => ce.Binders)
+                        .ThenInclude(b => b.Binder)
+                    .Include(he => he.AttributedBinders)
+                        .ThenInclude(ab => ab.AttributedBinder)
                     .FirstOrDefault();
-
         }
     }
 }

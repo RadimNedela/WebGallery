@@ -1,13 +1,23 @@
 using System.Collections.Generic;
+using Domain.DbEntities;
 using Domain.Dtos;
 
 namespace Domain.Elements
 {
     public abstract class HashedElement
     {
+        public int? Id { get; private set; }
         public string Hash { get; private set; }
         public string Type { get; private set; }
         public string Label { get; private set; }
+
+        protected void Initialize(HashedEntity hashedEntity)
+        {
+            Id = hashedEntity.Id;
+            Hash = hashedEntity.Hash;
+            Type = hashedEntity.Type;
+            Label = hashedEntity.Label;
+        }
 
         protected void Initialize(string hash, string type, string label)
         {

@@ -21,8 +21,8 @@ namespace Application.Directories
         {
             log.Begin($"{nameof(GetDirectoryContent)}.{path}");
             
-            IEnumerable<HashedElement> hashed = _directoryContentBuilder.GetDirectoryContent(path);
-            var retVal = hashed.ToDisplayableInfoDto();
+            var directoryBinder = _directoryContentBuilder.GetDirectoryContent(path);
+            var retVal = directoryBinder.ToDisplayableInfoDto();
             
             log.End($"{nameof(GetDirectoryContent)}.{path}");
             return retVal;

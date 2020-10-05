@@ -75,15 +75,14 @@ namespace IntegrationTests.Directories
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
                 var directoryContentBuilder = serviceProvider.GetService<DirectoryContentBuilder>();
-                IList<HashedElement> list = directoryContentBuilder.GetDirectoryContent(TestPicturesInnerPath);
-                var first = list.First(he => he.Label.EndsWith(DoubledPictureName1));
+                var binder = directoryContentBuilder.GetDirectoryContent(TestPicturesInnerPath);
+                var first = binder.Contents.First(he => he.Label.EndsWith(DoubledPictureName1));
 
-                ContentElement ce = first as ContentElement;
-                Assert.That(ce.AttributedBinders.Count(), Is.EqualTo(2));
+                Assert.That(first.AttributedBinders.Count(), Is.EqualTo(2));
 
                 Console.WriteLine($"The hash is {first.Hash}");
                 string s = "";
-                foreach (var dto in list)
+                foreach (var dto in binder.Contents)
                 {
                     s += ", " + dto.Hash;
                 }

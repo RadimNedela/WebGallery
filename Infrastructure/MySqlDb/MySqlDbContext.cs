@@ -6,10 +6,10 @@ namespace Infrastructure.MySqlDb
 {
     public class MySqlDbContext : DbContext
     {
-        public DbSet<HashedEntity> Hashes { get; set; }
-        public DbSet<LocationEntity> Locations { get; set; }
-        public DbSet<TagEntity> Tags { get; set; }
- 
+        public DbSet<ContentEntity> Contents { get; set; }
+        public DbSet<BinderEntity> Binders { get; set; }
+        public DbSet<AttributedBinderEntity> AttributedBinders { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
@@ -19,44 +19,41 @@ namespace Infrastructure.MySqlDb
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<LocationEntity>()
-                .ToTable("Location");
+            modelBuilder.Entity<BinderEntityToContentEntity>()
+                .ToTable("BinderContent")
+                .HasKey(bc => new { bc.BinderId, bc.ContentId });
+            
+            modelBuilder.Entity<AttributedBinderEntityToContentEntity>(entity =>
+            {
+                entity.ToTable("AttributedBinderContent");
+                //entity.HasIndex(bac => new { bac.BinderId, bac.ContentId, bac.Attribute })
+                //    .IsUnique();
+                //.HasKey(bac => new { bac.BinderId, bac.ContentId, bac.Attribute });
+            });
 
-            modelBuilder.Entity<TagEntity>()
-                .ToTable("Tag");
-            modelBuilder.Entity<HashedTagEntity>();
-            modelBuilder.Entity<LocationTagEntity>();
-
-            modelBuilder.Entity<LocationEntityToTagEntity>()
-                .ToTable("LocationTags")
-                .HasKey(lt => new { lt.TagId, lt.LocationId });
-            modelBuilder.Entity<HashedEntityToTagEntity>()
-                .ToTable("HashedTags")
-                .HasKey(ht => new { ht.TagId, ht.HashedId });
-            modelBuilder.Entity<LocationEntityToHashedEntity>()
-                .ToTable("HashedLocations")
-                .HasKey(ht => new { ht.LocationId, ht.HashedId });
-
-            modelBuilder.Entity<HashedEntity>(entity =>
+            modelBuilder.Entity<ContentEntity>(entity =>
             {
                 entity.HasIndex(e => e.Hash).IsUnique();
                 // entity.HasKey(e => e.ID);
                 entity.Property(e => e.Hash).IsRequired();
-                entity.ToTable("Hashed");
+                entity.ToTable("Content");
             });
-            // modelBuilder.Entity<Publisher>(entity =>
-            // {
-            //     entity.HasKey(e => e.ID);
-            //     entity.Property(e => e.Name).IsRequired();
-            // });
 
-            // modelBuilder.Entity<Book>(entity =>
-            // {
-            //     entity.HasKey(e => e.ISBN);
-            //     entity.Property(e => e.Title).IsRequired();
-            //     entity.HasOne(d => d.Publisher)
-            // .WithMany(p => p.Books);
-            // });
+            modelBuilder.Entity<BinderEntity>(entity =>
+            {
+                entity.HasIndex(e => e.Hash).IsUnique();
+                // entity.HasKey(e => e.ID);
+                entity.Property(e => e.Hash).IsRequired();
+                entity.ToTable("Binder");
+            });
+
+            modelBuilder.Entity<AttributedBinderEntity>(entity =>
+            {
+                entity.HasIndex(e => e.Hash).IsUnique();
+                // entity.HasKey(e => e.ID);
+                entity.Property(e => e.Hash).IsRequired();
+                entity.ToTable("AttributedBinder");
+            });
         }
 
         public void DetachAllEntities()

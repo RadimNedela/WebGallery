@@ -5,10 +5,11 @@
         public BinderElement TheBinder { get; private set; }
         public string Attribute { get; private set; }
 
-        public AttributedBinder(BinderElement binder, string attribute)
+        public AttributedBinder(BinderElement binder, ContentElement content, string attribute)
         {
             TheBinder = binder;
             Attribute = attribute;
+            TheBinder.AddContent(content);
         }
 
         public override bool Equals(object other)

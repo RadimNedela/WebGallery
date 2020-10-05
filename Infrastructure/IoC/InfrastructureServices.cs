@@ -12,7 +12,7 @@ namespace Infrastructure.IoC
             services.AddSingleton<IDirectoryMethods, DirectoryMethods>();
             services.AddSingleton<IHasher, FileHasher>();
 
-            services.AddScoped<IHashedEntitiesRepository, HashedEntitiesRepository>();
+            services.AddScoped<IContentEntityRepository, HashedEntitiesRepository>();
 
             services.AddDbContext<MySqlDbContext>();
         }

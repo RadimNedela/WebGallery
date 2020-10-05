@@ -23,15 +23,21 @@ namespace Domain.Services
             _elementsMemoryStorage = elementsMemoryStorage;
         }
 
-        public IList<HashedElement> GetDirectoryContent(string path)
+        public BinderElement GetDirectoryContent(string path)
         {
             var fileNames = _directoryMethods.GetFileNames(path);
             var dirNames = _directoryMethods.GetDirectories(path);
             BinderElement directoryBinder = CreateDirectoryBinder(path);
-            var files = fileNames.Select(fn => CreateFileContentElement(fn, directoryBinder));
-            var directories = dirNames.Select(dn => CreateDirectoryBinder(dn));
+            foreach (var fn in fileNames)
+            {
+                CreateFileContentElement(fn, directoryBinder);
+            }
+            foreach (var dn in dirNames)
+            {
+                directoryBinder.AddBinder(CreateDirectoryBinder(dn));
+            }
 
-            return directories.Union(files.Distinct()).ToList();
+            return directoryBinder;
         }
 
         private HashedElement CreateFileContentElement(string path, BinderElement directoryBinder)

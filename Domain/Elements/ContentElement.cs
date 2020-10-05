@@ -4,7 +4,6 @@ using System.IO;
 
 namespace Domain.Elements
 {
-
     public class ContentElement : HashedElement
     {
         public const string ImageType = "Image";
@@ -45,7 +44,7 @@ namespace Domain.Elements
 
         private void AddLastSeenFilePosition(string fullFilePath, BinderElement directoryBinder, string fileName)
         {
-            var attBinder = new AttributedBinder(directoryBinder, fileName);
+            var attBinder = new AttributedBinder(directoryBinder, this, fileName);
             if (!attributedBinders.Contains(attBinder))
                 attributedBinders.Add(attBinder);
             LastSeenFileFullPath = fullFilePath;

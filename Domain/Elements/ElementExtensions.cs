@@ -8,11 +8,10 @@ namespace Domain.Elements
 {
     public static class ElementExtensions
     {
-        public static DisplayableInfoDto ToDisplayableInfoDto(this IEnumerable<HashedElement> hashedElements)
+        public static DisplayableInfoDto ToDisplayableInfoDto(this BinderElement binderElement)
         {
-            var hashedElementsList = hashedElements.ToList();
-            List<BinderDto> binders = hashedElementsList.Where(he => he is BinderElement).Select(he => ((BinderElement)he).ToBinderDto()).ToList();
-            List<ContentInfoDto> contents = hashedElementsList.Where(he => he is ContentElement).Select(he => ((ContentElement)he).ToContentInfoDto()).ToList();
+            List<BinderDto> binders = binderElement.Binders.Select(he => ((BinderElement)he).ToBinderDto()).ToList();
+            List<ContentInfoDto> contents = binderElement.Contents.Select(he => ((ContentElement)he).ToContentInfoDto()).ToList();
 
             DisplayableInfoDto dto = new DisplayableInfoDto()
             {

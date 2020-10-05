@@ -16,9 +16,9 @@ namespace UnitTests.Domain
         {
             DirectoryContentBuilder contentBuilder = CreateContentBuilder();
 
-            var content = contentBuilder.GetDirectoryContent(TestDirectory);
+            var binder = contentBuilder.GetDirectoryContent(TestDirectory);
 
-            Assert.That(content.Count(), Is.EqualTo(4));
+            Assert.That(binder.Contents.Count(), Is.EqualTo(4));
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace UnitTests.Domain
         {
             DirectoryContentBuilder contentBuilder = CreateContentBuilder();
 
-            var content = contentBuilder.GetDirectoryContent(TestDirectory).First();
+            var content = contentBuilder.GetDirectoryContent(TestDirectory).Contents.First();
 
             Assert.That(content.Hash, Contains.Substring("2018-01-24-Chopok0335.JPGHash"));
         }
@@ -36,7 +36,7 @@ namespace UnitTests.Domain
         {
             DirectoryContentBuilder contentBuilder = CreateContentBuilder();
 
-            var content = contentBuilder.GetDirectoryContent(TestDirectory).First();
+            var content = contentBuilder.GetDirectoryContent(TestDirectory).Contents.First();
 
             Assert.That(content.Type, Is.EqualTo(ContentElement.ImageType));
         }

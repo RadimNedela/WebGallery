@@ -38,63 +38,54 @@ namespace IntegrationTests.DBTests
             RemoveTestHashedEntityFromDb();
         }
 
-        HashedEntity hashed;
-        LocationEntity location;
-        LocationTagEntity locationTag;
-        HashedTagEntity hashedTag;
+        BinderEntity binder;
+        ContentEntity content;
+        BinderEntityToContentEntity binderToContent;
+        AttributedBinderEntity dirBinder;
+        AttributedBinderEntityToContentEntity dirBinderToContent;
 
-        public const string testElementHash = "TestElementHashValue";
+        public const string TestContentElementHash = "ContentEntity01Hash";
+
         private void AddTestHashedEntityToDb()
         {
-            locationTag = new LocationTagEntity()
+            binder = new BinderEntity
             {
-                Description = "Test Location Tag",
-                Name = "Test Location Name",
-                Value = 2
+                Hash = "BinderEntity01",
+                Label = "Binder entity",
+                Type = "Nejaky binder type"
             };
-            location = new LocationEntity()
+            content = new ContentEntity
             {
-                Directory = "Test Directory",
-                FileName = "Test File Name"
+                Hash = TestContentElementHash,
+                Label = "Content 01",
+                Type = "jakysi content type"
             };
-
-            LocationEntityToTagEntity locationToTag = new LocationEntityToTagEntity()
+            dirBinder = new AttributedBinderEntity
             {
-                Location = location,
-                Tag = locationTag
-            };
-            location.Tags = new List<LocationEntityToTagEntity>() { locationToTag };
-
-            hashed = new HashedEntity()
-            {
-                Hash = testElementHash,
-                Type = "TestHashType"
+                Hash = "directoryBinder01",
+                Label = @"c:\temp",
+                Type = "Directory"
             };
 
-            LocationEntityToHashedEntity locationToHashed = new LocationEntityToHashedEntity()
+            binderToContent = new BinderEntityToContentEntity
             {
-                Location = location,
-                Hashed = hashed
+                Binder = binder,
+                Content = content
             };
+            binder.Contents = new List<BinderEntityToContentEntity> { binderToContent };
+            content.Binders = new List<BinderEntityToContentEntity> { binderToContent };
 
-            hashed.Locations = new List<LocationEntityToHashedEntity> { locationToHashed };
-
-            hashedTag = new HashedTagEntity()
+            dirBinderToContent = new AttributedBinderEntityToContentEntity
             {
-                Description = "Test Hashed Tag Description",
-                Name = "Test Hashed Tag Name"
+                AttributedBinder = dirBinder,
+                Content = content,
+                Attribute = "asdf.txt"
             };
-
-            HashedEntityToTagEntity hashedToTag = new HashedEntityToTagEntity()
-            {
-                Hashed = hashed,
-                Tag = hashedTag
-            };
-
-            hashed.Tags = new List<HashedEntityToTagEntity> { hashedToTag };
+            dirBinder.AttributedContents = new List<AttributedBinderEntityToContentEntity> { dirBinderToContent };
+            content.AttributedBinders = new List<AttributedBinderEntityToContentEntity> { dirBinderToContent };
 
             using var context = new TestDbContext();
-            context.Hashes.Add(hashed);
+            context.Contents.Add(content);
             context.SaveChanges();
             context.DetachAllEntities();
         }
@@ -103,10 +94,9 @@ namespace IntegrationTests.DBTests
         {
             using (var context = new TestDbContext())
             {
-                context.Hashes.Remove(hashed);
-                context.Locations.Remove(location);
-                context.Tags.Remove(locationTag);
-                context.Tags.Remove(hashedTag);
+                context.Binders.Remove(binder);
+                context.Contents.Remove(content);
+                context.AttributedBinders.Remove(dirBinder);
                 context.SaveChanges();
                 context.DetachAllEntities();
             }
@@ -118,18 +108,20 @@ namespace IntegrationTests.DBTests
             using (var context = new TestDbContext())
             {
                 var repo = new HashedEntitiesRepository(context);
-                HashedEntity fromDb = repo.Get(testElementHash);
+                var fromDb = repo.Get(TestContentElementHash);
                 Assert.That(fromDb, Is.Not.Null, "Returned element is null");
-                Assert.That(fromDb.Hash, Is.EqualTo(testElementHash), "Hash is not equal");
-                Assert.That(fromDb.Locations, Is.Not.Null, "Locations is null");
-                Assert.That(fromDb.Tags, Is.Not.Null, "Tags is null");
-                var location = fromDb.Locations.First().Location;
-                Assert.That(location, Is.Not.Null, "First Location is null");
-                Assert.That(location.Tags, Is.Not.Null, "Location tags is null");
-                var locationTag = location.Tags.FirstOrDefault();
-                Assert.That(locationTag, Is.Not.Null, "location Tag is null");
-                Assert.That(locationTag.Tag, Is.Not.Null, "location tag TAG is null");
-                Assert.That(locationTag.Tag.Description, Is.EqualTo("Test Location Tag"));
+                Assert.That(fromDb.Hash, Is.EqualTo(TestContentElementHash), "Hash is not equal");
+                Assert.That(fromDb.Binders, Is.Not.Null, "Binders is null");
+                Assert.That(fromDb.AttributedBinders, Is.Not.Null, "AttributedBinders is null");
+                var binder = fromDb.Binders.First().Binder;
+                Assert.That(binder, Is.Not.Null, "First Binder is null");
+                Assert.That(binder.Label, Is.Not.Empty, "Binder Lable is empty");
+                var dirBinderHolder = fromDb.AttributedBinders.First();
+                Assert.That(dirBinderHolder, Is.Not.Null, "First Dir Binder is null");
+                Assert.That(dirBinderHolder.Attribute, Is.Not.Empty, "Dir binder attribute is empty");
+                var dirBinder = dirBinderHolder.AttributedBinder;
+                Assert.That(dirBinder, Is.Not.Null, "Dir Binder is null");
+                Assert.That(dirBinder.Label, Is.Not.Empty, "Dir binder label is empty");
             }
         }
     }

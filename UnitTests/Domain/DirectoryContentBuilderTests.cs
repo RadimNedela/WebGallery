@@ -50,11 +50,12 @@ namespace UnitTests.Domain
                 "2018-01-24-Chopok0335.JPG",
                 "2018-01-24-Chopok0357.JPG",
                 "2018-01-24-Chopok0361.JPG",
-                "2018-01-24-Chopok0366.JPG"
+                "2018-01-24-Chopok0366.JPG",
+                "2018-01-24-Chopok0366ASDF.JPG"
             });
 
             var hasher = Substitute.For<IHasher>();
-            hasher.ComputeFileContentHash(Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(0)}Hash");
+            hasher.ComputeFileContentHash(Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
 
             return new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage());
         }

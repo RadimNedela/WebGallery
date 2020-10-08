@@ -9,11 +9,11 @@ namespace Domain.Elements
         public const string ImageType = "Image";
         public const string UnknownType = "Unknown";
         private IList<BinderElement> binders = new List<BinderElement>();
-        private ISet<AttributedBinder> attributedBinders = new HashSet<AttributedBinder>();
+        private ISet<AttributedBinderElement> attributedBinders = new HashSet<AttributedBinderElement>();
 
         public string LastSeenFileFullPath { get; private set; }
         public IEnumerable<BinderElement> Binders => binders;
-        public IEnumerable<AttributedBinder> AttributedBinders => attributedBinders;
+        public IEnumerable<AttributedBinderElement> AttributedBinders => attributedBinders;
 
         internal ContentElement(string hash, BinderElement directoryBinder, string fullFilePath)
         {
@@ -44,7 +44,7 @@ namespace Domain.Elements
 
         private void AddLastSeenFilePosition(string fullFilePath, BinderElement directoryBinder, string fileName)
         {
-            var attBinder = new AttributedBinder(directoryBinder, this, fileName);
+            var attBinder = new AttributedBinderElement(directoryBinder, this, fileName);
             if (!attributedBinders.Contains(attBinder))
                 attributedBinders.Add(attBinder);
             LastSeenFileFullPath = fullFilePath;

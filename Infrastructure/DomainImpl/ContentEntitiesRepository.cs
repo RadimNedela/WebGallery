@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DomainImpl
 {
-    public class HashedEntitiesRepository : IContentEntityRepository
+    public class ContentEntitiesRepository : IContentEntityRepository
     {
         private readonly MySqlDbContext _dbContext;
 
-        public HashedEntitiesRepository(MySqlDbContext dbContext)
+        public ContentEntitiesRepository(MySqlDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -18,6 +18,11 @@ namespace Infrastructure.DomainImpl
         public void Add(ContentEntity contentEntity)
         {
             _dbContext.Contents.Add(contentEntity);
+        }
+
+        public void Save()
+        {
+            _dbContext.SaveChanges();
         }
 
         public ContentEntity Get(string hash)

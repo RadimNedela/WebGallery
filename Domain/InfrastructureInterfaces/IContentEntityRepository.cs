@@ -7,5 +7,7 @@ namespace Domain.InfrastructureInterfaces
         ContentEntity Get(string hash);
 
         void Add(ContentEntity contentEntity);
+
+        void Save();
     }
 }

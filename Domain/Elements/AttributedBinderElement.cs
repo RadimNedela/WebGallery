@@ -1,11 +1,11 @@
 ﻿namespace Domain.Elements
 {
-    public class AttributedBinder
+    public class AttributedBinderElement
     {
         public BinderElement TheBinder { get; private set; }
         public string Attribute { get; private set; }
 
-        public AttributedBinder(BinderElement binder, ContentElement content, string attribute)
+        public AttributedBinderElement(BinderElement binder, ContentElement content, string attribute)
         {
             TheBinder = binder;
             Attribute = attribute;
@@ -14,7 +14,7 @@
 
         public override bool Equals(object other)
         {
-            if (other is AttributedBinder otherBinder)
+            if (other is AttributedBinderElement otherBinder)
             {
                 return 
                     TheBinder.Hash == otherBinder.TheBinder.Hash

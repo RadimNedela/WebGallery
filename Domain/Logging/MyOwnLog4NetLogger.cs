@@ -6,10 +6,10 @@ using System.Reflection;
 
 namespace Domain.Logging
 {
-    public class Log4NetLogger : ISimpleLogger
+    public class MyOwnLog4NetLogger : ISimpleLogger
     {
         #region Construct
-        static Log4NetLogger()
+        static MyOwnLog4NetLogger()
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Domain.Logging
         /// <code>System.Reflection.MethodBase.GetCurrentMethod().DeclaringType</code>
         /// </summary>
         /// <param name="loggerName"><code>System.Reflection.MethodBase.GetCurrentMethod().DeclaringType</code></param>
-        public Log4NetLogger(Type type)
+        public MyOwnLog4NetLogger(Type type)
         {
             log = log4net.LogManager.GetLogger(type);
         }

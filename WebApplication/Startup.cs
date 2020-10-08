@@ -7,12 +7,13 @@ using Application.IoC;
 using Infrastructure.IoC;
 using Domain.IoC;
 using Domain.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace WebApplication
 {
     public class Startup
     {
-        private static readonly ISimpleLogger log = new Log4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public Startup(IConfiguration configuration)
         {
@@ -31,7 +32,7 @@ namespace WebApplication
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             log.Begin("Configure");
             if (env.IsDevelopment())
@@ -44,6 +45,7 @@ namespace WebApplication
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            loggerFactory.AddLog4Net();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

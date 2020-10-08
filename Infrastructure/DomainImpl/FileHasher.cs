@@ -11,7 +11,7 @@ namespace Infrastructure.DomainImpl
 {
     public class FileHasher : IHasher
     {
-        private static readonly ISimpleLogger log = new Log4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public bool IsSupportedImage(string path)
         {

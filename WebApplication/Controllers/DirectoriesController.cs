@@ -13,7 +13,7 @@ namespace WebApplication.Controllers
     [Route("api/[controller]")]
     public class DirectoriesController : Controller
     {
-        private static readonly ISimpleLogger log = new Log4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private DirectoryContentApplication _directoryContentApplication;
         private PhysicalFileApplication _physicalFileApplication;
 

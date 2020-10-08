@@ -31,7 +31,29 @@ namespace Domain.Elements
                 Label = element.Label,
                 Type = element.Type
             };
+            entity.AttributedBinders = element.AttributedBinders.Select(ab => new AttributedBinderEntityToContentEntity
+            {
+                AttributedBinder = ab.TheBinder.ToAttributedEntity(),
+                Content = entity,
+                Attribute = ab.Attribute
+            }).ToList();
+            entity.Binders = element.Binders.Select(b => new BinderEntityToContentEntity
+            {
+                Binder = b.ToEntity(),
+                Content = entity,
+            }).ToList();
 
+            return entity;
+        }
+
+        public static AttributedBinderEntity ToAttributedEntity(this BinderElement element)
+        {
+            var entity = new AttributedBinderEntity
+            {
+                Hash = element.Hash,
+                Label = element.Label,
+                Type = element.Type
+            };
             return entity;
         }
 

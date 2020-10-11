@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace IntegrationTests.DBTests
 {
     [TestFixture]
-    public class CeateDB
+    public class CeateDatabase
     {
         public static readonly ILoggerFactory MyLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });

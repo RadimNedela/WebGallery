@@ -6,7 +6,9 @@ namespace Infrastructure.Databases.MySqlDb
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
+            optionsBuilder.EnableSensitiveDataLogging()
+                .UseLoggerFactory(LoggerFactory)
+                .UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
         }
     }
 }

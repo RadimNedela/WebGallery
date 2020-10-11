@@ -6,25 +6,23 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Databases
 {
+    public interface IGaleryDatabase
+    {
+
+    }
+
     public class GaleryDatabase : DbContext
     {
-        private static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => {
+        protected static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => {
             builder.AddFilter("Microsoft", LogLevel.Information)
-                   .AddFilter("System", LogLevel.Debug)
-                   .AddConsole();
+                .AddFilter("System", LogLevel.Debug)
+                .AddConsole();
         });
 
         private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public DbSet<ContentEntity> Contents { get; set; }
         public DbSet<BinderEntity> Binders { get; set; }
         public DbSet<AttributedBinderEntity> AttributedBinders { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.EnableSensitiveDataLogging()
-                .UseLoggerFactory(LoggerFactory)
-                .UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

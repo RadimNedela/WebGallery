@@ -12,12 +12,12 @@ namespace Domain.Elements
         public const string ImageType = "Image";
         public const string UnknownType = "Unknown";
         private readonly IList<BinderElement> _binders = new List<BinderElement>();
-        private readonly ISet<AttributedBinderElement> _attributedBinders = new HashSet<AttributedBinderElement>();
+        private readonly IList<KeyValuePair<string, BinderElement>> _attributedBinders = new List<KeyValuePair<string, BinderElement>>();
         private ContentEntity _contentEntity;
 
         public string LastSeenFileFullPath { get; private set; }
         public IEnumerable<BinderElement> Binders => _binders;
-        public IEnumerable<AttributedBinderElement> AttributedBinders => _attributedBinders;
+        public IEnumerable<KeyValuePair<string, BinderElement>> AttributedBinders => _attributedBinders;
 
         internal ContentElement(string hash, BinderElement directoryBinder, string fullFilePath)
         {
@@ -48,9 +48,12 @@ namespace Domain.Elements
 
         private void AddLastSeenFilePosition(string fullFilePath, BinderElement directoryBinder, string fileName)
         {
-            var attBinder = new AttributedBinderElement(directoryBinder, this, fileName);
-            if (!_attributedBinders.Contains(attBinder))
-                _attributedBinders.Add(attBinder);
+            var newKeyValue = new KeyValuePair<string, BinderElement>(fileName, directoryBinder);
+            if (!_attributedBinders.Any(a => a.Key == newKeyValue.Key && a.Value == newKeyValue.Value))
+            {
+                _attributedBinders.Add(newKeyValue);
+                directoryBinder.AddContent(fileName, this);
+            }
             LastSeenFileFullPath = fullFilePath;
         }
 
@@ -76,19 +79,6 @@ namespace Domain.Elements
                     Type = Type
                 };
             _contentEntity.Label = Label;
-            if (_contentEntity.Binders != null)
-            {
-                // need to merge
-            }
-            else
-            {
-                _contentEntity.Binders = new List<BinderEntityToContentEntity>();
-                foreach (var binderElement in Binders)
-                {
-                    _contentEntity.Binders.Add(binderElement.ToEntity());
-                }
-            }
-
             if (_contentEntity.AttributedBinders != null)
             {
                 // need to merge
@@ -96,11 +86,18 @@ namespace Domain.Elements
             else
             {
                 _contentEntity.AttributedBinders = new List<AttributedBinderEntityToContentEntity>();
-                foreach (var attributedBinderElement in AttributedBinders)
+                foreach (var keyValue in AttributedBinders)
                 {
-                    _contentEntity.AttributedBinders.Add(attributedBinderElement.ToEntity());
+                    var bToC = new AttributedBinderEntityToContentEntity()
+                    {
+                        Content = _contentEntity,
+                        Attribute = keyValue.Key
+                    };
+
+                    _contentEntity.AttributedBinders.Add(keyValue.Value.ToEntity(bToC));
                 }
             }
+
             return _contentEntity;
         }
     }

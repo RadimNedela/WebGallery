@@ -38,16 +38,14 @@ namespace Infrastructure.Databases
             modelBuilder.Entity<ContentEntity>(entity =>
             {
                 entity.HasIndex(e => e.Hash).IsUnique();
-                // entity.HasKey(e => e.ID);
-                entity.Property(e => e.Hash).IsRequired();
+                entity.Property(e => e.Hash).HasColumnType("Char(40)").IsRequired();
                 entity.ToTable("Content");
             });
 
             modelBuilder.Entity<BinderEntity>(entity =>
             {
                 entity.HasIndex(e => e.Hash).IsUnique();
-                // entity.HasKey(e => e.ID);
-                entity.Property(e => e.Hash).IsRequired();
+                entity.Property(e => e.Hash).HasColumnType("Char(40)").IsRequired();
                 entity.ToTable("Binder");
             });
         }

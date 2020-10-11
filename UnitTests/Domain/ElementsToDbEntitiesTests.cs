@@ -41,14 +41,15 @@ namespace UnitTests.Domain
         [Test]
         public void BinderElement_ToEntity_BasicContentOK()
         {
-            var builder = DirectoryContentBuilderTests.CreateContentBuilder();
-            var binderElement = builder.GetDirectoryContent(DirectoryContentBuilderTests.TestDirectory);
+            Assert.IsFalse(true);
+            //var builder = DirectoryContentBuilderTests.CreateContentBuilder();
+            //var binderElement = builder.GetDirectoryContent(DirectoryContentBuilderTests.TestDirectory);
 
-            var binderEntity = binderElement.ToEntity();
+            //var binderEntity = binderElement.ToEntity();
 
-            Assert.That(binderEntity.Hash, Is.EqualTo(binderElement.Hash));
-            Assert.That(binderEntity.Label, Is.EqualTo(binderElement.Label));
-            Assert.That(binderEntity.Type, Is.EqualTo(binderElement.Type));
+            //Assert.That(binderEntity.Hash, Is.EqualTo(binderElement.Hash));
+            //Assert.That(binderEntity.Label, Is.EqualTo(binderElement.Label));
+            //Assert.That(binderEntity.Type, Is.EqualTo(binderElement.Type));
         }
     }
 }

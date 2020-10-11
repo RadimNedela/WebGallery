@@ -21,7 +21,7 @@ namespace Infrastructure.DomainImpl
 
         public string ComputeFileContentHash(string path)
         {
-            Log.Begin($"{nameof(ComputeFileContentHash)}.{path}");
+            Log.Begin($"{nameof(ComputeFileContentHash)}", path);
             Stream stream = GetStream(path);
 
             string retVal = null;
@@ -30,7 +30,7 @@ namespace Infrastructure.DomainImpl
             else 
             retVal = OtherFileHash(stream);
 
-            Log.End($"{nameof(ComputeFileContentHash)}.{path}");
+            Log.End($"{nameof(ComputeFileContentHash)}", retVal);
             return retVal;
         }
 

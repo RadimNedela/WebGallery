@@ -1,5 +1,6 @@
 using Domain.InfrastructureInterfaces;
 using Infrastructure.Databases;
+using Infrastructure.Databases.MySqlDb;
 using Infrastructure.Databases.SqlServer;
 using Infrastructure.DomainImpl;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +16,8 @@ namespace Infrastructure.IoC
 
             services.AddScoped<IContentEntityRepository, ContentEntitiesRepository>();
 
-            services.AddSingleton<IGaleryDatabase, SqlServerDbContext>();
-            services.AddDbContext<SqlServerDbContext>();
+            services.AddSingleton<IGaleryDatabase, MySqlDbContext>();
+            services.AddDbContext<MySqlDbContext>();
         }
     }
 }

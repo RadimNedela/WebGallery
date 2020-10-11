@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Domain.DbEntities;
+using System;
 
 namespace Domain.Elements
 {
@@ -9,16 +10,16 @@ namespace Domain.Elements
     {
         private readonly ISet<ContentElement> _contents = new HashSet<ContentElement>();
         private readonly ISet<BinderElement> _binders = new HashSet<BinderElement>();
-        private readonly ISet<AttributedBinderElement> _attributes = new HashSet<AttributedBinderElement>();
+        private readonly IDictionary<string, ContentElement> _attributes = new Dictionary<string, ContentElement>();
         private BinderEntity _binderEntity;
 
         public BinderTypeEnum BinderType { get; private set; }
 
         public IEnumerable<ContentElement> Contents => _contents;
         public IEnumerable<BinderElement> Binders => _binders;
-        public IEnumerable<AttributedBinderElement> Attributes => _attributes;
+        public IEnumerable<KeyValuePair<string, ContentElement>> Attributes => _attributes;
 
-        public BinderElement(string hash, BinderTypeEnum type, string label) 
+        public BinderElement(string hash, BinderTypeEnum type, string label)
         {
             base.Initialize(hash, type.ToString(), label);
             BinderType = type;
@@ -31,13 +32,14 @@ namespace Domain.Elements
             _binders.Add(binderElement);
         }
 
-        public void AddContent(AttributedBinderElement attribute, ContentElement contentElement)
+        public void AddContent(string attribute, ContentElement contentElement)
         {
-            if (!_attributes.Contains(attribute))
-                _attributes.Add(attribute);
-            if (_contents.Contains(contentElement))
-                return;
-            _contents.Add(contentElement);
+            if (_attributes.ContainsKey(attribute))
+                throw new NotSupportedException("Currently it is not supported for Binder to contain 2 same attributes");
+
+            _attributes.Add(attribute, contentElement);
+            if (!_contents.Contains(contentElement))
+                _contents.Add(contentElement);
         }
 
         public BinderDto ToBinderDto()
@@ -50,14 +52,25 @@ namespace Domain.Elements
             };
         }
 
-        public BinderEntity ToEntity()
+        internal AttributedBinderEntityToContentEntity ToEntity(AttributedBinderEntityToContentEntity bToC)
         {
+            if (_binderEntity == null)
+            {
+                _binderEntity = new BinderEntity
+                {
+                    Hash = Hash,
+                    Label = Label,
+                    Type = Type,
+                    //AttributedContents = new List<AttributedBinderEntityToContentEntity>(),
+                    //Contents = new List<BinderEntityToContentEntity>()
+                };
+            }
+            if (bToC.Binder != null && bToC.Binder != _binderEntity)
+                throw new Exception("Something totaly wrong - bToC contains other binder as this one...");
+            if (bToC.Binder == null)
+                bToC.Binder = _binderEntity;
 
-        }
-
-        public BinderEntityToContentEntity ToEntity()
-        {
-            throw new System.NotImplementedException();
+            return bToC;
         }
     }
 }

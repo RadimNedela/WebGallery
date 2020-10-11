@@ -2,8 +2,6 @@
 {
     public class AttributedBinderEntityToContentEntity
     {
-        public int Id { get; set; }
-
         public int BinderId { get; set; }
         public BinderEntity Binder { get; set; }
 

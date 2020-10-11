@@ -32,7 +32,7 @@ namespace Infrastructure.DomainImpl
                     .Include(ce => ce.Binders)
                         .ThenInclude(b => b.Binder)
                     .Include(he => he.AttributedBinders)
-                        .ThenInclude(ab => ab.AttributedBinder)
+                        .ThenInclude(ab => ab.Binder)
                     .FirstOrDefault();
         }
     }

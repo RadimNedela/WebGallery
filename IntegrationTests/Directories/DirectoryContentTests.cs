@@ -58,18 +58,15 @@ namespace IntegrationTests.Directories
         public void GetDirectoryContent_ValidTestPath_Returns0Files()
         {
             var application = GetTestApplication();
-                var content = application.GetDirectoryContent(TestPicturesPath);
-                Assert.That(content.ContentInfos.Count(), Is.EqualTo(0));
+            var content = application.GetDirectoryContent(TestPicturesPath);
+            Assert.That(content.ContentInfos.Count(), Is.EqualTo(0));
         }
 
         [Test]
         public void GetRecursivelyDirectoryContent_ReturnsAll8Files()
         {
-            using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
-            {
-                var list = RecurseIntoDirectories(serviceProvider);
-                Assert.That(list.Count(), Is.EqualTo(8));
-            }
+            var list = RecurseIntoDirectories();
+            Assert.That(list.Count(), Is.EqualTo(8));
         }
 
         [Test]
@@ -97,9 +94,9 @@ namespace IntegrationTests.Directories
             Console.WriteLine($"TEst trval {t.Elapsed}");
         }
 
-        private IEnumerable<ContentInfoDto> RecurseIntoDirectories(ServiceProvider serviceProvider)
+        private IEnumerable<ContentInfoDto> RecurseIntoDirectories()
         {
-            var application = serviceProvider.GetService<DirectoryContentApplication>();
+            var application = GetTestApplication();
             var content = application.GetDirectoryContent(TestPicturesPath);
             IEnumerable<ContentInfoDto> list = new List<ContentInfoDto>();
             foreach (var dir in content.Binders)
@@ -110,20 +107,28 @@ namespace IntegrationTests.Directories
         }
 
         [Test]
-        public void GetFileStream_ValidHashFromVisitedDirectory_ReturnsCorrectFileStream()
+        public void TryIncludingDB()
         {
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
-                var dirApp = serviceProvider.GetService<DirectoryContentApplication>();
-                var dc = dirApp.GetDirectoryContent(TestPicturesInnerPath);
-                var hash = dc.ContentInfos.First(c => c.FilePath.EndsWith(DoubledPictureName2)).Hash;
+                var application = serviceProvider.GetService<DirectoryContentApplication>();
+                var content = application.GetDirectoryContent(TestPicturesInnerPath);
 
-                var application = serviceProvider.GetService<PhysicalFileApplication>();
-                var content = application.GetContent(hash);
-                Assert.That(content, Is.Not.Null);
-                Assert.That(content.FilePath, Is.Not.Null);
+
             }
         }
 
+        //[Test]
+        //public void GetFileStream_ValidHashFromVisitedDirectory_ReturnsCorrectFileStream()
+        //{
+        //    var dirApp = GetTestApplication();
+        //    var dc = dirApp.GetDirectoryContent(TestPicturesInnerPath);
+        //    var hash = dc.ContentInfos.First(c => c.FilePath.EndsWith(DoubledPictureName2)).Hash;
+
+        //    var application = serviceProvider.GetService<PhysicalFileApplication>();
+        //    var content = application.GetContent(hash);
+        //    Assert.That(content, Is.Not.Null);
+        //    Assert.That(content.FilePath, Is.Not.Null);
+        //}
     }
 }

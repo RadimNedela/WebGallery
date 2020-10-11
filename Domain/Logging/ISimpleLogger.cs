@@ -5,7 +5,9 @@ namespace Domain.Logging
     public interface ISimpleLogger
     {
         void Begin(string name);
+        void Begin(string name, string additional);
         void End(string name);
+        void End(string name, string additional);
         void Debug(FormattableString formattableMessage);
         void Debug(string message);
         void Debug(Exception ex);

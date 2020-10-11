@@ -38,6 +38,11 @@ namespace Domain.Logging
 
         public void Begin(string name)
         {
+            Begin(name, "");
+        }
+
+        public void Begin(string name, string additional)
+        {
             var beginTime = DateTime.Now;
             if (_beginTimes.ContainsKey(name))
             {
@@ -45,10 +50,15 @@ namespace Domain.Logging
                 return;
             }
             _beginTimes[name] = beginTime;
-            Debug($"{name} BEGIN \t\t {_beginTimes[name]}");
+            Debug($"{name} BEGIN \t\t {_beginTimes[name]} {additional}");
         }
 
         public void End(string name)
+        {
+            End(name, "");
+        }
+
+        public void End(string name, string additional)
         {
             var endTime = DateTime.Now;
             if (!_beginTimes.ContainsKey(name))
@@ -58,7 +68,7 @@ namespace Domain.Logging
             }
             var beginTime = _beginTimes[name];
             _beginTimes.Remove(name);
-            Debug($"{name} END \t\t {endTime} \t\t DURATION: {endTime - beginTime}");
+            Debug($"{name} END \t\t {endTime} \t\t DURATION: {endTime - beginTime} {additional}");
         }
 
         public void Debug(FormattableString formattableMessage)

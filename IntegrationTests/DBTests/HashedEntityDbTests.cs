@@ -1,10 +1,10 @@
 using Domain.DbEntities;
 using Domain.Logging;
 using Infrastructure.DomainImpl;
-using Infrastructure.MySqlDb;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Infrastructure.Databases.SqlServer;
 
 namespace IntegrationTests.DBTests
 {
@@ -71,7 +71,7 @@ namespace IntegrationTests.DBTests
             dirBinder.AttributedContents = new List<AttributedBinderEntityToContentEntity> { dirBinderToContent };
             content.AttributedBinders = new List<AttributedBinderEntityToContentEntity> { dirBinderToContent };
 
-            using var context = new MySqlDbContext();
+            using var context = new SqlServerDbContext();
             context.Contents.Add(content);
             context.SaveChanges();
             context.DetachAllEntities();
@@ -79,7 +79,7 @@ namespace IntegrationTests.DBTests
 
         private void RemoveTestHashedEntityFromDb()
         {
-            using var context = new MySqlDbContext();
+            using var context = new SqlServerDbContext();
             context.Binders.Remove(binder);
             context.Contents.Remove(content);
             context.AttributedBinders.Remove(dirBinder);
@@ -90,7 +90,7 @@ namespace IntegrationTests.DBTests
         [Test]
         public void GetExistingHashedElement_WillReturnIt()
         {
-            using var context = new MySqlDbContext();
+            using var context = new SqlServerDbContext();
             var repo = new ContentEntitiesRepository(context);
             var fromDb = repo.Get(TestContentElementHash);
             Assert.That(fromDb, Is.Not.Null, "Returned element is null");

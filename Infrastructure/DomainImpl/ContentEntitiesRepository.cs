@@ -1,16 +1,16 @@
 using System.Linq;
 using Domain.DbEntities;
 using Domain.InfrastructureInterfaces;
-using Infrastructure.MySqlDb;
+using Infrastructure.Databases.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DomainImpl
 {
     public class ContentEntitiesRepository : IContentEntityRepository
     {
-        private readonly MySqlDbContext _dbContext;
+        private readonly SqlServerDbContext _dbContext;
 
-        public ContentEntitiesRepository(MySqlDbContext dbContext)
+        public ContentEntitiesRepository(SqlServerDbContext dbContext)
         {
             _dbContext = dbContext;
         }

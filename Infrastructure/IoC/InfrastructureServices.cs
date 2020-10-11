@@ -1,6 +1,6 @@
 using Domain.InfrastructureInterfaces;
+using Infrastructure.Databases.SqlServer;
 using Infrastructure.DomainImpl;
-using Infrastructure.MySqlDb;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.IoC
@@ -14,7 +14,7 @@ namespace Infrastructure.IoC
 
             services.AddScoped<IContentEntityRepository, ContentEntitiesRepository>();
 
-            services.AddDbContext<MySqlDbContext>();
+            services.AddDbContext<SqlServerDbContext>();
         }
     }
 }

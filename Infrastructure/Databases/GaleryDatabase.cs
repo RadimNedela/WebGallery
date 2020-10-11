@@ -2,18 +2,13 @@ using System.Linq;
 using Domain.DbEntities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.MySqlDb
+namespace Infrastructure.Databases
 {
-    public class MySqlDbContext : DbContext
+    public class GaleryDatabase : DbContext
     {
         public DbSet<ContentEntity> Contents { get; set; }
         public DbSet<BinderEntity> Binders { get; set; }
         public DbSet<AttributedBinderEntity> AttributedBinders { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

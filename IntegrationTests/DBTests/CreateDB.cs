@@ -1,4 +1,4 @@
-using Infrastructure.MySqlDb;
+using Infrastructure.Databases.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
@@ -11,7 +11,7 @@ namespace IntegrationTests.DBTests
         public static readonly ILoggerFactory MyLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
-        public class TestDbContext : MySqlDbContext
+        public class TestDbContext : SqlServerDbContext
         {
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {

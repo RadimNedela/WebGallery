@@ -1,18 +1,30 @@
 using System.Linq;
 using Domain.DbEntities;
+using Domain.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace Infrastructure.MySqlDb
 {
     public class MySqlDbContext : DbContext
     {
+        private static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => {
+            builder.AddFilter("Microsoft", LogLevel.Information)
+                   .AddFilter("System", LogLevel.Debug)
+                   .AddConsole();
+        });
+
+        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public DbSet<ContentEntity> Contents { get; set; }
         public DbSet<BinderEntity> Binders { get; set; }
         public DbSet<AttributedBinderEntity> AttributedBinders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
+            optionsBuilder.EnableSensitiveDataLogging()
+                .UseLoggerFactory(loggerFactory)
+                .UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

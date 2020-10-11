@@ -3,13 +3,12 @@ using Domain.DbEntities;
 using Domain.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 
-namespace Infrastructure.MySqlDb
+namespace Infrastructure.Databases
 {
-    public class MySqlDbContext : DbContext
+    public class GaleryDatabase : DbContext
     {
-        private static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => {
+        private static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => {
             builder.AddFilter("Microsoft", LogLevel.Information)
                    .AddFilter("System", LogLevel.Debug)
                    .AddConsole();
@@ -23,7 +22,7 @@ namespace Infrastructure.MySqlDb
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.EnableSensitiveDataLogging()
-                .UseLoggerFactory(loggerFactory)
+                .UseLoggerFactory(LoggerFactory)
                 .UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
         }
 

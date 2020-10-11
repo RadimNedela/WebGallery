@@ -9,7 +9,7 @@
         {
             TheBinder = binder;
             Attribute = attribute;
-            TheBinder.AddContent(content);
+            TheBinder.AddContent(this, content);
         }
 
         public override bool Equals(object other)

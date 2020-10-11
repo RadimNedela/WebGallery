@@ -1,17 +1,22 @@
 ﻿using Domain.Dtos;
 using System.Collections.Generic;
+using System.Reflection;
+using Domain.DbEntities;
 
 namespace Domain.Elements
 {
     public class BinderElement : HashedElement
     {
-        private ISet<ContentElement> contents = new HashSet<ContentElement>();
-        private ISet<BinderElement> binders = new HashSet<BinderElement>();
+        private readonly ISet<ContentElement> _contents = new HashSet<ContentElement>();
+        private readonly ISet<BinderElement> _binders = new HashSet<BinderElement>();
+        private readonly ISet<AttributedBinderElement> _attributes = new HashSet<AttributedBinderElement>();
+        private BinderEntity _binderEntity;
 
         public BinderTypeEnum BinderType { get; private set; }
 
-        public IEnumerable<ContentElement> Contents => contents;
-        public IEnumerable<BinderElement> Binders => binders;
+        public IEnumerable<ContentElement> Contents => _contents;
+        public IEnumerable<BinderElement> Binders => _binders;
+        public IEnumerable<AttributedBinderElement> Attributes => _attributes;
 
         public BinderElement(string hash, BinderTypeEnum type, string label) 
         {
@@ -21,16 +26,18 @@ namespace Domain.Elements
 
         public void AddBinder(BinderElement binderElement)
         {
-            if (binders.Contains(binderElement))
+            if (_binders.Contains(binderElement))
                 return;
-            binders.Add(binderElement);
+            _binders.Add(binderElement);
         }
 
-        public void AddContent(ContentElement contentElement)
+        public void AddContent(AttributedBinderElement attribute, ContentElement contentElement)
         {
-            if (contents.Contains(contentElement))
+            if (!_attributes.Contains(attribute))
+                _attributes.Add(attribute);
+            if (_contents.Contains(contentElement))
                 return;
-            contents.Add(contentElement);
+            _contents.Add(contentElement);
         }
 
         public BinderDto ToBinderDto()
@@ -41,6 +48,16 @@ namespace Domain.Elements
                 Label = Label,
                 Type = Type
             };
+        }
+
+        public BinderEntity ToEntity()
+        {
+
+        }
+
+        public BinderEntityToContentEntity ToEntity()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

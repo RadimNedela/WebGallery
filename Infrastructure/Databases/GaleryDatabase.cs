@@ -6,12 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Databases
 {
-    public interface IGaleryDatabase
-    {
-
-    }
-
-    public class GaleryDatabase : DbContext
+    public abstract class GaleryDatabase : DbContext
     {
         protected static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => {
             builder.AddFilter("Microsoft", LogLevel.Information)
@@ -19,10 +14,9 @@ namespace Infrastructure.Databases
                 .AddConsole();
         });
 
-        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public DbSet<ContentEntity> Contents { get; set; }
         public DbSet<BinderEntity> Binders { get; set; }
-        public DbSet<AttributedBinderEntity> AttributedBinders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,10 +28,11 @@ namespace Infrastructure.Databases
             
             modelBuilder.Entity<AttributedBinderEntityToContentEntity>(entity =>
             {
-                entity.ToTable("AttributedBinderContent");
+                entity.ToTable("Attribute");
                 //entity.HasIndex(bac => new { bac.BinderId, bac.ContentId, bac.Attribute })
                 //    .IsUnique();
-                //.HasKey(bac => new { bac.BinderId, bac.ContentId, bac.Attribute });
+                entity.Property(attr => attr.Attribute).HasMaxLength(250);
+                entity.HasKey(attr => new { attr.BinderId, attr.ContentId, attr.Attribute });
             });
 
             modelBuilder.Entity<ContentEntity>(entity =>
@@ -54,14 +49,6 @@ namespace Infrastructure.Databases
                 // entity.HasKey(e => e.ID);
                 entity.Property(e => e.Hash).IsRequired();
                 entity.ToTable("Binder");
-            });
-
-            modelBuilder.Entity<AttributedBinderEntity>(entity =>
-            {
-                entity.HasIndex(e => e.Hash).IsUnique();
-                // entity.HasKey(e => e.ID);
-                entity.Property(e => e.Hash).IsRequired();
-                entity.ToTable("AttributedBinder");
             });
         }
 

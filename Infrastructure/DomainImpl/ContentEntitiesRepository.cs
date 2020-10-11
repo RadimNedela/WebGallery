@@ -1,33 +1,33 @@
 using System.Linq;
 using Domain.DbEntities;
 using Domain.InfrastructureInterfaces;
-using Infrastructure.Databases.SqlServer;
+using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DomainImpl
 {
     public class ContentEntitiesRepository : IContentEntityRepository
     {
-        private readonly SqlServerDbContext _dbContext;
+        private readonly IGaleryDatabase _galeryDatabase;
 
-        public ContentEntitiesRepository(SqlServerDbContext dbContext)
+        public ContentEntitiesRepository(IGaleryDatabase galeryDatabase)
         {
-            _dbContext = dbContext;
+            _galeryDatabase = galeryDatabase;
         }
 
         public void Add(ContentEntity contentEntity)
         {
-            _dbContext.Contents.Add(contentEntity);
+            _galeryDatabase.Contents.Add(contentEntity);
         }
 
         public void Save()
         {
-            _dbContext.SaveChanges();
+            _galeryDatabase.SaveChanges();
         }
 
         public ContentEntity Get(string hash)
         {
-            return _dbContext.Contents
+            return _galeryDatabase.Contents
                 .Where(h => h.Hash == hash)
                     .Include(ce => ce.Binders)
                         .ThenInclude(b => b.Binder)

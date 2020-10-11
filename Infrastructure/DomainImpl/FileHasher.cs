@@ -11,7 +11,7 @@ namespace Infrastructure.DomainImpl
 {
     public class FileHasher : IHasher
     {
-        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public bool IsSupportedImage(string path)
         {
@@ -21,7 +21,7 @@ namespace Infrastructure.DomainImpl
 
         public string ComputeFileContentHash(string path)
         {
-            log.Begin($"{nameof(ComputeFileContentHash)}.{path}");
+            Log.Begin($"{nameof(ComputeFileContentHash)}.{path}");
             Stream stream = GetStream(path);
 
             string retVal = null;
@@ -30,7 +30,7 @@ namespace Infrastructure.DomainImpl
             else 
             retVal = OtherFileHash(stream);
 
-            log.End($"{nameof(ComputeFileContentHash)}.{path}");
+            Log.End($"{nameof(ComputeFileContentHash)}.{path}");
             return retVal;
         }
 

@@ -29,106 +29,106 @@ namespace Domain.Logging
         /// <param name="loggerName"><code>System.Reflection.MethodBase.GetCurrentMethod().DeclaringType</code></param>
         public MyOwnLog4NetLogger(Type type)
         {
-            log = log4net.LogManager.GetLogger(type);
+            _log = log4net.LogManager.GetLogger(type);
         }
 
-        private readonly log4net.ILog log;
-        IDictionary<string, DateTime> beginTimes = new Dictionary<string, DateTime>();
+        private readonly log4net.ILog _log;
+        readonly IDictionary<string, DateTime> _beginTimes = new Dictionary<string, DateTime>();
         #endregion
 
         public void Begin(string name)
         {
             var beginTime = DateTime.Now;
-            if (beginTimes.ContainsKey(name))
+            if (_beginTimes.ContainsKey(name))
             {
                 Error($"WRONG USAGE OF BEGIN: {name} ALREADY EXISTS!");
                 return;
             }
-            beginTimes[name] = beginTime;
-            Debug($"{name} BEGIN \t\t {beginTimes[name]}");
+            _beginTimes[name] = beginTime;
+            Debug($"{name} BEGIN \t\t {_beginTimes[name]}");
         }
 
         public void End(string name)
         {
             var endTime = DateTime.Now;
-            if (!beginTimes.ContainsKey(name))
+            if (!_beginTimes.ContainsKey(name))
             {
                 Error($"WRONG USAGE OF END: NO BEGIN FOR {name}");
                 return;
             }
-            var beginTime = beginTimes[name];
-            beginTimes.Remove(name);
+            var beginTime = _beginTimes[name];
+            _beginTimes.Remove(name);
             Debug($"{name} END \t\t {endTime} \t\t DURATION: {endTime - beginTime}");
         }
 
         public void Debug(FormattableString formattableMessage)
         {
-            if (log.IsDebugEnabled)
-                DoLog(formattableMessage, log.Debug);
+            if (_log.IsDebugEnabled)
+                DoLog(formattableMessage, _log.Debug);
         }
 
         public void Debug(string message)
         {
-            DoLog(message, log.Debug);
+            DoLog(message, _log.Debug);
         }
 
         public void Debug(Exception ex)
         {
-            if (log.IsDebugEnabled)
-                DoLog(ex, log.Debug);
+            if (_log.IsDebugEnabled)
+                DoLog(ex, _log.Debug);
         }
 
         public void Debug(object commonObject)
         {
-            if (log.IsDebugEnabled)
-                DoLog(commonObject, log.Debug);
+            if (_log.IsDebugEnabled)
+                DoLog(commonObject, _log.Debug);
         }
 
         public void Error(FormattableString formattableMessage)
         {
-            if (log.IsErrorEnabled)
-                DoLog(formattableMessage, log.Error);
+            if (_log.IsErrorEnabled)
+                DoLog(formattableMessage, _log.Error);
         }
 
         public void Error(string message)
         {
-            DoLog(message, log.Error);
+            DoLog(message, _log.Error);
         }
 
         public void Error(Exception ex)
         {
-            if (log.IsErrorEnabled)
-                DoLog(ex, log.Error);
+            if (_log.IsErrorEnabled)
+                DoLog(ex, _log.Error);
         }
 
         public void Error(object commonObject)
         {
-            if (log.IsErrorEnabled)
-                DoLog(commonObject, log.Error);
+            if (_log.IsErrorEnabled)
+                DoLog(commonObject, _log.Error);
         }
 
         public void Info(FormattableString formattableMessage)
         {
-            if (log.IsInfoEnabled)
-                DoLog(formattableMessage, log.Info);
+            if (_log.IsInfoEnabled)
+                DoLog(formattableMessage, _log.Info);
         }
 
         public void Info(string message)
         {
-            if (log.IsInfoEnabled)
-                DoLog(message, log.Info);
+            if (_log.IsInfoEnabled)
+                DoLog(message, _log.Info);
         }
 
         public void Info(Exception ex)
         {
-            if (log.IsInfoEnabled)
-                DoLog(ex, log.Info);
+            if (_log.IsInfoEnabled)
+                DoLog(ex, _log.Info);
         }
 
         public void Info(object commonObject)
         {
-            if (log.IsInfoEnabled)
-                DoLog(commonObject, log.Info);
+            if (_log.IsInfoEnabled)
+                DoLog(commonObject, _log.Info);
         }
 
         #region Private = the logging

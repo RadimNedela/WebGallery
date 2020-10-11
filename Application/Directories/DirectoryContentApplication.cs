@@ -10,7 +10,7 @@ namespace Application.Directories
 {
     public class DirectoryContentApplication
     {
-        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly DirectoryContentBuilder _directoryContentBuilder;
         private readonly IContentEntityRepository _contentRepository;
 
@@ -24,19 +24,19 @@ namespace Application.Directories
 
         public DisplayableInfoDto GetDirectoryContent(string path)
         {
-            log.Begin($"{nameof(GetDirectoryContent)}.{path}");
+            Log.Begin($"{nameof(GetDirectoryContent)}.{path}");
             
             var directoryBinder = _directoryContentBuilder.GetDirectoryContent(path);
             PersistDirectoryContent(directoryBinder);
             var retVal = directoryBinder.ToDisplayableInfoDto();
             
-            log.End($"{nameof(GetDirectoryContent)}.{path}");
+            Log.End($"{nameof(GetDirectoryContent)}.{path}");
             return retVal;
         }
 
         private void PersistDirectoryContent(BinderElement directoryBinder)
         {
-            log.Begin($"{nameof(PersistDirectoryContent)}.{directoryBinder}");
+            Log.Begin($"{nameof(PersistDirectoryContent)}.{directoryBinder}");
 
             foreach (var content in directoryBinder.Contents)
             {
@@ -44,7 +44,7 @@ namespace Application.Directories
             }
             _contentRepository.Save();
 
-            log.End($"{nameof(PersistDirectoryContent)}.{directoryBinder}");
+            Log.End($"{nameof(PersistDirectoryContent)}.{directoryBinder}");
         }
     }
 }

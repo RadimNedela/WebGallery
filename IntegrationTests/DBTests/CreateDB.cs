@@ -1,3 +1,4 @@
+using Infrastructure.Databases.MySqlDb;
 using Infrastructure.Databases.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,24 +9,19 @@ namespace IntegrationTests.DBTests
     [TestFixture]
     public class CeateDatabase
     {
-        public static readonly ILoggerFactory MyLoggerFactory
-            = LoggerFactory.Create(builder => { builder.AddConsole(); });
-
-        public class TestDbContext : SqlServerDbContext
+        [Test, Explicit("This is only for creating empty DB tables")]
+        public void JustCreateTheDatabase_SQLServer()
         {
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            using (var context = new SqlServerDbContext())
             {
-                optionsBuilder
-                   .UseLoggerFactory(MyLoggerFactory); // Warning: Do not create a new ILoggerFactory instance each time
-
-                base.OnConfiguring(optionsBuilder);
+                context.Database.EnsureCreated();
             }
         }
 
         [Test, Explicit("This is only for creating empty DB tables")]
-        public void JustCreateTheDatabase()
+        public void JustCreateTheDatabase_MySQL()
         {
-            using (var context = new TestDbContext())
+            using (var context = new MySqlDbContext())
             {
                 context.Database.EnsureCreated();
             }

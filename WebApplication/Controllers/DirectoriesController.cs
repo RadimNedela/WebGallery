@@ -13,9 +13,9 @@ namespace WebApplication.Controllers
     [Route("api/[controller]")]
     public class DirectoriesController : Controller
     {
-        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private DirectoryContentApplication _directoryContentApplication;
-        private PhysicalFileApplication _physicalFileApplication;
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly DirectoryContentApplication _directoryContentApplication;
+        private readonly PhysicalFileApplication _physicalFileApplication;
 
         public DirectoriesController(
             DirectoryContentApplication directoryContentApplication,
@@ -28,9 +28,9 @@ namespace WebApplication.Controllers
         [HttpGet("getDirectoryContent")]
         public DisplayableInfoDto GetDirectoryContent(string directoryName)
         {
-            log.Info($"GetDirectoryContent {directoryName}");
+            Log.Info($"GetDirectoryContent {directoryName}");
             var retVal = _directoryContentApplication.GetDirectoryContent(directoryName);
-            log.Info(retVal);
+            Log.Info(retVal);
             return retVal;
         }
 

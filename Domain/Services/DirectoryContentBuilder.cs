@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using Domain.Dtos;
 using Domain.Elements;
 using Domain.InfrastructureInterfaces;
-using Domain.Logging;
 
 namespace Domain.Services
 {
@@ -40,7 +33,7 @@ namespace Domain.Services
             return directoryBinder;
         }
 
-        private HashedElement CreateFileContentElement(string path, BinderElement directoryBinder)
+        private void CreateFileContentElement(string path, BinderElement directoryBinder)
         {
             var hash = _hasher.ComputeFileContentHash(path);
 
@@ -55,7 +48,6 @@ namespace Domain.Services
             {
                 theElement.AddLastSeenFilePosition(path, directoryBinder);
             }
-            return theElement;
         }
 
         private BinderElement CreateDirectoryBinder(string path)

@@ -8,9 +8,12 @@ using Application.Directories;
 using Domain.Dtos;
 using Domain.Elements;
 using Domain.Services;
+using Infrastructure.Databases;
+using Infrastructure.DomainImpl;
 using IntegrationTests.IoC;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using NUnit.Framework;
 using WebApplication;
 using WebApplication.Controllers;
@@ -25,6 +28,14 @@ namespace IntegrationTests.Directories
         public const string DoubledPictureName1 = "2017-08-20-Duha0383.JPG";
         public const string DoubledPictureName2 = "2017-08-20-Duha0383_2.JPG";
 
+
+        private DirectoryContentApplication GetTestApplication()
+        {
+            var app = new DirectoryContentApplication(new DirectoryContentBuilder(new DirectoryMethods(), new FileHasher(), new ElementsMemoryStorage()),
+                new ContentEntitiesRepository(Substitute.For<IGaleryDatabase>()));
+
+            return app;
+        }
         [Test]
         public void DirectoriesController_IsResolvable()
         {
@@ -38,23 +49,17 @@ namespace IntegrationTests.Directories
         [Test]
         public void GetDirectoryContent_ValidTestPath_Returns2Directories()
         {
-            using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
-            {
-                var application = serviceProvider.GetService<DirectoryContentApplication>();
-                var content = application.GetDirectoryContent(TestPicturesPath);
-                Assert.That(content.Binders.Count(), Is.EqualTo(2));
-            }
+            var application = GetTestApplication();
+            var content = application.GetDirectoryContent(TestPicturesPath);
+            Assert.That(content.Binders.Count(), Is.EqualTo(2));
         }
 
         [Test]
         public void GetDirectoryContent_ValidTestPath_Returns0Files()
         {
-            using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
-            {
-                var application = serviceProvider.GetService<DirectoryContentApplication>();
+            var application = GetTestApplication();
                 var content = application.GetDirectoryContent(TestPicturesPath);
                 Assert.That(content.ContentInfos.Count(), Is.EqualTo(0));
-            }
         }
 
         [Test]

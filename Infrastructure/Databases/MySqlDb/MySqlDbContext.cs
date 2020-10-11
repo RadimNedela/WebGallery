@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Databases.MySqlDb
 {
-    public class MySqlDbContext : GaleryDatabase
+    public class MySqlDbContext : GaleryDatabase, IGaleryDatabase
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

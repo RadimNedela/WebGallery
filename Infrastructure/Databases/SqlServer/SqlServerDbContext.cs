@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Databases.SqlServer
 {
-    public class SqlServerDbContext : GaleryDatabase
+    public class SqlServerDbContext : GaleryDatabase, IGaleryDatabase
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

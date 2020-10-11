@@ -11,7 +11,7 @@ namespace IntegrationTests.DBTests
     [TestFixture]
     public class HashedEntityDbTests
     {
-        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [SetUp]
         public void OneTimeSetUp()
@@ -25,54 +25,54 @@ namespace IntegrationTests.DBTests
             RemoveTestHashedEntityFromDb();
         }
 
-        BinderEntity binder;
-        ContentEntity content;
-        BinderEntityToContentEntity binderToContent;
-        AttributedBinderEntity dirBinder;
-        AttributedBinderEntityToContentEntity dirBinderToContent;
+        BinderEntity _binder;
+        ContentEntity _content;
+        BinderEntityToContentEntity _binderToContent;
+        BinderEntity _dirBinder;
+        AttributedBinderEntityToContentEntity _dirBinderToContent;
 
         public const string TestContentElementHash = "ContentEntity01Hash";
 
         private void AddTestHashedEntityToDb()
         {
-            binder = new BinderEntity
+            _binder = new BinderEntity
             {
                 Hash = "BinderEntity01",
                 Label = "Binder entity",
                 Type = "Nejaky binder type"
             };
-            content = new ContentEntity
+            _content = new ContentEntity
             {
                 Hash = TestContentElementHash,
                 Label = "Content 01",
                 Type = "jakysi content type"
             };
-            dirBinder = new AttributedBinderEntity
+            _dirBinder = new BinderEntity
             {
                 Hash = "directoryBinder01",
                 Label = @"c:\temp",
                 Type = "Directory"
             };
 
-            binderToContent = new BinderEntityToContentEntity
+            _binderToContent = new BinderEntityToContentEntity
             {
-                Binder = binder,
-                Content = content
+                Binder = _binder,
+                Content = _content
             };
-            binder.Contents = new List<BinderEntityToContentEntity> { binderToContent };
-            content.Binders = new List<BinderEntityToContentEntity> { binderToContent };
+            _binder.Contents = new List<BinderEntityToContentEntity> { _binderToContent };
+            _content.Binders = new List<BinderEntityToContentEntity> { _binderToContent };
 
-            dirBinderToContent = new AttributedBinderEntityToContentEntity
+            _dirBinderToContent = new AttributedBinderEntityToContentEntity
             {
-                AttributedBinder = dirBinder,
-                Content = content,
+                Binder = _dirBinder,
+                Content = _content,
                 Attribute = "asdf.txt"
             };
-            dirBinder.AttributedContents = new List<AttributedBinderEntityToContentEntity> { dirBinderToContent };
-            content.AttributedBinders = new List<AttributedBinderEntityToContentEntity> { dirBinderToContent };
+            _dirBinder.AttributedContents = new List<AttributedBinderEntityToContentEntity> { _dirBinderToContent };
+            _content.AttributedBinders = new List<AttributedBinderEntityToContentEntity> { _dirBinderToContent };
 
             using var context = new SqlServerDbContext();
-            context.Contents.Add(content);
+            context.Contents.Add(_content);
             context.SaveChanges();
             context.DetachAllEntities();
         }
@@ -80,9 +80,9 @@ namespace IntegrationTests.DBTests
         private void RemoveTestHashedEntityFromDb()
         {
             using var context = new SqlServerDbContext();
-            context.Binders.Remove(binder);
-            context.Contents.Remove(content);
-            context.AttributedBinders.Remove(dirBinder);
+            context.Binders.Remove(_binder);
+            context.Contents.Remove(_content);
+            context.Binders.Remove(_dirBinder);
             context.SaveChanges();
             context.DetachAllEntities();
         }
@@ -103,7 +103,7 @@ namespace IntegrationTests.DBTests
             var dirBinderHolder = fromDb.AttributedBinders.First();
             Assert.That(dirBinderHolder, Is.Not.Null, "First Dir Binder is null");
             Assert.That(dirBinderHolder.Attribute, Is.Not.Empty, "Dir binder attribute is empty");
-            var dirBinder = dirBinderHolder.AttributedBinder;
+            var dirBinder = dirBinderHolder.Binder;
             Assert.That(dirBinder, Is.Not.Null, "Dir Binder is null");
             Assert.That(dirBinder.Label, Is.Not.Empty, "Dir binder label is empty");
         }

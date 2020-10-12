@@ -13,6 +13,7 @@ namespace Domain.Elements
 
             DisplayableInfoDto dto = new DisplayableInfoDto()
             {
+                TheBinder = binderElement.ToBinderDto(),
                 Binders = binders,
                 ContentInfos = contents
             };

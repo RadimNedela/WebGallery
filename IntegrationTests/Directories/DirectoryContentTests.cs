@@ -7,6 +7,7 @@ using System.Timers;
 using Application.Directories;
 using Domain.Dtos;
 using Domain.Elements;
+using Domain.InfrastructureInterfaces;
 using Domain.Services;
 using Infrastructure.Databases;
 using Infrastructure.DomainImpl;
@@ -112,9 +113,20 @@ namespace IntegrationTests.Directories
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
                 var application = serviceProvider.GetService<DirectoryContentApplication>();
-                var content = application.GetDirectoryContent(TestPicturesInnerPath);
+                var contentRepository = serviceProvider.GetService<IContentEntityRepository>();
+                var binderRepository = serviceProvider.GetService<IBinderEntityRepository>();
 
+                var directoryContentDto = application.GetDirectoryContent(TestPicturesInnerPath);
 
+                foreach (var contentInfo in directoryContentDto.ContentInfos)
+                {
+                    var contentEntity = contentRepository.Get(contentInfo.Hash);
+                    contentRepository.Remove(contentEntity);
+                }
+                var binderEntity = binderRepository.Get(directoryContentDto.TheBinder.Hash);
+                binderRepository.Remove(binderEntity);
+
+                contentRepository.Save();
             }
         }
 

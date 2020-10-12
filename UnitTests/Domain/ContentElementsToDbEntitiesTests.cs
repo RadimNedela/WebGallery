@@ -5,10 +5,10 @@ using System.Linq;
 namespace UnitTests.Domain
 {
     [TestFixture]
-    public class ElementsToDbEntitiesTests
+    public class ContentElementsToDbEntitiesTests
     {
         [Test]
-        public void ContentElementFromDirectory_ToEntity_BasicContentOK()
+        public void FromDirectory_ToEntity_BasicContentOK()
         {
             var builder = DirectoryContentBuilderTests.CreateContentBuilder();
             var element = builder.GetDirectoryContent(DirectoryContentBuilderTests.TestDirectory).Contents.First();
@@ -21,7 +21,7 @@ namespace UnitTests.Domain
         }
 
         [Test]
-        public void ContentElementFromDirectory_ToEntity_FileNamesOK()
+        public void FromDirectory_ToEntity_FileNamesOK()
         {
             var builder = DirectoryContentBuilderTests.CreateContentBuilder();
 
@@ -36,20 +36,6 @@ namespace UnitTests.Domain
 
             Assert.That(entity1.AttributedBinders.Count, Is.EqualTo(1));
             Assert.That(entity2.AttributedBinders.Count, Is.EqualTo(2));
-        }
-
-        [Test]
-        public void BinderElement_ToEntity_BasicContentOK()
-        {
-            Assert.IsFalse(true);
-            //var builder = DirectoryContentBuilderTests.CreateContentBuilder();
-            //var binderElement = builder.GetDirectoryContent(DirectoryContentBuilderTests.TestDirectory);
-
-            //var binderEntity = binderElement.ToEntity();
-
-            //Assert.That(binderEntity.Hash, Is.EqualTo(binderElement.Hash));
-            //Assert.That(binderEntity.Label, Is.EqualTo(binderElement.Label));
-            //Assert.That(binderEntity.Type, Is.EqualTo(binderElement.Type));
         }
     }
 }

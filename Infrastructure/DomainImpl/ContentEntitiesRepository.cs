@@ -6,24 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DomainImpl
 {
-    public class ContentEntitiesRepository : IContentEntityRepository
+    public class ContentEntitiesRepository : EntitiesRepository<ContentEntity>, IContentEntityRepository
     {
-        private readonly IGaleryDatabase _galeryDatabase;
-
         public ContentEntitiesRepository(IGaleryDatabase galeryDatabase)
-        {
-            _galeryDatabase = galeryDatabase;
-        }
+            : base(galeryDatabase) { }
 
-        public void Add(ContentEntity contentEntity)
-        {
-            _galeryDatabase.Contents.Add(contentEntity);
-        }
-
-        public void Save()
-        {
-            _galeryDatabase.SaveChanges();
-        }
+        protected override DbSet<ContentEntity> TheDbSet => _galeryDatabase.Contents;
 
         public ContentEntity Get(string hash)
         {

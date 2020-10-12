@@ -15,6 +15,7 @@ namespace Infrastructure.IoC
             services.AddSingleton<IHasher, FileHasher>();
 
             services.AddScoped<IContentEntityRepository, ContentEntitiesRepository>();
+            services.AddScoped<IBinderEntityRepository, BinderEntitiesRepository>();
 
             services.AddSingleton<IGaleryDatabase, MySqlDbContext>();
             services.AddDbContext<MySqlDbContext>();

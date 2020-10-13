@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebApplication;
@@ -9,8 +10,12 @@ namespace IntegrationTests.IoC
     {
         public static IServiceCollection CreateServiceCollection()
         {
-            var confBuilder = new ConfigurationBuilder();
-            var startup = new Startup(confBuilder.Build());
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", false, false)
+                .Build();
+
+            var startup = new Startup(config);
             IServiceCollection services = new ServiceCollection();
 
             startup.ConfigureServices(services);

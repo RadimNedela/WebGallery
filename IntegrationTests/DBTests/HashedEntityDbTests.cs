@@ -4,6 +4,7 @@ using Infrastructure.DomainImpl;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Infrastructure.Databases;
 using Infrastructure.Databases.SqlServer;
 using Infrastructure.Databases.MySqlDb;
 
@@ -13,6 +14,8 @@ namespace IntegrationTests.DBTests
     public class HashedEntityDbTests
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private IGaleryDatabase dbContext => new SqlServerDbContext();
 
         [SetUp]
         public void OneTimeSetUp()
@@ -72,7 +75,7 @@ namespace IntegrationTests.DBTests
             _dirBinder.AttributedContents = new List<AttributedBinderEntityToContentEntity> { _dirBinderToContent };
             _content.AttributedBinders = new List<AttributedBinderEntityToContentEntity> { _dirBinderToContent };
 
-            using var context = new MySqlDbContext();
+            using var context = dbContext as GaleryDatabase;
             context.Contents.Add(_content);
             context.SaveChanges();
             context.DetachAllEntities();
@@ -80,7 +83,7 @@ namespace IntegrationTests.DBTests
 
         private void RemoveTestHashedEntityFromDb()
         {
-            using var context = new MySqlDbContext();
+            using var context = dbContext as GaleryDatabase;
             context.Binders.Remove(_binder);
             context.Contents.Remove(_content);
             context.Binders.Remove(_dirBinder);
@@ -91,11 +94,11 @@ namespace IntegrationTests.DBTests
         [Test]
         public void GetExistingHashedElement_WillReturnIt()
         {
-            using var context = new MySqlDbContext();
-            var repo = new ContentEntitiesRepository(context);
+            using var context = dbContext as GaleryDatabase;
+            var repo = new ContentEntitiesRepository(context as IGaleryDatabase);
             var fromDb = repo.Get(TestContentElementHash);
             Assert.That(fromDb, Is.Not.Null, "Returned element is null");
-            Assert.That(fromDb.Hash, Is.EqualTo(TestContentElementHash), "Hash is not equal");
+            Assert.That(fromDb.Hash.Trim(), Is.EqualTo(TestContentElementHash), "Hash is not equal");
             Assert.That(fromDb.Binders, Is.Not.Null, "Binders is null");
             Assert.That(fromDb.AttributedBinders, Is.Not.Null, "AttributedBinders is null");
             var binder = fromDb.Binders.First().Binder;

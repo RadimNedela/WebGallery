@@ -28,7 +28,7 @@ namespace WebApplication
             services.AddControllersWithViews();
             services.RegisterApplications();
             services.RegisterDomainServices();
-            services.RegisterInfrastructureServices();
+            services.RegisterInfrastructureServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

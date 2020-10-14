@@ -2,7 +2,7 @@
 
 namespace Domain.DbEntities
 {
-    public class BinderEntity: HashedEntity
+    public class BinderEntity: HashedContentBaseEntity
     {
         public IList<BinderEntityToContentEntity> Contents { get; set; }
         public IList<AttributedBinderEntityToContentEntity> AttributedContents { get; set; }

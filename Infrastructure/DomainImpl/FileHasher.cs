@@ -13,7 +13,7 @@ namespace Infrastructure.DomainImpl
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public bool IsSupportedImage(string path)
+        private bool IsSupportedImage(string path)
         {
             var upper = path.ToUpper();
             return upper.EndsWith(".JPG") || upper.EndsWith(".JPEG");
@@ -34,7 +34,7 @@ namespace Infrastructure.DomainImpl
             return retVal;
         }
 
-        public Stream GetStream(string path)
+        private Stream GetStream(string path)
         {
             Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
             return stream;
@@ -43,6 +43,11 @@ namespace Infrastructure.DomainImpl
         public string ComputeDirectoryHash(string directoryPath)
         {
             return ComputeHash(Encoding.UTF8.GetBytes(directoryPath));
+        }
+
+        public string ComputeStringHash(string theString)
+        {
+            return ComputeHash(Encoding.UTF8.GetBytes(theString));
         }
 
         private string OtherFileHash(Stream stream)

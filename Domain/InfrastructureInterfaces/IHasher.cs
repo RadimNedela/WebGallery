@@ -6,5 +6,6 @@ namespace Domain.InfrastructureInterfaces
     {
         string ComputeFileContentHash(string path);
         string ComputeDirectoryHash(string directoryPath);
+        string ComputeStringHash(string theString);
     }
 }

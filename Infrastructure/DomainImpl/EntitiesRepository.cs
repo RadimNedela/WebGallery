@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DomainImpl
 {
-    public abstract class EntitiesRepository<T> where T: HashedEntity
+    public abstract class EntitiesRepository<T> where T: HashedContentBaseEntity
     {
         protected readonly IGaleryDatabase _galeryDatabase;
 

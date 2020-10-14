@@ -11,7 +11,7 @@ namespace Domain.Elements
         public string Type { get; private set; }
         public string Label { get; private set; }
 
-        protected void Initialize(HashedEntity hashedEntity)
+        protected void Initialize(HashedContentBaseEntity hashedEntity)
         {
             Id = hashedEntity.Id;
             Hash = hashedEntity.Hash;

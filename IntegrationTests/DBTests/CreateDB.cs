@@ -1,7 +1,7 @@
-using Infrastructure.Databases.MySqlDb;
-using Infrastructure.Databases.SqlServer;
+using Infrastructure.Databases;
+using IntegrationTests.IoC;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
 namespace IntegrationTests.DBTests
@@ -10,21 +10,20 @@ namespace IntegrationTests.DBTests
     public class CeateDatabase
     {
         [Test, Explicit("This is only for creating empty DB tables")]
-        public void JustCreateTheDatabase_SQLServer()
+        public void JustCreateTheDatabase()
         {
-            using (var context = new SqlServerDbContext())
+            using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
+                var instance = serviceProvider.GetService<IGaleryDatabase>();
+                DbContext context = instance as DbContext;
                 context.Database.EnsureCreated();
             }
         }
 
-        [Test, Explicit("This is only for creating empty DB tables")]
-        public void JustCreateTheDatabase_MySQL()
+        [Test, Explicit("This is only for creating default masterdata entries")]
+        public void JustCreateDefaultDatabaseMasterdata()
         {
-            using (var context = new MySqlDbContext())
-            {
-                context.Database.EnsureCreated();
-            }
+
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Linq;
 using Domain.DbEntities;
+using Domain.DbEntities.Maintenance;
 using Domain.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,24 +9,57 @@ namespace Infrastructure.Databases
 {
     public abstract class GaleryDatabase : DbContext
     {
-        protected static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => {
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
+        {
             builder.AddFilter("Microsoft", LogLevel.Information)
                 .AddFilter("System", LogLevel.Debug)
                 .AddConsole();
         });
 
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public DbSet<ContentEntity> Contents { get; set; }
         public DbSet<BinderEntity> Binders { get; set; }
+        public DbSet<DatabaseInfoEntity> DatabaseInfo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            InitMasterDataTables(modelBuilder);
+
+            InitContentTables(modelBuilder);
+        }
+
+        private void InitMasterDataTables(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DatabaseInfoEntity>(entity =>
+            {
+                entity.ToTable("DatabaseInfo");
+                entity.HasKey(di => di.Hash);
+                entity.Property(di => di.Hash).HasColumnType("Char(40)");
+            });
+
+            modelBuilder.Entity<RackEntity>(entity =>
+            {
+                entity.ToTable("Rack");
+                entity.HasKey(di => di.Hash);
+                entity.Property(di => di.Hash).HasColumnType("Char(40)");
+            });
+
+            modelBuilder.Entity<MountPointEntity>(entity =>
+            {
+                entity.ToTable("MountPoint");
+                entity.HasKey(di => di.Hash);
+                entity.Property(di => di.Hash).HasColumnType("Char(40)");
+            });
+        }
+
+        private void InitContentTables(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<BinderEntityToContentEntity>()
                 .ToTable("BinderContent")
                 .HasKey(bc => new { bc.BinderId, bc.ContentId });
-            
+
             modelBuilder.Entity<AttributedBinderEntityToContentEntity>(entity =>
             {
                 entity.ToTable("Attribute");
@@ -52,6 +86,8 @@ namespace Infrastructure.Databases
 
         public void DetachAllEntities()
         {
+            Log.Begin(nameof(DetachAllEntities));
+
             var changedEntriesCopy = this.ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added ||
                             e.State == EntityState.Modified ||
@@ -60,6 +96,8 @@ namespace Infrastructure.Databases
 
             foreach (var entry in changedEntriesCopy)
                 entry.State = EntityState.Detached;
+
+            Log.End(nameof(DetachAllEntities));
         }
     }
 }

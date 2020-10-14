@@ -1,4 +1,5 @@
 using Domain.DbEntities;
+using Domain.DbEntities.Maintenance;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Databases
@@ -7,6 +8,7 @@ namespace Infrastructure.Databases
     {
         DbSet<ContentEntity> Contents { get; }
         DbSet<BinderEntity> Binders { get; }
+        DbSet<DatabaseInfoEntity> DatabaseInfo { get; }
         int SaveChanges();
         void DetachAllEntities();
     }

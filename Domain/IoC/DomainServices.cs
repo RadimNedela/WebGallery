@@ -9,6 +9,7 @@ namespace Domain.IoC
         {
             services.AddScoped<DirectoryContentBuilder, DirectoryContentBuilder>();
             services.AddSingleton<ElementsMemoryStorage, ElementsMemoryStorage>();
+            services.AddSingleton<DatabaseInfoBuilder, DatabaseInfoBuilder>();
         }
     }
 }

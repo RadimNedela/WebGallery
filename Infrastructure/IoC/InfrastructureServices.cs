@@ -18,6 +18,7 @@ namespace Infrastructure.IoC
 
             services.AddScoped<IContentEntityRepository, ContentEntitiesRepository>();
             services.AddScoped<IBinderEntityRepository, BinderEntitiesRepository>();
+            services.AddScoped<IDatabaseInfoEntityRepository, DatabaseInfoRepository>();
 
             var provider = configuration["GaleryDatabaseProvider"];
             if (provider == "MySql")

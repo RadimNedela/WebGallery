@@ -1,4 +1,4 @@
-﻿using Domain.DbEntities.Maintenance;
+﻿using Domain.Elements.Maintenance;
 using Domain.InfrastructureInterfaces;
 using System;
 
@@ -7,23 +7,28 @@ namespace Domain.Services
     public class DatabaseInfoBuilder
     {
         private IHasher hasher;
+        private readonly IDatabaseInfoEntityRepository repository;
 
-        public DatabaseInfoBuilder(IHasher hasher)
+        public DatabaseInfoBuilder(IHasher hasher, IDatabaseInfoEntityRepository repository)
         {
             this.hasher = hasher;
+            this.repository = repository;
         }
 
-        public DatabaseInfoEntity BuildNewDatabase(string databaseName)
+        public DatabaseInfoElement GetDatabase(string hash)
+        {
+            var entity = repository.Get(hash);
+            var element = new DatabaseInfoElement(hasher, entity);
+            return element;
+        }
+
+        public DatabaseInfoElement BuildNewDatabase(string databaseName)
         {
             string newHash = hasher.ComputeStringHash(databaseName + CreateRandomString(50, 100));
 
-            var infoEntity = new DatabaseInfoEntity()
-            {
-                Name = databaseName,
-                Hash = newHash,
-            };
+            var infoElement = new DatabaseInfoElement(hasher, databaseName, newHash);
 
-            return infoEntity;
+            return infoElement;
         }
 
         private string CreateRandomString(int minLength, int maxLength)

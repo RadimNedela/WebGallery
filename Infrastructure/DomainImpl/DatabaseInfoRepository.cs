@@ -18,7 +18,7 @@ namespace Infrastructure.DomainImpl
             return _galeryDatabase.DatabaseInfo
                 .Where(h => h.Hash == hash)
                     .Include(di => di.Racks)
-                    .Include(di => di.MountPoints)
+                        .ThenInclude(r => r.MountPoints)
                     .FirstOrDefault();
         }
     }

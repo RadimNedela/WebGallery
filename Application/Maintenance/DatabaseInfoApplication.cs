@@ -1,4 +1,5 @@
-﻿using Domain.InfrastructureInterfaces;
+﻿using Domain.Elements.Maintenance;
+using Domain.InfrastructureInterfaces;
 using System;
 
 namespace Domain.Services
@@ -13,13 +14,24 @@ namespace Domain.Services
             this.repository = repository;
         }
 
-        public void CreateNewDatabase(string databaseName)
+        public DatabaseInfoElement CreateNewDatabase(string databaseName)
         {
             if (string.IsNullOrEmpty(databaseName))
                 throw new Exception("Please give correct name to the new created database");
-            var entity = infoBuilder.BuildNewDatabase(databaseName);
-            repository.Add(entity);
+            var element = infoBuilder.BuildNewDatabase(databaseName);
+            repository.Add(element.Entity);
             repository.Save();
+
+            return element;
+        }
+
+        public DatabaseInfoElement AddNewRack(string databaseHash, string name, string initialMountPointPath)
+        {
+            var element = infoBuilder.GetDatabase(databaseHash);
+            element.AddNewRack(name, initialMountPointPath);
+            repository.Save();
+
+            return element;
         }
     }
 }

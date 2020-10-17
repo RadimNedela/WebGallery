@@ -37,20 +37,23 @@ namespace Infrastructure.Databases
                 entity.ToTable("DatabaseInfo");
                 entity.HasKey(di => di.Hash);
                 entity.Property(di => di.Hash).HasColumnType("Char(40)");
+                entity.HasIndex(di => di.Name).IsUnique();
             });
 
             modelBuilder.Entity<RackEntity>(entity =>
             {
                 entity.ToTable("Rack");
-                entity.HasKey(di => di.Hash);
-                entity.Property(di => di.Hash).HasColumnType("Char(40)");
+                entity.HasKey(re => re.Hash);
+                entity.Property(re => re.Hash).HasColumnType("Char(40)");
+                entity.Property(re => re.DatabaseId).IsRequired();
             });
 
             modelBuilder.Entity<MountPointEntity>(entity =>
             {
                 entity.ToTable("MountPoint");
-                entity.HasKey(di => di.Hash);
-                entity.Property(di => di.Hash).HasColumnType("Char(40)");
+                entity.HasKey(mpe => mpe.Hash);
+                entity.Property(mpe => mpe.Hash).HasColumnType("Char(40)");
+                entity.Property(re => re.RackId).IsRequired();
             });
         }
 

@@ -6,6 +6,5 @@ namespace Domain.DbEntities.Maintenance
     {
         public string Name { get; set; }
         public List<RackEntity> Racks { get; set; }
-        public List<MountPointEntity> MountPoints { get; set; }
     }
 }

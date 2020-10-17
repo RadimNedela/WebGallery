@@ -6,6 +6,6 @@ namespace Domain.Elements.Maintenance
     {
         private DatabaseInfoEntity databaseInfoEntity;
 
-
+        public DatabaseInfoElement(Dat)
     }
 }

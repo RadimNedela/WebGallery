@@ -15,10 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{78EAD5D9-7319-4EBC-B00C-AB399FE0BC52}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{59FB0FA3-69D3-4094-9367-E78227F4BDF1}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{56D94260-4DA7-46CE-BB2F-1CF98EA393DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Layers", "Layers", "{85559CA7-EC02-4F93-A9DD-AA9F4315C044}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +52,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E0209ADF-4AF6-4A4E-93B3-E1EC71A48952} = {56D94260-4DA7-46CE-BB2F-1CF98EA393DD}
+		{1E82246E-55A1-43CE-95F2-464E2B74A949} = {85559CA7-EC02-4F93-A9DD-AA9F4315C044}
+		{76E654ED-E5C3-43FE-828C-3AE9FE617A4E} = {85559CA7-EC02-4F93-A9DD-AA9F4315C044}
+		{B6560843-84C9-46CF-AFA2-0DA3E4356A21} = {85559CA7-EC02-4F93-A9DD-AA9F4315C044}
+		{78EAD5D9-7319-4EBC-B00C-AB399FE0BC52} = {56D94260-4DA7-46CE-BB2F-1CF98EA393DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A54C7076-EBA8-4196-9591-7CC583D7C013}

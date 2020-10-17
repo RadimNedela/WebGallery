@@ -1,4 +1,3 @@
-using Domain.Services;
 using Infrastructure.Databases;
 using IntegrationTests.IoC;
 using Microsoft.EntityFrameworkCore;
@@ -18,16 +17,6 @@ namespace IntegrationTests.DBTests
                 var instance = serviceProvider.GetService<IGaleryDatabase>();
                 DbContext context = instance as DbContext;
                 context.Database.EnsureCreated();
-            }
-        }
-
-        [Test, Explicit("This is only for creating default masterdata entries")]
-        public void JustCreateDefaultDatabaseMasterdata()
-        {
-            using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
-            {
-                var databaseApplication = serviceProvider.GetService<DatabaseInfoApplication>();
-                databaseApplication.CreateNewDatabase("Default");
             }
         }
     }

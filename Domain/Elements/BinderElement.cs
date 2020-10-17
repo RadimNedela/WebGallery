@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Domain.DbEntities;
 using System;
+using Domain.Elements.Maintenance;
 
 namespace Domain.Elements
 {
@@ -18,11 +19,23 @@ namespace Domain.Elements
         public IEnumerable<ContentElement> Contents => _contents;
         public IEnumerable<BinderElement> Binders => _binders;
         public IEnumerable<KeyValuePair<string, ContentElement>> Attributes => _attributes;
+        public RackElement Rack { get; }
 
-        public BinderElement(string hash, BinderTypeEnum type, string label)
+        public BinderElement(RackElement rack, string hash, BinderTypeEnum type, string label)
         {
+            Rack = rack;
             base.Initialize(hash, type.ToString(), label);
             BinderType = type;
+
+            _binderEntity = new BinderEntity
+            {
+                Hash = Hash,
+                Label = Label,
+                Type = Type,
+                AttributedContents = new List<AttributedBinderEntityToContentEntity>(),
+                Contents = new List<BinderEntityToContentEntity>(),
+                Rack = Rack?.Entity
+            };
         }
 
         public void AddBinder(BinderElement binderElement)
@@ -54,17 +67,6 @@ namespace Domain.Elements
 
         internal AttributedBinderEntityToContentEntity ToEntity(AttributedBinderEntityToContentEntity bToC)
         {
-            if (_binderEntity == null)
-            {
-                _binderEntity = new BinderEntity
-                {
-                    Hash = Hash,
-                    Label = Label,
-                    Type = Type,
-                    //AttributedContents = new List<AttributedBinderEntityToContentEntity>(),
-                    //Contents = new List<BinderEntityToContentEntity>()
-                };
-            }
             if (bToC.Binder != null && bToC.Binder != _binderEntity)
                 throw new Exception("Something totaly wrong - bToC contains other binder as this one...");
             if (bToC.Binder == null)

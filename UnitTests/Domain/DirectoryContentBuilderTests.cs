@@ -1,4 +1,5 @@
 using Domain.Elements;
+using Domain.Elements.Maintenance;
 using Domain.InfrastructureInterfaces;
 using Domain.Services;
 using NSubstitute;
@@ -57,7 +58,10 @@ namespace UnitTests.Domain
             var hasher = Substitute.For<IHasher>();
             hasher.ComputeFileContentHash(Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
 
-            return new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage());
+            var dip = Substitute.For<IPathOptimizer>();
+            dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));
+
+            return new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage(), dip);
         }
     }
 }

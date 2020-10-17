@@ -8,12 +8,18 @@ namespace Domain.Services
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
         private readonly ElementsMemoryStorage _elementsMemoryStorage;
+        private readonly IPathOptimizer _pathOptimizer;
 
-        public DirectoryContentBuilder(IDirectoryMethods directoryMethods, IHasher hasher, ElementsMemoryStorage elementsMemoryStorage)
+        public DirectoryContentBuilder(
+            IDirectoryMethods directoryMethods, 
+            IHasher hasher, 
+            ElementsMemoryStorage elementsMemoryStorage,
+            IPathOptimizer pathOptimizer)
         {
             _directoryMethods = directoryMethods;
             _hasher = hasher;
             _elementsMemoryStorage = elementsMemoryStorage;
+            _pathOptimizer = pathOptimizer;
         }
 
         public BinderElement GetDirectoryContent(string path)
@@ -52,7 +58,8 @@ namespace Domain.Services
 
         private BinderElement CreateDirectoryBinder(string path)
         {
-            return new BinderElement(_hasher.ComputeDirectoryHash(path), BinderTypeEnum.DirectoryType, path);
+            string subpath = _pathOptimizer.CreateValidSubpathAccordingToCurrentConfiguration(path);
+            return new BinderElement(_pathOptimizer.Rack, _hasher.ComputeStringHash(subpath), BinderTypeEnum.DirectoryType, subpath);
         }
     }
 }

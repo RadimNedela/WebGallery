@@ -40,11 +40,6 @@ namespace Infrastructure.DomainImpl
             return stream;
         }
 
-        public string ComputeDirectoryHash(string directoryPath)
-        {
-            return ComputeHash(Encoding.UTF8.GetBytes(directoryPath));
-        }
-
         public string ComputeStringHash(string theString)
         {
             return ComputeHash(Encoding.UTF8.GetBytes(theString));

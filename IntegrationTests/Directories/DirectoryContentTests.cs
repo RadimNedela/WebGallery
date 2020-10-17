@@ -1,22 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Timers;
 using Application.Directories;
 using Domain.Dtos;
-using Domain.Elements;
 using Domain.InfrastructureInterfaces;
 using Domain.Services;
 using Infrastructure.Databases;
 using Infrastructure.DomainImpl;
 using IntegrationTests.IoC;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using NUnit.Framework;
-using WebApplication;
 using WebApplication.Controllers;
 
 namespace IntegrationTests.Directories
@@ -32,7 +27,9 @@ namespace IntegrationTests.Directories
 
         private DirectoryContentApplication GetTestApplication()
         {
-            var app = new DirectoryContentApplication(new DirectoryContentBuilder(new DirectoryMethods(), new FileHasher(), new ElementsMemoryStorage()),
+            var dip = Substitute.For<IPathOptimizer>();
+            dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));
+            var app = new DirectoryContentApplication(new DirectoryContentBuilder(new DirectoryMethods(), new FileHasher(), new ElementsMemoryStorage(), dip),
                 new ContentEntitiesRepository(Substitute.For<IGaleryDatabase>()));
 
             return app;

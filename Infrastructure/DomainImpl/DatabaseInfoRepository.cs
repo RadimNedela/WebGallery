@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Domain.DbEntities.Maintenance;
 using Domain.InfrastructureInterfaces;
@@ -20,6 +21,13 @@ namespace Infrastructure.DomainImpl
                     .Include(di => di.Racks)
                         .ThenInclude(r => r.MountPoints)
                     .FirstOrDefault();
+        }
+
+        public IEnumerable<DatabaseInfoEntity> GetAll()
+        {
+            return _galeryDatabase.DatabaseInfo
+                .Include(di => di.Racks)
+                    .ThenInclude(r => r.MountPoints);
         }
     }
 }

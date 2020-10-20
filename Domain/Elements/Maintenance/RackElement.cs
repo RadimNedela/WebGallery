@@ -1,6 +1,7 @@
 ﻿using Domain.DbEntities.Maintenance;
 using Domain.InfrastructureInterfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Elements.Maintenance
 {
@@ -18,6 +19,7 @@ namespace Domain.Elements.Maintenance
             _hasher = hasher;
             Entity = entity;
             Name = entity.Name;
+            MountPoints = entity.MountPoints.Select(mpe => mpe.Path).ToList();
         }
 
         public RackElement(DatabaseInfoEntity diEntity, IHasher hasher, string name, string initialMountPointPath)
@@ -49,7 +51,14 @@ namespace Domain.Elements.Maintenance
 
         public string GetSubpath(string fullPath)
         {
-            return fullPath;
+            foreach (var mountPoint in MountPoints)
+            {
+                if (fullPath.StartsWith(mountPoint))
+                {
+                    return fullPath.Substring(mountPoint.Length);
+                }
+            }
+            throw new System.Exception($"Sorry, the given path {fullPath} does not start with any known mount point");
         }
     }
 }

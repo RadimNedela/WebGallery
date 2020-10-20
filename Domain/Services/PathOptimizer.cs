@@ -12,7 +12,7 @@ namespace Domain.Services
             this.databaseInfoProvider = databaseInfoProvider;
         }
 
-        public RackElement Rack => databaseInfoProvider.CurrentDatabaseInfo.Racks.First();
+        public RackElement Rack => databaseInfoProvider.CurrentRack;
 
         public string CreateValidSubpathAccordingToCurrentConfiguration(string fullPath)
         {

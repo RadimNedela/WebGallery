@@ -24,27 +24,9 @@ namespace Domain.Services
 
         public DatabaseInfoElement BuildNewDatabase(string databaseName)
         {
-            string newHash = hasher.ComputeStringHash(databaseName + CreateRandomString(50, 100));
-
-            var infoElement = new DatabaseInfoElement(hasher, databaseName, newHash);
+            var infoElement = new DatabaseInfoElement(hasher, databaseName);
 
             return infoElement;
-        }
-
-        private string CreateRandomString(int minLength, int maxLength)
-        {
-            var random = new Random();
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789=+-_)(*&^%$#@!`~\\|}{][\"';:/?.>,<";
-            int length = random.Next(minLength, maxLength);
-            var stringChars = new char[length];
-
-            for (int i = 0; i < length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
-
-            var finalString = new String(stringChars);
-            return finalString;
         }
     }
 }

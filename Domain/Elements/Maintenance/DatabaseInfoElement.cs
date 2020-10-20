@@ -24,11 +24,12 @@ namespace Domain.Elements.Maintenance
             Racks = Entity.Racks.Select(re => new RackElement(hasher, re)).ToList();
         }
 
-        public DatabaseInfoElement(IHasher hasher, string databaseName, string hash)
+        public DatabaseInfoElement(IHasher hasher, string databaseName)
         {
             this.hasher = hasher;
+
             Name = databaseName;
-            Hash = hash;
+            Hash = hasher.ComputeStringHash(databaseName + CreateRandomString(50, 100));
             Racks = new List<RackElement>();
 
             Entity = new DatabaseInfoEntity
@@ -37,7 +38,26 @@ namespace Domain.Elements.Maintenance
                 Hash = Hash,
                 Racks = new List<RackEntity>(),
             };
+
+            AddNewRack("Default", "");
         }
+
+        private string CreateRandomString(int minLength, int maxLength)
+        {
+            var random = new Random();
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789=+-_)(*&^%$#@!`~\\|}{][\"';:/?.>,<";
+            int length = random.Next(minLength, maxLength);
+            var stringChars = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+            return finalString;
+        }
+
 
         public void AddNewRack(string name, string initialMountPointPath)
         {

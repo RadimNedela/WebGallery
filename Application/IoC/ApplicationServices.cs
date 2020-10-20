@@ -1,6 +1,7 @@
 using Application.Directories;
 using Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
+using WebApplication.Controllers;
 
 namespace Application.IoC
 {
@@ -11,6 +12,7 @@ namespace Application.IoC
             services.AddScoped<DirectoryContentApplication, DirectoryContentApplication>();
             services.AddScoped<PhysicalFileApplication, PhysicalFileApplication>();
             services.AddScoped<DatabaseInfoApplication, DatabaseInfoApplication>();
+            services.AddSingleton<IDatabaseInfoProvider, DatabaseInfoProvider>();
         }
     }
 }

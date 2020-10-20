@@ -49,8 +49,9 @@ namespace IntegrationTests.DBTests
 
                 Assert.That(dbInfo, Is.Not.Null);
                 Assert.That(dbInfo.Name, Is.EqualTo("TestDatabase"));
-                Assert.That(dbInfo.Racks.First().Name, Is.EqualTo("NewTestRack"));
-                Assert.That(dbInfo.Racks.First().MountPoints.First().Path, Does.Contain("ExternalStorage001"));
+                var testRack = dbInfo.Racks.First(r => r.Name == "NewTestRack");
+                Assert.That(testRack.Name, Is.EqualTo("NewTestRack"));
+                Assert.That(testRack.MountPoints.First().Path, Does.Contain("ExternalStorage001"));
             }
         }
     }

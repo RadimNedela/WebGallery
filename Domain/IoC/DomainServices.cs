@@ -11,8 +11,6 @@ namespace Domain.IoC
             services.AddSingleton<ElementsMemoryStorage, ElementsMemoryStorage>();
             services.AddSingleton<DatabaseInfoBuilder, DatabaseInfoBuilder>();
             services.AddScoped<IPathOptimizer, PathOptimizer>();
-
-            services.AddSingleton<IDatabaseInfoProvider, >();
         }
     }
 }

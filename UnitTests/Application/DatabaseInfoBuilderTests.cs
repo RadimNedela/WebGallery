@@ -66,7 +66,7 @@ namespace UnitTests.DbEntities
 
             element.AddNewRack("MetArt", @"t:\MetArt");
 
-            Assert.That(element.Entity.Racks.First().Name, Is.EqualTo("MetArt"));
+            Assert.That(element.Entity.Racks.Last().Name, Is.EqualTo("MetArt"));
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace UnitTests.DbEntities
 
             element.AddNewRack("MetArt", @"\mount\externalDisk01\MetArt");
 
-            Assert.That(element.Entity.Racks.First().MountPoints.First().Path, Does.Contain("externalDisk01"));
+            Assert.That(element.Entity.Racks.Last().MountPoints.First().Path, Does.Contain("externalDisk01"));
         }
     }
 }

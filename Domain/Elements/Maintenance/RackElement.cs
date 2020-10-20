@@ -18,6 +18,7 @@ namespace Domain.Elements.Maintenance
         {
             _hasher = hasher;
             Entity = entity;
+            Hash = entity.Hash;
             Name = entity.Name;
             MountPoints = entity.MountPoints.Select(mpe => mpe.Path).ToList();
         }

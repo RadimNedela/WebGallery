@@ -21,6 +21,7 @@ namespace Domain.Elements.Maintenance
             this.hasher = hasher;
             Entity = databaseInfoEntity;
             Hash = Entity.Hash;
+            Name = Entity.Name;
             Racks = Entity.Racks.Select(re => new RackElement(hasher, re)).ToList();
         }
 

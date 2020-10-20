@@ -1,4 +1,5 @@
-﻿using Domain.Elements.Maintenance;
+﻿using Domain.DbEntities.Maintenance;
+using Domain.Elements.Maintenance;
 using Domain.InfrastructureInterfaces;
 using System;
 
@@ -13,6 +14,11 @@ namespace Domain.Services
         {
             this.hasher = hasher;
             this.repository = repository;
+        }
+
+        public DatabaseInfoElement Create(DatabaseInfoEntity entity)
+        {
+            return new DatabaseInfoElement(hasher, entity);
         }
 
         public DatabaseInfoElement GetDatabase(string hash)

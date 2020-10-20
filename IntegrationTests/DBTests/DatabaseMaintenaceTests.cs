@@ -1,8 +1,8 @@
-﻿using Domain.Elements.Maintenance;
+﻿using Domain.Dtos.Maintenance;
+using Domain.Elements.Maintenance;
 using Domain.InfrastructureInterfaces;
 using Domain.Services;
 using Infrastructure.Databases;
-using Infrastructure.DomainImpl;
 using IntegrationTests.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -13,7 +13,7 @@ namespace IntegrationTests.DBTests
     [TestFixture]
     public class DatabaseMaintenaceTests
     {
-        private DatabaseInfoElement element;
+        private DatabaseInfoDto dto;
 
         [SetUp]
         public void SetUp()
@@ -21,20 +21,23 @@ namespace IntegrationTests.DBTests
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
                 var databaseApplication = serviceProvider.GetService<DatabaseInfoApplication>();
-                element = databaseApplication.CreateNewDatabase("TestDatabase");
+                dto = databaseApplication.CreateNewDatabase("TestDatabase");
 
-                databaseApplication.AddNewRack(element.Hash, "NewTestRack", "/mount/ExternalStorage001/Something");
+                databaseApplication.AddNewRack(dto.Hash, "NewTestRack", "/mount/ExternalStorage001/Something");
             }
         }
 
         [TearDown]
         public void TearDown()
         {
-            if (element != null)
+            if (dto != null)
                 using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
                 {
+                    var getter = serviceProvider.GetService<IDatabaseInfoEntityRepository>();
+                    var entity = getter.Get(dto.Hash);
+
                     var database = serviceProvider.GetService<IGaleryDatabase>();
-                    database.DatabaseInfo.Remove(element.Entity);
+                    database.DatabaseInfo.Remove(entity);
                     database.SaveChanges();
                 }
         }
@@ -45,7 +48,7 @@ namespace IntegrationTests.DBTests
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
                 var database = serviceProvider.GetService<IDatabaseInfoEntityRepository>();
-                var dbInfo = database.Get(element.Hash);
+                var dbInfo = database.Get(dto.Hash);
 
                 Assert.That(dbInfo, Is.Not.Null);
                 Assert.That(dbInfo.Name, Is.EqualTo("TestDatabase"));

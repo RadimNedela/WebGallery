@@ -4,7 +4,6 @@ function Maintenance() {
 
     var MH = MaintenanceHandler();
     var allDatabases;
-    var activeDatabase;
 
     function allDatabasesArrived(data) {
         allDatabases = data;
@@ -18,46 +17,44 @@ function Maintenance() {
         }
     }
 
-    function showActiveDatabase(event) {
-        var hash = event.data.hash;
-        var db;
-        for (let i = 0; i < allDatabases.length; i++) {
-            if (allDatabases[i].hash === hash) {
-                db = allDatabases[i];
-                break;
-            }
-        }
-        if (db) {
-            activeDatabase = db;
-            $('#ActiveDatabaseNameInput').val(db.name);
-            $('#ActiveDatabaseHashInput').val(db.hash);
-        }
+    function inputFieldValueChanged() {
+        var dto = $(this).data("dto");
+        var propertyName = $(this).data("propertyName");
+        var index = $(this).data("index");
+        var newValue = $(this).val();
+
+        if (typeof index !== "undefined") dto[propertyName][index] = newValue;
+        else dto[propertyName] = newValue;
     }
 
-    function showActiveRack(event) {
-        var hash = event.data.hash;
-        var rack;
-        for (let i = 0; i < allDatabases.length; i++) {
-            for (let j = 0; j < allDatabases[i].racks.length; j++) {
-                if (allDatabases[i].racks[j].hash === hash) {
-                    rack = allDatabases[i].racks[j];
-                    break;
-                }
-            }
-            if (rack) break;
-        }
-        if (rack) {
-            $('#ActiveRackNameInput').val(rack.name);
-            $('#ActiveRackHashInput').val(rack.hash);
-        }
+    function createInputField(dto, propertyName, index) {
+        var propertyValue = dto[propertyName];
+        if (typeof index !== "undefined") propertyValue = propertyValue[index];
+
+        var $input = $('<input type="text" value="' + propertyValue + '" />');
+        $input.data("dto", dto);
+        $input.data("propertyName", propertyName);
+        if (typeof index !== "undefined") $input.data("index", index);
+        $input.on('input', inputFieldValueChanged);
+        return $input;
     }
 
     function addDatabaseDtoInfoRow($table, dto) {
         var $tr = $table.find('tbody:last').append('<tr>');
-        var $td = $('<td>' + dto.name + '</td>');
-        $td.click({ hash: dto.hash }, showActiveDatabase);
+        var $nameInput = createInputField(dto, "name");
+
+        var $td = $('<td> </td>').html($nameInput);
         $tr.append($td);
         $tr.append('<td>' + dto.hash + '</td>');
+        $tr.append('<td>' + " " + '</td>');
+        $tr.append('<td>' + " " + '</td>');
+        $tr.append('<td>' + " " + '</td>');
+
+        var $action = $('<input type="button" value="Save Database"/>');
+        $action.click({ dto: dto }, saveDatabase);
+        $td = $('<td> </td>').html($action);
+        $tr.append($td);
+        
 
         for (let i = 0; i < dto.racks.length; i++) {
             addRackInfoRow($table, dto.racks[i]);
@@ -68,46 +65,44 @@ function Maintenance() {
         var $tr = $table.find('tbody:last').append('<tr>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
-        var $td = $('<td>' + rackDto.name + '</td>');
-        $td.click({ hash: rackDto.hash }, showActiveRack);
+        var $td = $('<td> </td>').html(createInputField(rackDto, "name"));
         $tr.append($td);
         $tr.append('<td>' + rackDto.hash + '</td>');
 
         for (let i = 0; i < rackDto.mountPoints.length; i++) {
-            addMountPointRow($table, rackDto.mountPoints[i]);
+            addMountPointRow($table, rackDto, i);
         }
     }
 
-    function addMountPointRow($table, mountPoint) {
+    function addMountPointRow($table, rackDto, index) {
         var $tr = $table.find('tbody:last').append('<tr>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
-        $tr.append('<td>' + '"' + mountPoint + '"' + '</td>');
+        var $td = $('<td> </td>').html(createInputField(rackDto, "mountPoints", index));
+        $tr.append($td);
     }
 
-    function createNewDatabase() {
-        var newName = $('#ActiveDatabaseNameInput').val();
-        if (newName) {
-            MH.createNewDatabase(newName)
-                .then(allDatabasesArrived);
-        }
-    }
+    //var activeDatabase;
+    //function createNewDatabase() {
+    //    var newName = $('#ActiveDatabaseNameInput').val();
+    //    if (newName) {
+    //        MH.createNewDatabase(newName)
+    //            .then(allDatabasesArrived);
+    //    }
+    //}
 
-    function saveDatabase() {
-        if (!activeDatabase) return;
-        activeDatabase.name = $('#ActiveDatabaseNameInput').val();
-
-        MH.saveDatabase(activeDatabase);
+    function saveDatabase(e) {
+        var dto = e.data.dto;
+        MH.saveDatabase(dto);
     }
 
     $(function () {
         MH.getAllDatabases()
             .then(allDatabasesArrived);
-        //$("#MainImageMaxWidthInput").on('input', mainImageMaxWidthChanged);
-        $("#NewDatabaseButton").click(createNewDatabase);
-        $("#SaveDatabaseButton").click(saveDatabase);
+        //$("#NewDatabaseButton").click(createNewDatabase);
+        //$("#SaveDatabaseButton").click(saveDatabase);
     });
 }
 

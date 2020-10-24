@@ -40,6 +40,9 @@ namespace Domain.Services
         public DatabaseInfoDto PersistDatabase(DatabaseInfoDto dto)
         {
             var element = infoBuilder.Create(dto);
+
+            repository.Save();
+
             return element.ToDto();
         }
 

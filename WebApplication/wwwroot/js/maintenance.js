@@ -101,8 +101,6 @@ function Maintenance() {
     $(function () {
         MH.getAllDatabases()
             .then(allDatabasesArrived);
-        //$("#NewDatabaseButton").click(createNewDatabase);
-        //$("#SaveDatabaseButton").click(saveDatabase);
     });
 }
 

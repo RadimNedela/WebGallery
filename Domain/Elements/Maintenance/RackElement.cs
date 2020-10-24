@@ -33,25 +33,31 @@ namespace Domain.Elements.Maintenance
 
             string rackHash = hasher.ComputeStringHash($"{diEntity.Hash} {name}");
 
-            var mountPointEntities = new List<MountPointEntity>();
-
             Entity = new RackEntity()
             {
                 Database = diEntity,
                 Hash = rackHash,
                 Name = name,
-                MountPoints = mountPointEntities
+                MountPoints = new List<MountPointEntity>()
             };
 
             foreach (var mountPoint in MountPoints)
             {
-                var mountPointEntity = new MountPointEntity
-                {
-                    Path = mountPoint,
-                    Rack = Entity
-                };
-                mountPointEntities.Add(mountPointEntity);
+                AddMountPoint(mountPoint);
             }
+        }
+
+        private void AddMountPoint(string newMountPoint)
+        {
+            if (string.IsNullOrWhiteSpace(newMountPoint))
+                throw new Exception("Mount point cannot be null nor empty string...");
+
+            var mountPointEntity = new MountPointEntity
+            {
+                Path = newMountPoint,
+                Rack = Entity
+            };
+            Entity.MountPoints.Add(mountPointEntity);
         }
 
         internal void Merge(RackDto rackDto)
@@ -79,8 +85,7 @@ namespace Domain.Elements.Maintenance
                 if (MountPoints.Contains(mountPointDto))
                     continue;
                 // není tam, vytvořit nový...
-                MountPoints.Add(mountPointDto);
-                Entity.MountPoints.Add(new MountPointEntity() { Path = mountPointDto, Rack = Entity });
+                AddMountPoint(mountPointDto);
             }
         }
 

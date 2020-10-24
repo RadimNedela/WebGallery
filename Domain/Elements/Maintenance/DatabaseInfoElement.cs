@@ -26,7 +26,7 @@ namespace Domain.Elements.Maintenance
             Racks = Entity.Racks.Select(re => new RackElement(hasher, re)).ToList();
         }
 
-        public DatabaseInfoElement(IHasher hasher, string databaseName)
+        public DatabaseInfoElement(IHasher hasher, string databaseName, string initialRackName, string initialMountPoint)
         {
             this.hasher = hasher;
 
@@ -41,7 +41,7 @@ namespace Domain.Elements.Maintenance
                 Racks = new List<RackEntity>(),
             };
 
-            AddNewRack("Default", "");
+            AddNewRack(initialRackName, initialMountPoint);
         }
 
         public void Merge(DatabaseInfoDto dto)

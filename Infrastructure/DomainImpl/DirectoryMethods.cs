@@ -6,6 +6,11 @@ namespace Infrastructure.DomainImpl
 {
     public class DirectoryMethods : IDirectoryMethods
     {
+        public string GetCurrentDirectoryName()
+        {
+            return Directory.GetCurrentDirectory();
+        }
+
         public IEnumerable<string> GetFileNames(string directoryName)
         {
             if (string.IsNullOrWhiteSpace(directoryName)) directoryName = Directory.GetCurrentDirectory();

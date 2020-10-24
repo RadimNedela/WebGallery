@@ -31,11 +31,11 @@ namespace WebApplication.Controllers
             return Get();
         }
 
-        [HttpGet("changeDatabase")]
-        public IEnumerable<DatabaseInfoDto> ChangeDatabase(DatabaseInfoDto dto)
+        [HttpPost]
+        public IEnumerable<DatabaseInfoDto> SaveDatabase(DatabaseInfoDto databaseDto)
         {
-            Log.Info($"{nameof(ChangeDatabase)} {dto}");
-            var notUsed = databaseInfoApplication.PersistDatabase(dto);
+            Log.Info($"{nameof(SaveDatabase)} {databaseDto}");
+            var notUsed = databaseInfoApplication.PersistDatabase(databaseDto);
             return Get();
         }
 
@@ -44,12 +44,6 @@ namespace WebApplication.Controllers
         public string Get(int id)
         {
             return "value";
-        }
-
-        // POST api/<controller>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
         }
 
         // PUT api/<controller>/5

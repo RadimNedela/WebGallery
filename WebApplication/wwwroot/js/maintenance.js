@@ -10,6 +10,9 @@ function Maintenance() {
         allDatabases = data;
         var $table = $("#DatabasesTable");
 
+        var $tableBody = $("#DatabasesTableBody");
+        $tableBody.empty();
+
         for (let i = 0; i < data.length; i++) {
             addDatabaseDtoInfoRow($table, data[i]);
         }
@@ -95,6 +98,8 @@ function Maintenance() {
     function saveDatabase() {
         if (!activeDatabase) return;
         activeDatabase.name = $('#ActiveDatabaseNameInput').val();
+
+        MH.saveDatabase(activeDatabase);
     }
 
     $(function () {

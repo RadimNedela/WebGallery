@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Application.Directories;
 using Domain.Dtos;
@@ -74,8 +75,12 @@ namespace IntegrationTests.Directories
             t.Start();
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
+                var directoryMethods = serviceProvider.GetService<IDirectoryMethods>();
+                var currPath = directoryMethods.GetCurrentDirectoryName();
+
                 var directoryContentBuilder = serviceProvider.GetService<DirectoryContentBuilder>();
-                var binder = directoryContentBuilder.GetDirectoryContent(TestPicturesInnerPath);
+                var picsPath = Path.Combine(currPath, TestPicturesInnerPath);
+                var binder = directoryContentBuilder.GetDirectoryContent(picsPath);
                 var first = binder.Contents.First(he => he.Label.EndsWith(DoubledPictureName1));
 
                 Assert.That(first.AttributedBinders.Count(), Is.EqualTo(2));
@@ -109,11 +114,15 @@ namespace IntegrationTests.Directories
         {
             using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
             {
+                var directoryMethods = serviceProvider.GetService<IDirectoryMethods>();
+                var currPath = directoryMethods.GetCurrentDirectoryName();
+
                 var application = serviceProvider.GetService<DirectoryContentApplication>();
                 var contentRepository = serviceProvider.GetService<IContentEntityRepository>();
                 var binderRepository = serviceProvider.GetService<IBinderEntityRepository>();
 
-                var directoryContentDto = application.GetDirectoryContent(TestPicturesInnerPath);
+                var picsPath = Path.Combine(currPath, TestPicturesInnerPath);
+                var directoryContentDto = application.GetDirectoryContent(picsPath);
 
                 foreach (var contentInfo in directoryContentDto.ContentInfos)
                 {

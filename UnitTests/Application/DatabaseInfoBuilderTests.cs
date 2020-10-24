@@ -18,8 +18,10 @@ namespace UnitTests.DbEntities
         {
             var hasher = Substitute.For<IHasher>();
             hasher.ComputeStringHash(Arg.Any<string>()).Returns(info => "HASH" + info.ArgAt<string>(0) + "HASH");
+            var directoryMethods = Substitute.For<IDirectoryMethods>();
+            directoryMethods.GetCurrentDirectoryName().Returns("f:\nonsenseDirectory");
 
-            var databaseBuilder = new DatabaseInfoBuilder(hasher, null);
+            var databaseBuilder = new DatabaseInfoBuilder(hasher, null, directoryMethods);
             return databaseBuilder;
         }
 

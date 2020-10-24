@@ -10,11 +10,16 @@ namespace Domain.Services
     {
         private IHasher hasher;
         private readonly IDatabaseInfoEntityRepository repository;
+        private readonly IDirectoryMethods directoryMethods;
 
-        public DatabaseInfoBuilder(IHasher hasher, IDatabaseInfoEntityRepository repository)
+        public DatabaseInfoBuilder(
+            IHasher hasher, 
+            IDatabaseInfoEntityRepository repository, 
+            IDirectoryMethods directoryMethods)
         {
             this.hasher = hasher;
             this.repository = repository;
+            this.directoryMethods = directoryMethods;
         }
 
         public DatabaseInfoElement Create(DatabaseInfoEntity entity)
@@ -38,7 +43,7 @@ namespace Domain.Services
 
         public DatabaseInfoElement BuildNewDatabase(string databaseName)
         {
-            var infoElement = new DatabaseInfoElement(hasher, databaseName);
+            var infoElement = new DatabaseInfoElement(hasher, databaseName, "Default", directoryMethods.GetCurrentDirectoryName());
 
             return infoElement;
         }

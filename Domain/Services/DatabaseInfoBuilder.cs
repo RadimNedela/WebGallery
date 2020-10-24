@@ -1,4 +1,5 @@
 ﻿using Domain.DbEntities.Maintenance;
+using Domain.Dtos.Maintenance;
 using Domain.Elements.Maintenance;
 using Domain.InfrastructureInterfaces;
 using System;
@@ -19,6 +20,13 @@ namespace Domain.Services
         public DatabaseInfoElement Create(DatabaseInfoEntity entity)
         {
             return new DatabaseInfoElement(hasher, entity);
+        }
+
+        public DatabaseInfoElement Create(DatabaseInfoDto dto)
+        {
+            var element = GetDatabase(dto.Hash);
+            element.Merge(dto);
+            return element;
         }
 
         public DatabaseInfoElement GetDatabase(string hash)

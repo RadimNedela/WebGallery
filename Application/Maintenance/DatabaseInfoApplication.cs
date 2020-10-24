@@ -37,6 +37,12 @@ namespace Domain.Services
             return element.ToDto();
         }
 
+        public DatabaseInfoDto PersistDatabase(DatabaseInfoDto dto)
+        {
+            var element = infoBuilder.Create(dto);
+            return element.ToDto();
+        }
+
         public DatabaseInfoDto AddNewRack(string databaseHash, string name, string initialMountPointPath)
         {
             var element = infoBuilder.GetDatabase(databaseHash);

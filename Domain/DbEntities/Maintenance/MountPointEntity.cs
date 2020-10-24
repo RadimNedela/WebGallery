@@ -1,6 +1,6 @@
 ﻿namespace Domain.DbEntities.Maintenance
 {
-    public class MountPointEntity : HashedEntity
+    public class MountPointEntity
     {
         public string Path { get; set; }
         public RackEntity Rack { get; set; }

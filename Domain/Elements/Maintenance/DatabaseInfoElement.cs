@@ -1,4 +1,5 @@
 ﻿using Domain.DbEntities.Maintenance;
+using Domain.Dtos.Maintenance;
 using Domain.InfrastructureInterfaces;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,28 @@ namespace Domain.Elements.Maintenance
             AddNewRack("Default", "");
         }
 
+        public void Merge(DatabaseInfoDto dto)
+        {
+            if (dto.Name != Name)
+            {
+                Name = dto.Name;
+                Entity.Name = Name;
+            }
+            foreach (var rackDto in dto.Racks)
+            {
+                if (rackDto.Hash != null)
+                {
+                    var existingRack = Racks.FirstOrDefault(r => r.Hash == rackDto.Hash);
+                    if (existingRack == null)
+                        throw new Exception($"Cannot find rack with hash {rackDto.Hash}. Database: {this}");
+                    existingRack.Merge(rackDto);
+                } else
+                {
+                    AddNewRack(rackDto.Name, rackDto.MountPoints);
+                }
+            }
+        }
+
         private string CreateRandomString(int minLength, int maxLength)
         {
             var random = new Random();
@@ -62,10 +85,15 @@ namespace Domain.Elements.Maintenance
 
         public void AddNewRack(string name, string initialMountPointPath)
         {
+            AddNewRack(name, new string[] { initialMountPointPath });
+        }
+
+        public void AddNewRack(string name, IEnumerable<string> initialMountPoints)
+        {
             if (Racks.Any(r => r.Name == name))
                 throw new NotSupportedException("Cannot add new rack with already existing name, the name must be unique in the database");
 
-            var rack = new RackElement(Entity, hasher, name, initialMountPointPath);
+            var rack = new RackElement(Entity, hasher, name, initialMountPoints);
             Racks.Add(rack);
             Entity.Racks.Add(rack.Entity);
         }

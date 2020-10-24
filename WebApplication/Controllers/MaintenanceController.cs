@@ -23,6 +23,22 @@ namespace WebApplication.Controllers
             return databaseInfoApplication.GetAllDatabases();
         }
 
+        [HttpGet("createNewDatabase")]
+        public IEnumerable<DatabaseInfoDto> CreateNewDatabase(string databaseName)
+        {
+            Log.Info($"{nameof(CreateNewDatabase)} {databaseName}");
+            var notUsed = databaseInfoApplication.CreateNewDatabase(databaseName);
+            return Get();
+        }
+
+        [HttpGet("changeDatabase")]
+        public IEnumerable<DatabaseInfoDto> ChangeDatabase(DatabaseInfoDto dto)
+        {
+            Log.Info($"{nameof(ChangeDatabase)} {dto}");
+            var notUsed = databaseInfoApplication.PersistDatabase(dto);
+            return Get();
+        }
+
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public string Get(int id)

@@ -51,8 +51,8 @@ namespace Infrastructure.Databases
             modelBuilder.Entity<MountPointEntity>(entity =>
             {
                 entity.ToTable("MountPoint");
-                entity.HasKey(mpe => mpe.Hash);
-                entity.Property(mpe => mpe.Hash).HasColumnType("Char(40)");
+                entity.HasKey(mpe => new { mpe.RackId, mpe.Path});
+                entity.Property(re => re.Path).HasMaxLength(200);
                 entity.Property(re => re.RackId).IsRequired();
             });
         }

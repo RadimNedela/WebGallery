@@ -1,7 +1,10 @@
-﻿function Maintenance() {
+﻿"use strict";
+
+function Maintenance() {
 
     var MH = MaintenanceHandler();
     var allDatabases;
+    var activeDatabase;
 
     function allDatabasesArrived(data) {
         allDatabases = data;
@@ -22,8 +25,27 @@
             }
         }
         if (db) {
+            activeDatabase = db;
             $('#ActiveDatabaseNameInput').val(db.name);
             $('#ActiveDatabaseHashInput').val(db.hash);
+        }
+    }
+
+    function showActiveRack(event) {
+        var hash = event.data.hash;
+        var rack;
+        for (let i = 0; i < allDatabases.length; i++) {
+            for (let j = 0; j < allDatabases[i].racks.length; j++) {
+                if (allDatabases[i].racks[j].hash === hash) {
+                    rack = allDatabases[i].racks[j];
+                    break;
+                }
+            }
+            if (rack) break;
+        }
+        if (rack) {
+            $('#ActiveRackNameInput').val(rack.name);
+            $('#ActiveRackHashInput').val(rack.hash);
         }
     }
 
@@ -43,7 +65,9 @@
         var $tr = $table.find('tbody:last').append('<tr>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
-        $tr.append('<td>' + rackDto.name + '</td>');
+        var $td = $('<td>' + rackDto.name + '</td>');
+        $td.click({ hash: rackDto.hash }, showActiveRack);
+        $tr.append($td);
         $tr.append('<td>' + rackDto.hash + '</td>');
 
         for (let i = 0; i < rackDto.mountPoints.length; i++) {
@@ -60,11 +84,25 @@
         $tr.append('<td>' + '"' + mountPoint + '"' + '</td>');
     }
 
+    function createNewDatabase() {
+        var newName = $('#ActiveDatabaseNameInput').val();
+        if (newName) {
+            MH.createNewDatabase(newName)
+                .then(allDatabasesArrived);
+        }
+    }
+
+    function saveDatabase() {
+        if (!activeDatabase) return;
+        activeDatabase.name = $('#ActiveDatabaseNameInput').val();
+    }
+
     $(function () {
         MH.getAllDatabases()
             .then(allDatabasesArrived);
         //$("#MainImageMaxWidthInput").on('input', mainImageMaxWidthChanged);
-        //$("#ParseDirectoryButton").click(parseDirectoryContent);
+        $("#NewDatabaseButton").click(createNewDatabase);
+        $("#SaveDatabaseButton").click(saveDatabase);
     });
 }
 

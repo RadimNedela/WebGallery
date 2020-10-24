@@ -18,7 +18,7 @@
                     <th>Hash</th>
                     <th>RackName</th>
                     <th>RackHash</th>
-                    <th>MountPoints</th>
+                    <th>MountPoint</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +27,13 @@
     </div>
     <div id="ActiveDatabaseDiv">
         <label>Database Name:</label> <input type="text" id="ActiveDatabaseNameInput" />
-        <label>Database Hash:</label> <input type="text" id="ActiveDatabaseHashInput" readonly="readonly" size="45" />
+        <label>Database Hash:</label> <input type="text" id="ActiveDatabaseHashInput" readonly="readonly" size="43" />
+        <input type="button" id="NewDatabaseButton" value="Create New DB" />
+        <input type="button" id="SaveDatabaseButton" value="Save Changes" />
+        <br />
+        <label>Rack Name:</label> <input type="text" id="ActiveRackNameInput" />
+        <label>Rack Hash:</label> <input type="text" id="ActiveRackHashInput" readonly="readonly" size="43" />
+
     </div>
 </body>
 </html>

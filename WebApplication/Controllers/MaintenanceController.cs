@@ -3,6 +3,7 @@ using Domain.Dtos.Maintenance;
 using Domain.Logging;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace WebApplication.Controllers
 {
@@ -36,6 +37,28 @@ namespace WebApplication.Controllers
         {
             Log.Info($"{nameof(SaveDatabase)} {databaseDto}");
             var notUsed = databaseInfoApplication.PersistDatabase(databaseDto);
+            return Get();
+        }
+
+        [HttpPost("addNewRack")]
+        public IEnumerable<DatabaseInfoDto> AddNewRack(DatabaseInfoDto databaseDto)
+        {
+            Log.Info($"{nameof(AddNewRack)} {databaseDto}");
+            var notUsed = databaseInfoApplication.AddNewRack(databaseDto);
+            return Get();
+        }
+
+        public class NewMountPointDto
+        {
+            public string databaseHash { get; set; }
+            public string rackHash { get; set; }
+        }
+
+        [HttpPost("addNewMountPoint")]
+        public IEnumerable<DatabaseInfoDto> AddNewMountPoint(NewMountPointDto dto)
+        {
+            Log.Info($"{nameof(AddNewMountPoint)} {dto.databaseHash} {dto.rackHash}");
+            var notUsed = databaseInfoApplication.AddNewMountPoint(dto.databaseHash, dto.rackHash);
             return Get();
         }
 

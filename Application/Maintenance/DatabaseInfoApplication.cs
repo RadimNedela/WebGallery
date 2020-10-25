@@ -11,10 +11,16 @@ namespace Domain.Services
     {
         private readonly DatabaseInfoBuilder infoBuilder;
         private readonly IDatabaseInfoEntityRepository repository;
-        public DatabaseInfoApplication(DatabaseInfoBuilder infoBuilder, IDatabaseInfoEntityRepository repository)
+        private readonly IDirectoryMethods directoryMethods;
+
+        public DatabaseInfoApplication(
+            DatabaseInfoBuilder infoBuilder, 
+            IDatabaseInfoEntityRepository repository,
+            IDirectoryMethods directoryMethods)
         {
             this.infoBuilder = infoBuilder;
             this.repository = repository;
+            this.directoryMethods = directoryMethods;
         }
 
         public IEnumerable<DatabaseInfoDto> GetAllDatabases()
@@ -46,6 +52,11 @@ namespace Domain.Services
             return element.ToDto();
         }
 
+        public DatabaseInfoDto AddNewRack(DatabaseInfoDto dto)
+        {
+            return AddNewRack(dto.Hash, "Default", directoryMethods.GetCurrentDirectoryName());
+        }
+
         public DatabaseInfoDto AddNewRack(string databaseHash, string name, string initialMountPointPath)
         {
             var element = infoBuilder.GetDatabase(databaseHash);
@@ -53,6 +64,17 @@ namespace Domain.Services
             repository.Save();
 
             return element.ToDto();
+        }
+
+        public object AddNewMountPoint(string databaseHash, string rackHash)
+        {
+            var database = infoBuilder.GetDatabase(databaseHash);
+            var rack = database.Racks.First(r => r.Hash == rackHash);
+            rack.AddMountPoint(directoryMethods.GetCurrentDirectoryName());
+
+            repository.Save();
+
+            return database.ToDto();
         }
     }
 }

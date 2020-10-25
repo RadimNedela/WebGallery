@@ -15,6 +15,19 @@ function Maintenance() {
         for (let i = 0; i < data.length; i++) {
             addDatabaseDtoInfoRow($table, data[i]);
         }
+        addNewDatabaseInfoRow($table);
+    }
+
+    function addNewDatabaseInfoRow($table) {
+        var $tr = $table.find('tbody:last').append('<tr>');
+        var $input = $('<input type="text" id="NewDatabaseNameInput" />');
+        var $td = $('<td> </td>').html($input);
+        $tr.append($td);
+
+        var $button = $('<input type="button" value="Create New Database"/>');
+        $button.click(createNewDatabase);
+        $td = $('<td> </td>').html($button);
+        $tr.append($td);
     }
 
     function inputFieldValueChanged() {
@@ -23,13 +36,23 @@ function Maintenance() {
         var index = $(this).data("index");
         var newValue = $(this).val();
 
-        if (typeof index !== "undefined") dto[propertyName][index] = newValue;
+        if (typeof index !== "undefined") {
+            if (index == dto[propertyName].length)
+                dto[propertyName].push(newValue);
+            else
+                dto[propertyName][index] = newValue;
+        }
         else dto[propertyName] = newValue;
     }
 
     function createInputField(dto, propertyName, index) {
         var propertyValue = dto[propertyName];
-        if (typeof index !== "undefined") propertyValue = propertyValue[index];
+        if (typeof index !== "undefined") {
+            if (index < propertyValue.length)
+                propertyValue = propertyValue[index];
+            else
+                propertyValue = "";
+        }
 
         var $input = $('<input type="text" value="' + propertyValue + '" />');
         $input.data("dto", dto);
@@ -39,42 +62,48 @@ function Maintenance() {
         return $input;
     }
 
-    function addDatabaseDtoInfoRow($table, dto) {
+    function addDatabaseDtoInfoRow($table, databaseDto) {
         var $tr = $table.find('tbody:last').append('<tr>');
-        var $nameInput = createInputField(dto, "name");
+        var $nameInput = createInputField(databaseDto, "name");
 
         var $td = $('<td> </td>').html($nameInput);
         $tr.append($td);
-        $tr.append('<td>' + dto.hash + '</td>');
+        $tr.append('<td>' + databaseDto.hash + '</td>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
 
         var $action = $('<input type="button" value="Save Database"/>');
-        $action.click({ dto: dto }, saveDatabase);
+        $action.click({ databaseDto: databaseDto }, saveDatabase);
         $td = $('<td> </td>').html($action);
         $tr.append($td);
         
 
-        for (let i = 0; i < dto.racks.length; i++) {
-            addRackInfoRow($table, dto.racks[i]);
+        for (let i = 0; i < databaseDto.racks.length; i++) {
+            addRackInfoRow($table, databaseDto, databaseDto.racks[i]);
         }
     }
 
-    function addRackInfoRow($table, rackDto) {
+    function addRackInfoRow($table, databaseDto, rackDto) {
         var $tr = $table.find('tbody:last').append('<tr>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
         var $td = $('<td> </td>').html(createInputField(rackDto, "name"));
         $tr.append($td);
         $tr.append('<td>' + rackDto.hash + '</td>');
+        $tr.append('<td>' + " " + '</td>');
+
+        var $action = $('<input type="button" value="Add New Rack"/>');
+        $action.click({ databaseDto: databaseDto }, addNewRack);
+        $td = $('<td> </td>').html($action);
+        $tr.append($td);
 
         for (let i = 0; i < rackDto.mountPoints.length; i++) {
-            addMountPointRow($table, rackDto, i);
+            addMountPointRow($table, databaseDto, rackDto, i);
         }
     }
 
-    function addMountPointRow($table, rackDto, index) {
+    function addMountPointRow($table, databaseDto, rackDto, index) {
         var $tr = $table.find('tbody:last').append('<tr>');
         $tr.append('<td>' + " " + '</td>');
         $tr.append('<td>' + " " + '</td>');
@@ -82,20 +111,38 @@ function Maintenance() {
         $tr.append('<td>' + " " + '</td>');
         var $td = $('<td> </td>').html(createInputField(rackDto, "mountPoints", index));
         $tr.append($td);
+
+        var $action = $('<input type="button" value="Add New Mount Point"/>');
+        $action.click({ databaseDto: databaseDto, rackDto: rackDto }, addNewMountPoint);
+        $td = $('<td> </td>').html($action);
+        $tr.append($td);
     }
 
-    //var activeDatabase;
-    //function createNewDatabase() {
-    //    var newName = $('#ActiveDatabaseNameInput').val();
-    //    if (newName) {
-    //        MH.createNewDatabase(newName)
-    //            .then(allDatabasesArrived);
-    //    }
-    //}
+    function createNewDatabase() {
+        var newName = $('#NewDatabaseNameInput').val();
+        if (newName) {
+            MH.createNewDatabase(newName)
+                .then(allDatabasesArrived);
+        }
+    }
+
+    function addNewRack(e) {
+        var databaseDto = e.data.databaseDto;
+        MH.addNewRack(databaseDto)
+            .then(allDatabasesArrived);
+    }
+
+    function addNewMountPoint(e) {
+        var databaseDto = e.data.databaseDto;
+        var rackDto = e.data.rackDto;
+        MH.addNewMountPoint(databaseDto, rackDto)
+            .then(allDatabasesArrived);
+    }
 
     function saveDatabase(e) {
-        var dto = e.data.dto;
-        MH.saveDatabase(dto);
+        var databaseDto = e.data.databaseDto;
+        MH.saveDatabase(databaseDto)
+            .then(allDatabasesArrived);
     }
 
     $(function () {

@@ -89,5 +89,26 @@ namespace Infrastructure.DomainImpl
             //return System.Text.Encoding.ASCII.GetString(hash);
             return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
+
+        public string ComputeRandomStringHash(string somePrefix)
+        {
+            return ComputeStringHash(somePrefix + CreateRandomString(50, 100));
+        }
+
+        private string CreateRandomString(int minLength, int maxLength)
+        {
+            var random = new Random();
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789=+-_)(*&^%$#@!`~\\|}{][\"';:/?.>,<";
+            int length = random.Next(minLength, maxLength);
+            var stringChars = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+            return finalString;
+        }
     }
 }

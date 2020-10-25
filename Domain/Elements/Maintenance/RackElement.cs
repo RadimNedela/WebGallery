@@ -29,9 +29,10 @@ namespace Domain.Elements.Maintenance
         {
             _hasher = hasher;
             Name = name;
-            MountPoints = initialMountPoints.Select(s => s).ToList();
+            MountPoints = new List<string>();
 
-            string rackHash = hasher.ComputeStringHash($"{diEntity.Hash} {name}");
+            // buďto budu počítat hash při změně jména (což by asi mělo katastrofální dopad), nebo to bude muset být náhodné...
+            string rackHash = hasher.ComputeRandomStringHash($"{diEntity.Hash} {name}");
 
             Entity = new RackEntity()
             {
@@ -41,16 +42,18 @@ namespace Domain.Elements.Maintenance
                 MountPoints = new List<MountPointEntity>()
             };
 
-            foreach (var mountPoint in MountPoints)
+            foreach (var mountPoint in initialMountPoints)
             {
                 AddMountPoint(mountPoint);
             }
         }
 
-        private void AddMountPoint(string newMountPoint)
+        public void AddMountPoint(string newMountPoint)
         {
             if (string.IsNullOrWhiteSpace(newMountPoint))
                 throw new Exception("Mount point cannot be null nor empty string...");
+            if (MountPoints.Contains(newMountPoint))
+                throw new Exception("Cannot create same mount point - this one already exists");
 
             var mountPointEntity = new MountPointEntity
             {

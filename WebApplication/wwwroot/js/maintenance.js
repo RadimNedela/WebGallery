@@ -90,7 +90,8 @@ function Maintenance() {
         $tr.append('<td>' + " " + '</td>');
         var $td = $('<td> </td>').html(createInputField(rackDto, "name"));
         $tr.append($td);
-        $tr.append('<td>' + rackDto.hash + '</td>');
+        $td = $('<td> <a href="FileImport.html?rackHash=' + rackDto.hash + '">' + rackDto.hash + '</a> </td>');
+        $tr.append($td);
         $tr.append('<td>' + " " + '</td>');
 
         var $action = $('<input type="button" value="Add New Rack"/>');

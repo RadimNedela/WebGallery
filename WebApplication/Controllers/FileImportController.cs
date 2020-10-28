@@ -1,6 +1,6 @@
 ﻿using Application.Directories;
+using Domain.Dtos;
 using Domain.Logging;
-using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication.Controllers
@@ -15,6 +15,10 @@ namespace WebApplication.Controllers
             this.directoryContentApplication = directoryContentApplication;
         }
 
-
+        [HttpGet("getRackInfo")]
+        public RackInfoDto GetRackInfo(string rackHash)
+        {
+            return directoryContentApplication.GetRackInfo(rackHash);
+        }
     }
 }

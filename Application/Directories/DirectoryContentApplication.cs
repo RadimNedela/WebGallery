@@ -3,6 +3,7 @@ using Domain.Elements;
 using Domain.InfrastructureInterfaces;
 using Domain.Logging;
 using Domain.Services;
+using System;
 
 namespace Application.Directories
 {
@@ -18,6 +19,18 @@ namespace Application.Directories
         {
             _directoryContentBuilder = directoryContentBuilder;
             _contentRepository = contentRepository;
+        }
+
+        public RackInfoDto GetRackInfo(string rackHash)
+        {
+            return new RackInfoDto
+            {
+                ActiveDatabaseName = "asdf",
+                ActiveDatabaseHash = "fdsa",
+                ActiveRackName = "rackName",
+                ActiveRackHash = rackHash,
+                ActiveDirectory = @"c:\cosik",
+            };
         }
 
         public DisplayableInfoDto GetDirectoryContent(string path)

@@ -4,6 +4,7 @@ using Domain.InfrastructureInterfaces;
 using Domain.Logging;
 using Domain.Services;
 using System;
+using System.Linq;
 
 namespace Application.Directories
 {
@@ -12,24 +13,29 @@ namespace Application.Directories
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly DirectoryContentBuilder _directoryContentBuilder;
         private readonly IContentEntityRepository _contentRepository;
+        private readonly IDatabaseInfoProvider _databaseInfoProvider;
 
         public DirectoryContentApplication(
+            IDatabaseInfoProvider databaseInfoProvider,
             DirectoryContentBuilder directoryContentBuilder,
             IContentEntityRepository contentRepository)
         {
             _directoryContentBuilder = directoryContentBuilder;
             _contentRepository = contentRepository;
+            _databaseInfoProvider = databaseInfoProvider;
         }
 
-        public RackInfoDto GetRackInfo(string rackHash)
+        public RackInfoDto GetCurrentRackInfo()
         {
+            var db = _databaseInfoProvider.CurrentDatabaseInfo;
+            var rack = _databaseInfoProvider.CurrentRack;
             return new RackInfoDto
             {
-                ActiveDatabaseName = "asdf",
-                ActiveDatabaseHash = "fdsa",
-                ActiveRackName = "rackName",
-                ActiveRackHash = rackHash,
-                ActiveDirectory = @"c:\cosik",
+                ActiveDatabaseName = db.Name,
+                ActiveDatabaseHash = db.Hash,
+                ActiveRackName = rack.Name,
+                ActiveRackHash = rack.Hash,
+                ActiveDirectory = rack.MountPoints.First(),
             };
         }
 

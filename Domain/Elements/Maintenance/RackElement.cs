@@ -55,6 +55,8 @@ namespace Domain.Elements.Maintenance
             if (MountPoints.Contains(newMountPoint))
                 throw new Exception("Cannot create same mount point - this one already exists");
 
+            MountPoints.Add(newMountPoint);
+
             var mountPointEntity = new MountPointEntity
             {
                 Path = newMountPoint,

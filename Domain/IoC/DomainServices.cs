@@ -7,10 +7,14 @@ namespace Domain.IoC
     {
         public static void RegisterDomainServices(this IServiceCollection services)
         {
-            services.AddScoped<DirectoryContentBuilder, DirectoryContentBuilder>();
-            services.AddSingleton<ElementsMemoryStorage, ElementsMemoryStorage>();
-            services.AddSingleton<DatabaseInfoBuilder, DatabaseInfoBuilder>();
+            services.AddScoped<DirectoryContentBuilder>();
+            services.AddSingleton<ElementsMemoryStorage>();
+            services.AddSingleton<DatabasesMemoryStorage>();
+            services.AddSingleton<DatabaseInfoBuilder>();
             services.AddScoped<IPathOptimizer, PathOptimizer>();
+            services.AddScoped<DatabaseInfoProvider>();
+            services.AddScoped<IDatabaseInfoProvider>(s => s.GetService<DatabaseInfoProvider>());
+            services.AddScoped<IDatabaseInfoInitializer>(s => s.GetService<DatabaseInfoProvider>());
         }
     }
 }

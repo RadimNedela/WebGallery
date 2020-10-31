@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,17 @@ namespace IntegrationTests.Directories
         {
             var dip = Substitute.For<IPathOptimizer>();
             dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));
-            var app = new DirectoryContentApplication(new DirectoryContentBuilder(new DirectoryMethods(), new FileHasher(), new ElementsMemoryStorage(), dip),
+
+            IDirectoryMethods directoryMethods = new DirectoryMethods();
+            IHasher hasher = new FileHasher();
+            IDatabaseInfoEntityRepository repository = Substitute.For<IDatabaseInfoEntityRepository>();
+            //DatabasesMemoryStorage databasesMemoryStorage = new DatabasesMemoryStorage(repository, hasher);
+
+
+            var directoryContentBuilder = new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage(), dip);
+            var databaseInfoProvider = new DatabaseInfoProvider(null, directoryMethods, hasher);
+            var app = new DirectoryContentApplication(databaseInfoProvider,
+                directoryContentBuilder,
                 new ContentEntitiesRepository(Substitute.For<IGaleryDatabase>()));
 
             return app;
@@ -133,9 +144,19 @@ namespace IntegrationTests.Directories
                 binderRepository.Remove(binderEntity);
 
                 contentRepository.Save();
+
+
+
+
+                var dbStorage = serviceProvider.GetService<DatabasesMemoryStorage>();
+                dbStorage.Initialize();
+                var defaultDb = dbStorage.AllInfos.First(db => db.Name == "Default");
+                var db = serviceProvider.GetService<IGaleryDatabase>();
+                db.DatabaseInfo.Remove(defaultDb.Entity);
+                db.SaveChanges();
+
             }
         }
-
         //[Test]
         //public void GetFileStream_ValidHashFromVisitedDirectory_ReturnsCorrectFileStream()
         //{

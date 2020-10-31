@@ -1,6 +1,7 @@
 ﻿using Application.Directories;
 using Domain.Dtos;
 using Domain.Logging;
+using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication.Controllers
@@ -10,15 +11,20 @@ namespace WebApplication.Controllers
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly DirectoryContentApplication directoryContentApplication;
-        public FileImportController(DirectoryContentApplication directoryContentApplication)
+        private readonly IDatabaseInfoInitializer databaseInfoInitializer;
+        public FileImportController(
+            DirectoryContentApplication directoryContentApplication,
+            IDatabaseInfoInitializer databaseInfoInitializer)
         {
             this.directoryContentApplication = directoryContentApplication;
+            this.databaseInfoInitializer = databaseInfoInitializer;
         }
 
         [HttpGet("getRackInfo")]
         public RackInfoDto GetRackInfo(string rackHash)
         {
-            return directoryContentApplication.GetRackInfo(rackHash);
+            databaseInfoInitializer.SetCurrentInfo(rackHash);
+            return directoryContentApplication.GetCurrentRackInfo();
         }
     }
 }

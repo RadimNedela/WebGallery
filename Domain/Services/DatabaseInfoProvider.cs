@@ -18,7 +18,7 @@ namespace Domain.Services
             {
                 if (_currentDatabaseInfo == null)
                     _currentDatabaseInfo = 
-                        new DatabaseInfoElement(_hasher, "Default", "Default", _directoryMethods.GetCurrentDirectoryName());
+                        new DatabaseInfoElement(_hasher, "Default", "Default", _directoryMethods.GetCurrentDirectoryName() + @"\..\..\..\..");
                 return _currentDatabaseInfo;
             }
         }

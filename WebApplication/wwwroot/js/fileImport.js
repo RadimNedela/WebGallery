@@ -11,6 +11,18 @@ function FileImport() {
         $('#ActiveDatabaseHashDiv').html(rackInfo.activeDatabaseHash);
         $('#ActiveRackNameDiv').html(rackInfo.activeRackName);
         $('#ActiveRackHashDiv').html(rackInfo.activeRackHash);
+
+        var $dirTableBody = $('#DirectoriesListBody');
+        $dirTableBody.empty();
+        for (let i = 0; i < rackInfo.subDirectories.length; i++) {
+            addDirectory($dirTableBody, rackInfo.subDirectories[i]);
+        }
+    }
+
+    function addDirectory($dirTableBody, subDirectory) {
+        var $tr = $dirTableBody.append('<tr>');
+        var $td = $('<td> </td>').html(subDirectory);
+        $tr.append($td);
     }
 
     $(function () {

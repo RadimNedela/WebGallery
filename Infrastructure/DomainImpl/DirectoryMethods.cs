@@ -24,5 +24,10 @@ namespace Infrastructure.DomainImpl
             var directories = Directory.GetDirectories(directoryName);
             return directories;
         }
+
+        public bool DirectoryExists(string path)
+        {
+            return Directory.Exists(path);
+        }
     }
 }

@@ -3,6 +3,7 @@ using Domain.Dtos.Maintenance;
 using Domain.InfrastructureInterfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Domain.Elements.Maintenance
@@ -96,14 +97,23 @@ namespace Domain.Elements.Maintenance
 
         public string GetSubpath(string fullPath)
         {
+            var normalizedFullPath = NormalizePath(fullPath);
             foreach (var mountPoint in MountPoints)
             {
-                if (fullPath.StartsWith(mountPoint))
+                var normalizedMountPoint = NormalizePath(mountPoint);
+                if (normalizedFullPath.StartsWith(normalizedMountPoint, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return fullPath.Substring(mountPoint.Length);
+                    return normalizedFullPath.Substring(normalizedMountPoint.Length + 1);
                 }
             }
             throw new System.Exception($"Sorry, the given path {fullPath} does not start with any known mount point");
+        }
+
+        public static string NormalizePath(string path)
+        {
+            return Path.GetFullPath(new Uri(path).LocalPath)
+                       .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                       //.ToUpperInvariant();
         }
     }
 }

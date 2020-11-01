@@ -42,7 +42,8 @@ namespace IntegrationTests.Directories
             var databaseInfoProvider = new DatabaseInfoProvider(null, directoryMethods, hasher);
             var app = new DirectoryContentApplication(databaseInfoProvider,
                 directoryContentBuilder,
-                new ContentEntitiesRepository(Substitute.For<IGaleryDatabase>()));
+                new ContentEntitiesRepository(Substitute.For<IGaleryDatabase>()),
+                null);
 
             return app;
         }

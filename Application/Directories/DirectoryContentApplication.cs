@@ -1,5 +1,6 @@
 using Domain.Dtos;
 using Domain.Elements;
+using Domain.Elements.Maintenance;
 using Domain.InfrastructureInterfaces;
 using Domain.Logging;
 using Domain.Services;
@@ -53,12 +54,18 @@ namespace Application.Directories
 
         public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
+            var rack = _databaseInfoProvider.CurrentRack;
+
             var directoryInfo = new DirectoryInfoDto();
             var activeDirectory = GetActiveDirectory();
             var fullPath = Path.Combine(activeDirectory, subDirectory);
 
             var fileNames = _directoryMethods.GetFileNames(fullPath).Select(path => Path.GetFileName(path));
-            var dirNames = _directoryMethods.GetDirectories(fullPath).Select(path => _databaseInfoProvider.CurrentRack.GetSubpath(path));
+            var dirNames = _directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
+
+            var normSubDir = rack.GetSubpath(fullPath);
+            if (normSubDir != ".")
+                dirNames = new[] { Path.Combine(normSubDir, @"..") }.Union(dirNames);
 
             directoryInfo.SubDirectories = dirNames;
             directoryInfo.Files = fileNames;

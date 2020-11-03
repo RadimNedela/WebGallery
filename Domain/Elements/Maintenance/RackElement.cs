@@ -103,6 +103,8 @@ namespace Domain.Elements.Maintenance
                 var normalizedMountPoint = NormalizePath(mountPoint);
                 if (normalizedFullPath.StartsWith(normalizedMountPoint, StringComparison.InvariantCultureIgnoreCase))
                 {
+                    if (normalizedFullPath.Length == normalizedMountPoint.Length)
+                        return ".";
                     return normalizedFullPath.Substring(normalizedMountPoint.Length + 1);
                 }
             }

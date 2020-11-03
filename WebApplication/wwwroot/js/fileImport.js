@@ -36,7 +36,10 @@ function FileImport() {
 
     function addDirectory($dirTableBody, subDirectory) {
         var $tr = $dirTableBody.append('<tr>');
-        var $td = $('<td> </td>').html(subDirectory);
+        var label = subDirectory;
+        if (label.endsWith(".."))
+            label = "..";
+        var $td = $('<td> </td>').html(label);
         $td.click({ subDirectory: subDirectory }, subDirectoryClicked);
         $tr.append($td);
     }

@@ -1,5 +1,6 @@
 ﻿using Application.Directories;
 using Domain.Dtos;
+using Domain.Dtos.Directories;
 using Domain.Logging;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,13 @@ namespace WebApplication.Controllers
         {
             databaseInfoInitializer.SetCurrentInfo(rackHash);
             return directoryContentApplication.GetCurrentRackInfo();
+        }
+
+        [HttpGet("getDirectoryInfo")]
+        public DirectoryInfoDto GetDirectoryInfo(DirectoriesCallDto dto)
+        {
+            databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
+            return directoryContentApplication.GetSubDirectoryInfo(dto.SubDirectory);
         }
     }
 }

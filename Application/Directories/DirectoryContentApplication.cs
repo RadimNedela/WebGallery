@@ -35,22 +35,40 @@ namespace Application.Directories
         {
             var db = _databaseInfoProvider.CurrentDatabaseInfo;
             var rack = _databaseInfoProvider.CurrentRack;
+            var activeDirectory = GetActiveDirectory(rack.MountPoints);
+
             var retVal = new RackInfoDto
             {
                 ActiveDatabaseName = db.Name,
                 ActiveDatabaseHash = db.Hash,
                 ActiveRackName = rack.Name,
                 ActiveRackHash = rack.Hash,
-                ActiveDirectory = GetActiveDirectory(rack.MountPoints),
+                ActiveDirectory = activeDirectory,
+                DirectoryInfo = GetSubDirectoryInfo(".")
             };
 
-            var fileNames = _directoryMethods.GetFileNames(retVal.ActiveDirectory).Select(path => Path.GetFileName(path));
-            var dirNames = _directoryMethods.GetDirectories(retVal.ActiveDirectory).Select(path => rack.GetSubpath(path));
-
-            retVal.SubDirectories = dirNames;
-            retVal.Files = fileNames;
 
             return retVal;
+        }
+
+        public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
+        {
+            var directoryInfo = new DirectoryInfoDto();
+            var activeDirectory = GetActiveDirectory();
+            var fullPath = Path.Combine(activeDirectory, subDirectory);
+
+            var fileNames = _directoryMethods.GetFileNames(fullPath).Select(path => Path.GetFileName(path));
+            var dirNames = _directoryMethods.GetDirectories(fullPath).Select(path => _databaseInfoProvider.CurrentRack.GetSubpath(path));
+
+            directoryInfo.SubDirectories = dirNames;
+            directoryInfo.Files = fileNames;
+
+            return directoryInfo;
+        }
+
+        public string GetActiveDirectory()
+        {
+            return GetActiveDirectory(_databaseInfoProvider.CurrentRack.MountPoints);
         }
 
         public string GetActiveDirectory(IList<string> mountPoints)

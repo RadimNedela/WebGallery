@@ -5,17 +5,20 @@
     <title>File Import</title>
     <script src="lib/jquery/dist/jquery.js"></script>
     <script src="js/commons.js"></script>
+    <script src="js/gridContainerBuilder.js"></script>
     <script src="js/fileImportHandler.js"></script>
     <script src="js/fileImport.js"></script>
     <link rel="stylesheet" href="css/viewerStyle.css" />
+    <link rel="stylesheet" href="css/fileImport.css" />
 </head>
 <body>
-    <div id="ActiveRackDiv">
+
+    <div id="ActiveRackDiv" class="toHeader">
         <label>Database Name:</label> <span id="ActiveDatabaseNameDiv"></span>
-        <br />
         <label>Rack Name:</label> <span id="ActiveRackNameDiv"></span>
     </div>
-    <div class="directoriesList">
+
+    <div class="directoriesList toRight">
         <table id="DirectoriesListTable">
             <thead>
                 <tr>
@@ -23,6 +26,18 @@
                 </tr>
             </thead>
             <tbody id="DirectoriesListBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="filesList toMain">
+        <table id="FilesListTable">
+            <thead>
+                <tr>
+                    <th>File</th>
+                </tr>
+            </thead>
+            <tbody id="FilesListBody">
             </tbody>
         </table>
     </div>

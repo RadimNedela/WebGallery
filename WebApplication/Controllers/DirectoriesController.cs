@@ -34,7 +34,6 @@ namespace WebApplication.Controllers
             return retVal;
         }
 
-
         [HttpGet("getImage/{hash}")]
         public string GetImage(string hash)
         {

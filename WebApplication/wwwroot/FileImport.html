@@ -31,6 +31,26 @@
     </div>
 
     <div class="filesList toMain">
+        <button id="ParseFilesButton">Parse Files</button>
+        <button id="GetParseInfoButton">Get Parse Info</button>
+        <table id="ThreadTable">
+            <thead>
+                <tr>
+                    <th>Files</th>
+                    <th>Bytes</th>
+                    <th>Files Done</th>
+                    <th>Bytes Done</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="ThreadTableFiles">0</td>
+                    <td id="ThreadTableBytes">0</td>
+                    <td id="ThreadTableFilesDone">0</td>
+                    <td id="ThreadTableBytesDone">0</td>
+                </tr>
+            </tbody>
+        </table>
         <table id="FilesListTable">
             <thead>
                 <tr>

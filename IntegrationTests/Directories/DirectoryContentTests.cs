@@ -92,7 +92,7 @@ namespace IntegrationTests.Directories
 
                 var directoryContentBuilder = serviceProvider.GetService<DirectoryContentBuilder>();
                 var picsPath = Path.Combine(currPath, TestPicturesInnerPath);
-                var binder = directoryContentBuilder.GetDirectoryContent(picsPath);
+                var binder = directoryContentBuilder.GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = picsPath });
                 var first = binder.Contents.First(he => he.Label.EndsWith(DoubledPictureName1));
 
                 Assert.That(first.AttributedBinders.Count(), Is.EqualTo(2));

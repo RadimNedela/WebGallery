@@ -4,6 +4,7 @@ function FileImport() {
 
     var FIH = FileImportHandler();
     var rackInfo;
+    var currentDirectoryInfo;
 
     function rackInfoArrived(data) {
         rackInfo = data;
@@ -16,6 +17,7 @@ function FileImport() {
     }
 
     function directoryInfoArrived(directoryInfo) {
+        currentDirectoryInfo = directoryInfo;
         fillDirectoriesTable(directoryInfo);
         fillFilesTable(directoryInfo);
     }
@@ -58,9 +60,34 @@ function FileImport() {
         $tr.append($td);
     }
 
+    function parseFiles() {
+        FIH.parseDirectoryContent(rackInfo.activeRackHash, currentDirectoryInfo.currentDirectory)
+            .then(parseDone);
+    }
+
+    function getThreadInfo() {
+        FIH.getThreadInfo(rackInfo.activeRackHash, currentDirectoryInfo.currentDirectory)
+            .then(directoryContentThreadInfoDtoArrived);
+    }
+
+    function parseDone(data) {
+        directoryContentThreadInfoDtoArrived(data);
+    }
+
+    function directoryContentThreadInfoDtoArrived(data) {
+        if (data) {
+            $('#ThreadTableFiles').html(data.files);
+            $('#ThreadTableBytes').html(data.bytes);
+            $('#ThreadTableFilesDone').html(data.filesDone);
+            $('#ThreadTableBytesDone').html(data.bytesDone);
+        }
+    }
+
     $(function () {
         const urlParams = new URLSearchParams(window.location.search);
         var rackHash = urlParams.get("rackHash");
+        $('#ParseFilesButton').click(parseFiles);
+        $('#GetParseInfoButton').click(getThreadInfo);
 
         FIH.getRackInfo(rackHash)
             .then(rackInfoArrived);

@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Application.Directories
 {
@@ -69,6 +70,7 @@ namespace Application.Directories
 
             directoryInfo.SubDirectories = dirNames;
             directoryInfo.Files = fileNames;
+            directoryInfo.CurrentDirectory = subDirectory;
 
             return directoryInfo;
         }
@@ -88,15 +90,44 @@ namespace Application.Directories
             throw new Exception("Sorry, the rack cannot be used because no mount point is currently mounted");
         }
 
+        public DirectoryContentThreadInfoDto GetThreadInfo(string subDirectory)
+        {
+            var activeDirectory = GetActiveDirectory();
+            var fullPath = Path.Combine(activeDirectory, subDirectory);
+
+            if (DirectoryContentInfos.ContentInfos.ContainsKey(fullPath))
+                return DirectoryContentInfos.ContentInfos[fullPath];
+            return null;
+        }
+
+        public async Task<DirectoryContentThreadInfoDto> ParseDirectoryContentAsync(string subDirectory)
+        {
+            var activeDirectory = GetActiveDirectory();
+            var fullPath = Path.Combine(activeDirectory, subDirectory);
+
+            var info = new DirectoryContentThreadInfo { FullPath = fullPath };
+            DirectoryContentInfos.ContentInfos.Add(fullPath, info);
+            var notUsed = await Task.Run(() => GetDirectoryContent(info));
+
+            var retVal = GetThreadInfo(subDirectory);
+            DirectoryContentInfos.ContentInfos.Remove(fullPath);
+            return retVal;
+        }
+
         public DisplayableInfoDto GetDirectoryContent(string path)
         {
-            Log.Begin($"{nameof(GetDirectoryContent)}.{path}");
-            
-            var directoryBinder = _directoryContentBuilder.GetDirectoryContent(path);
+            return GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = path });
+        }
+
+        private DisplayableInfoDto GetDirectoryContent(DirectoryContentThreadInfo info)
+        {
+            Log.Begin($"{nameof(GetDirectoryContent)}.{info.FullPath}");
+
+            var directoryBinder = _directoryContentBuilder.GetDirectoryContent(info);
             PersistDirectoryContent(directoryBinder);
             var retVal = directoryBinder.ToDisplayableInfoDto();
-            
-            Log.End($"{nameof(GetDirectoryContent)}.{path}");
+
+            Log.End($"{nameof(GetDirectoryContent)}.{info.FullPath}");
             return retVal;
         }
 

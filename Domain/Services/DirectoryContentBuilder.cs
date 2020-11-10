@@ -11,8 +11,8 @@ namespace Domain.Services
         private readonly IPathOptimizer _pathOptimizer;
 
         public DirectoryContentBuilder(
-            IDirectoryMethods directoryMethods, 
-            IHasher hasher, 
+            IDirectoryMethods directoryMethods,
+            IHasher hasher,
             ElementsMemoryStorage elementsMemoryStorage,
             IPathOptimizer pathOptimizer)
         {
@@ -22,16 +22,17 @@ namespace Domain.Services
             _pathOptimizer = pathOptimizer;
         }
 
-        public BinderElement GetDirectoryContent(string path)
+        public BinderElement GetDirectoryContent(DirectoryContentThreadInfo info)
         {
-            var fileNames = _directoryMethods.GetFileNames(path);
-            var dirNames = _directoryMethods.GetDirectories(path);
-            BinderElement directoryBinder = CreateDirectoryBinder(path);
-            foreach (var fn in fileNames)
+            info.FileNames = _directoryMethods.GetFileNames(info.FullPath);
+            info.DirNames = _directoryMethods.GetDirectories(info.FullPath);
+            BinderElement directoryBinder = CreateDirectoryBinder(info.FullPath);
+            foreach (var fn in info.FileNames)
             {
                 CreateFileContentElement(fn, directoryBinder);
+                info.FilesDone++;
             }
-            foreach (var dn in dirNames)
+            foreach (var dn in info.DirNames)
             {
                 directoryBinder.AddBinder(CreateDirectoryBinder(dn));
             }

@@ -1,4 +1,5 @@
 ﻿using Domain.Elements;
+using Domain.Services;
 using NUnit.Framework;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace UnitTests.Domain
         public void FromDirectory_ToEntity_BasicContentOK()
         {
             var builder = DirectoryContentBuilderTests.CreateContentBuilder();
-            var element = builder.GetDirectoryContent(DirectoryContentBuilderTests.TestDirectory).Contents.First();
+            var element = builder.GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = DirectoryContentBuilderTests.TestDirectory }).Contents.First();
 
             var entity = element.ToEntity();
 
@@ -25,7 +26,7 @@ namespace UnitTests.Domain
         {
             var builder = DirectoryContentBuilderTests.CreateContentBuilder();
 
-            var binderElement = builder.GetDirectoryContent(DirectoryContentBuilderTests.TestDirectory);
+            var binderElement = builder.GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = DirectoryContentBuilderTests.TestDirectory });
             var firstContentElement = binderElement.Contents
                 .First(e => e.Label.Contains("0335"));
             var doubledContentElement = binderElement.Contents

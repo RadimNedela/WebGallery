@@ -4,6 +4,7 @@ using Domain.Dtos.Directories;
 using Domain.Logging;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace WebApplication.Controllers
 {
@@ -34,5 +35,20 @@ namespace WebApplication.Controllers
             databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
             return directoryContentApplication.GetSubDirectoryInfo(dto.SubDirectory);
         }
+
+        [HttpGet("parseDirectoryContent")]
+        public async Task<DirectoryContentThreadInfoDto> ParseDirectoryContent(DirectoriesCallDto dto)
+        {
+            databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
+            return await directoryContentApplication.ParseDirectoryContentAsync(dto.SubDirectory);
+        }
+
+        [HttpGet("getThreadInfo")]
+        public DirectoryContentThreadInfoDto GetThreadInfo(DirectoriesCallDto dto)
+        {
+            databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
+            return directoryContentApplication.GetThreadInfo(dto.SubDirectory);
+        }
+
     }
 }

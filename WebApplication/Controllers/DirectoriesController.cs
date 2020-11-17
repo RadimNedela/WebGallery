@@ -14,11 +14,11 @@ namespace WebApplication.Controllers
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly DirectoryContentApplication _directoryContentApplication;
-        private readonly PhysicalFileApplication _physicalFileApplication;
+        private readonly BinderApp _physicalFileApplication;
 
         public DirectoriesController(
             DirectoryContentApplication directoryContentApplication,
-            PhysicalFileApplication physicalFileApplication)
+            BinderApp physicalFileApplication)
         {
             _directoryContentApplication = directoryContentApplication;
             _physicalFileApplication = physicalFileApplication;

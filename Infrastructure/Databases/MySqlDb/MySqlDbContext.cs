@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Infrastructure.Databases.MySqlDb
 {
@@ -6,9 +7,14 @@ namespace Infrastructure.Databases.MySqlDb
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            string connectionString = "server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword";
             optionsBuilder.EnableSensitiveDataLogging()
                 .UseLoggerFactory(LoggerFactory)
-                .UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
+                //.UseMySQL("server=localhost;database=galery;user=galeryAdmin;password=galeryAdminPassword");
+                .UseMySql(connectionString,
+                    new MySqlServerVersion(ServerVersion.AutoDetect(connectionString)), // use MariaDbServerVersion for MariaDB
+                        mySqlOptions => mySqlOptions
+                            .CharSetBehavior(CharSetBehavior.NeverAppend));
         }
     }
 }

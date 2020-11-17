@@ -1,15 +1,14 @@
 using Domain.Dtos;
 using Domain.Services;
 using System;
-using System.IO;
 
 namespace Application.Directories
 {
-    public class PhysicalFileApplication
+    public class BinderApp
     {
-        private readonly ElementsMemoryStorage _elementsMemoryStorage;
+        private readonly IContentElementRepository _elementsMemoryStorage;
 
-        public PhysicalFileApplication (ElementsMemoryStorage elementsMemoryStorage)
+        public BinderApp (IContentElementRepository elementsMemoryStorage)
         {
             _elementsMemoryStorage = elementsMemoryStorage;
         }

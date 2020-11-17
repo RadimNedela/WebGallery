@@ -4,9 +4,11 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Application.Directories;
 using Domain.Dtos;
 using Domain.InfrastructureInterfaces;
+using Domain.Logging;
 using Domain.Services;
 using Infrastructure.Databases;
 using Infrastructure.DomainImpl;
@@ -21,6 +23,7 @@ namespace IntegrationTests.Directories
     [TestFixture]
     public class DirectoryContentTests
     {
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public const string TestPicturesPath = @"../../../../TestPictures";
         public const string TestPicturesInnerPath = TestPicturesPath + @"/Duha";
         public const string DoubledPictureName1 = "2017-08-20-Duha0383.JPG";
@@ -145,17 +148,18 @@ namespace IntegrationTests.Directories
                 binderRepository.Remove(binderEntity);
 
                 contentRepository.Save();
+                
 
+                Log.Error("Právì jsem zavolal Save na content repository...");
+                //Thread.Sleep(2000);
+                //Log.Error("jsem za sleep");
 
-
-
-                var dbStorage = serviceProvider.GetService<DatabasesMemoryStorage>();
-                dbStorage.Initialize();
-                var defaultDb = dbStorage.AllInfos.First(db => db.Name == "Default");
+                var dbStorage = serviceProvider.GetService<IDatabaseInfoElementRepository>();
+                var defaultDb = dbStorage.First(db => db.Name == "Default");
                 var db = serviceProvider.GetService<IGaleryDatabase>();
                 db.DatabaseInfo.Remove(defaultDb.Entity);
+                Log.Error("Další je zavolat SaveChanges na database infu...");
                 db.SaveChanges();
-
             }
         }
         //[Test]

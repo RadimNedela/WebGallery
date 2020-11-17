@@ -6,7 +6,7 @@ namespace Domain.Services
 {
     public class DatabaseInfoProvider : IDatabaseInfoProvider, IDatabaseInfoInitializer
     {
-        private DatabasesMemoryStorage _databasesMemoryStorage;
+        private IDatabaseInfoElementRepository _databaseInfoRepository;
         private IDirectoryMethods _directoryMethods;
         private IHasher _hasher;
         private DatabaseInfoElement _currentDatabaseInfo;
@@ -34,23 +34,18 @@ namespace Domain.Services
         }
 
         public DatabaseInfoProvider(
-            DatabasesMemoryStorage databasesMemoryStorage,
+            IDatabaseInfoElementRepository databaseInfoRepository,
             IDirectoryMethods directoryMethods,
             IHasher hasher)
         {
-            _databasesMemoryStorage = databasesMemoryStorage;
+            _databaseInfoRepository = databaseInfoRepository;
             _directoryMethods = directoryMethods;
             _hasher = hasher;
         }
 
         public void SetCurrentInfo(string rackHash)
         {
-            _currentDatabaseInfo = _databasesMemoryStorage.AllInfos.FirstOrDefault(die => die.Racks.Any(r => r.Hash == rackHash));
-            if (_currentDatabaseInfo == null)
-            {
-                _databasesMemoryStorage.Initialize();
-                _currentDatabaseInfo = _databasesMemoryStorage.AllInfos.First(die => die.Racks.Any(r => r.Hash == rackHash));
-            }
+            _currentDatabaseInfo = _databaseInfoRepository.First(die => die.Racks.Any(r => r.Hash == rackHash));
             _currentRack = CurrentDatabaseInfo.Racks.First(re => re.Hash == rackHash);
         }
     }

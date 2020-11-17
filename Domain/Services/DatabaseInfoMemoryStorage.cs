@@ -1,26 +1,36 @@
 ﻿using Domain.DbEntities.Maintenance;
 using Domain.Elements.Maintenance;
 using Domain.InfrastructureInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Domain.Services
 {
-    public class DatabasesMemoryStorage
+    public class DatabaseInfoMemoryStorage2 : IDatabaseInfoElementRepository
     {
         private IList<DatabaseInfoElement> _allInfos;
         private IDatabaseInfoEntityRepository _repository;
         private IHasher _hasher;
 
-        public IEnumerable<DatabaseInfoElement> AllInfos => _allInfos;
-
-        public DatabasesMemoryStorage(
+        public DatabaseInfoMemoryStorage2(
             IDatabaseInfoEntityRepository repository,
             IHasher hasher)
         {
             _repository = repository;
             _hasher = hasher;
             Initialize();
+        }
+
+        public DatabaseInfoElement First(Func<DatabaseInfoElement, bool> predicate)
+        {
+            var currentDatabaseInfo = _allInfos.FirstOrDefault(predicate);
+            if (currentDatabaseInfo == null)
+            {
+                Initialize();
+                currentDatabaseInfo = _allInfos.First();
+            }
+            return currentDatabaseInfo;
         }
 
         public void Initialize()

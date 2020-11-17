@@ -1,11 +1,9 @@
 ﻿using Domain.Elements;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Services
 {
-    public class ElementsMemoryStorage
+    public class ElementsMemoryStorage : IContentElementRepository
     {
         private readonly IDictionary<string, ContentElement> _theStorage = new Dictionary<string, ContentElement>();
 

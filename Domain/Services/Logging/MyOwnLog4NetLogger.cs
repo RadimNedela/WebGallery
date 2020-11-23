@@ -1,10 +1,12 @@
-﻿using log4net.Repository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using log4net;
+using log4net.Config;
+using log4net.Repository;
 
-namespace Domain.Logging
+namespace Domain.Services.Logging
 {
     public class MyOwnLog4NetLogger : ISimpleLogger
     {
@@ -13,9 +15,9 @@ namespace Domain.Logging
         {
             try
             {
-                ILoggerRepository repository = log4net.LogManager.GetRepository(Assembly.GetCallingAssembly());
+                ILoggerRepository repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
                 var fileInfo = new FileInfo(@"log4net.config");
-                log4net.Config.XmlConfigurator.Configure(repository, fileInfo);
+                XmlConfigurator.Configure(repository, fileInfo);
             }
             catch (Exception ex)
             {
@@ -29,10 +31,10 @@ namespace Domain.Logging
         /// <param name="loggerName"><code>System.Reflection.MethodBase.GetCurrentMethod().DeclaringType</code></param>
         public MyOwnLog4NetLogger(Type type)
         {
-            _log = log4net.LogManager.GetLogger(type);
+            _log = LogManager.GetLogger(type);
         }
 
-        private readonly log4net.ILog _log;
+        private readonly ILog _log;
         readonly IDictionary<string, DateTime> _beginTimes = new Dictionary<string, DateTime>();
         #endregion
 
@@ -152,7 +154,7 @@ namespace Domain.Logging
         }
         private void DoLog(Exception ex, Action<string> logAction)
         {
-            string toLog = $"EXCEPTION: {ex.ToString()}";
+            string toLog = $"EXCEPTION: {ex}";
             logAction(toLog);
         }
         private void DoLog(object commonObject, Action<string> logAction)

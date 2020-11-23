@@ -1,5 +1,5 @@
-﻿using Domain.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Domain.Services;
 
 namespace Application.Directories
 {

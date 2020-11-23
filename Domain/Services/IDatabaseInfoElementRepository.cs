@@ -1,5 +1,5 @@
-﻿using Domain.Elements.Maintenance;
-using System;
+﻿using System;
+using Domain.Elements.Maintenance;
 
 namespace Domain.Services
 {

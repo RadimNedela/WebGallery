@@ -1,30 +1,29 @@
 ﻿using Domain.DbEntities.Maintenance;
 using Domain.Dtos.Maintenance;
 using Domain.Elements.Maintenance;
-using Domain.InfrastructureInterfaces;
-using System;
+using Domain.Services.InfrastructureInterfaces;
 
 namespace Domain.Services
 {
     public class DatabaseInfoBuilder
     {
-        private IHasher hasher;
-        private readonly IDatabaseInfoEntityRepository repository;
-        private readonly IDirectoryMethods directoryMethods;
+        private readonly IHasher _hasher;
+        private readonly IDatabaseInfoEntityRepository _repository;
+        private readonly IDirectoryMethods _directoryMethods;
 
         public DatabaseInfoBuilder(
             IHasher hasher, 
             IDatabaseInfoEntityRepository repository, 
             IDirectoryMethods directoryMethods)
         {
-            this.hasher = hasher;
-            this.repository = repository;
-            this.directoryMethods = directoryMethods;
+            _hasher = hasher;
+            _repository = repository;
+            _directoryMethods = directoryMethods;
         }
 
         public DatabaseInfoElement Create(DatabaseInfoEntity entity)
         {
-            return new DatabaseInfoElement(hasher, entity);
+            return new DatabaseInfoElement(_hasher, entity);
         }
 
         public DatabaseInfoElement Create(DatabaseInfoDto dto)
@@ -36,14 +35,14 @@ namespace Domain.Services
 
         public DatabaseInfoElement GetDatabase(string hash)
         {
-            var entity = repository.Get(hash);
-            var element = new DatabaseInfoElement(hasher, entity);
+            var entity = _repository.Get(hash);
+            var element = new DatabaseInfoElement(_hasher, entity);
             return element;
         }
 
         public DatabaseInfoElement BuildNewDatabase(string databaseName)
         {
-            var infoElement = new DatabaseInfoElement(hasher, databaseName, "Default", directoryMethods.GetCurrentDirectoryName());
+            var infoElement = new DatabaseInfoElement(_hasher, databaseName, "Default", _directoryMethods.GetCurrentDirectoryName());
 
             return infoElement;
         }

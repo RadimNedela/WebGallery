@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Application.Directories;
 using Domain.Dtos;
-using Domain.Logging;
+using Domain.Services.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Net.Http.Headers;
 
 namespace WebApplication.Controllers
 {
     [Route("api/[controller]")]
     public class DirectoriesController : Controller
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly DirectoryContentApplication _directoryContentApplication;
         private readonly BinderApp _physicalFileApplication;
 
@@ -62,10 +64,7 @@ namespace WebApplication.Controllers
 
             var stream = System.IO.File.OpenRead(fileName);
 
-            return new FileStreamResult(stream, new Microsoft.Net.Http.Headers.MediaTypeHeaderValue(mimeType))
-            {
-                //FileDownloadName = fileName
-            };
+            return new FileStreamResult(stream, new MediaTypeHeaderValue(mimeType));
         }
 
         // GET: api/<controller>

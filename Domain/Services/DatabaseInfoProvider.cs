@@ -1,37 +1,22 @@
-﻿using Domain.Elements.Maintenance;
-using Domain.InfrastructureInterfaces;
-using System.Linq;
+﻿using System.Linq;
+using Domain.Elements.Maintenance;
+using Domain.Services.InfrastructureInterfaces;
 
 namespace Domain.Services
 {
     public class DatabaseInfoProvider : IDatabaseInfoProvider, IDatabaseInfoInitializer
     {
-        private IDatabaseInfoElementRepository _databaseInfoRepository;
-        private IDirectoryMethods _directoryMethods;
-        private IHasher _hasher;
+        private readonly IDatabaseInfoElementRepository _databaseInfoRepository;
+        private readonly IDirectoryMethods _directoryMethods;
+        private readonly IHasher _hasher;
         private DatabaseInfoElement _currentDatabaseInfo;
         private RackElement _currentRack;
 
-        public DatabaseInfoElement CurrentDatabaseInfo
-        {
-            get
-            {
-                if (_currentDatabaseInfo == null)
-                    _currentDatabaseInfo = 
-                        new DatabaseInfoElement(_hasher, "Default", "Default", _directoryMethods.GetCurrentDirectoryName() + @"\..\..\..\..");
-                return _currentDatabaseInfo;
-            }
-        }
+        public DatabaseInfoElement CurrentDatabaseInfo =>
+            _currentDatabaseInfo ??= new DatabaseInfoElement(_hasher, "Default",
+                "Default", _directoryMethods.GetCurrentDirectoryName() + @"\..\..\..\..");
 
-        public RackElement CurrentRack
-        {
-            get
-            {
-                if (_currentRack == null)
-                    _currentRack = CurrentDatabaseInfo.Racks.Last();
-                return _currentRack;
-            }
-        }
+        public RackElement CurrentRack => _currentRack ??= CurrentDatabaseInfo.Racks.Last();
 
         public DatabaseInfoProvider(
             IDatabaseInfoElementRepository databaseInfoRepository,

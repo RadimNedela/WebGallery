@@ -1,4 +1,6 @@
-﻿namespace Domain.Dtos
+﻿using Domain.Dtos.Directories;
+
+namespace Domain.Dtos
 {
     public class RackInfoDto
     {

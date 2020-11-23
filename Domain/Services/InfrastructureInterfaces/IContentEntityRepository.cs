@@ -1,6 +1,6 @@
 using Domain.DbEntities;
 
-namespace Domain.InfrastructureInterfaces
+namespace Domain.Services.InfrastructureInterfaces
 {
     public interface IContentEntityRepository : IEntityRepository<ContentEntity>
     {

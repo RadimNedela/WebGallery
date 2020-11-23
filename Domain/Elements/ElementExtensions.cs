@@ -1,6 +1,6 @@
-﻿using Domain.Dtos;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Domain.Dtos;
 
 namespace Domain.Elements
 {
@@ -8,10 +8,10 @@ namespace Domain.Elements
     {
         public static DisplayableInfoDto ToDisplayableInfoDto(this BinderElement binderElement)
         {
-            List<BinderDto> binders = binderElement.Binders.Select(he => ((BinderElement)he).ToBinderDto()).ToList();
-            List<ContentInfoDto> contents = binderElement.Contents.Select(he => ((ContentElement)he).ToContentInfoDto()).ToList();
+            List<BinderDto> binders = binderElement.Binders.Select(he => he.ToBinderDto()).ToList();
+            List<ContentInfoDto> contents = binderElement.Contents.Select(he => he.ToContentInfoDto()).ToList();
 
-            DisplayableInfoDto dto = new DisplayableInfoDto()
+            DisplayableInfoDto dto = new DisplayableInfoDto
             {
                 TheBinder = binderElement.ToBinderDto(),
                 Binders = binders,

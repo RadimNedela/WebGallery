@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.IO;
 
-namespace Domain.InfrastructureInterfaces
+namespace Domain.Services.InfrastructureInterfaces
 {
     public interface IDirectoryMethods
     {

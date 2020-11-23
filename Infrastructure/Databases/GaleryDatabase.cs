@@ -1,7 +1,8 @@
 using System.Linq;
+using System.Reflection;
 using Domain.DbEntities;
 using Domain.DbEntities.Maintenance;
-using Domain.Logging;
+using Domain.Services.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -9,7 +10,7 @@ namespace Infrastructure.Databases
 {
     public abstract class GaleryDatabase : DbContext
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         protected static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
         {
             builder.AddFilter("Microsoft", LogLevel.Information)
@@ -91,7 +92,7 @@ namespace Infrastructure.Databases
         {
             Log.Begin(nameof(DetachAllEntities));
 
-            var changedEntriesCopy = this.ChangeTracker.Entries()
+            var changedEntriesCopy = ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added ||
                             e.State == EntityState.Modified ||
                             e.State == EntityState.Deleted)

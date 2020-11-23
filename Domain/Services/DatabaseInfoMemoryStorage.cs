@@ -1,17 +1,17 @@
-﻿using Domain.DbEntities.Maintenance;
-using Domain.Elements.Maintenance;
-using Domain.InfrastructureInterfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.DbEntities.Maintenance;
+using Domain.Elements.Maintenance;
+using Domain.Services.InfrastructureInterfaces;
 
 namespace Domain.Services
 {
     public class DatabaseInfoMemoryStorage2 : IDatabaseInfoElementRepository
     {
         private IList<DatabaseInfoElement> _allInfos;
-        private IDatabaseInfoEntityRepository _repository;
-        private IHasher _hasher;
+        private readonly IDatabaseInfoEntityRepository _repository;
+        private readonly IHasher _hasher;
 
         public DatabaseInfoMemoryStorage2(
             IDatabaseInfoEntityRepository repository,

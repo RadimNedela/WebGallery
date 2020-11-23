@@ -1,6 +1,6 @@
 using System.Linq;
 using Domain.DbEntities;
-using Domain.InfrastructureInterfaces;
+using Domain.Services.InfrastructureInterfaces;
 using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +11,11 @@ namespace Infrastructure.DomainImpl
         public ContentEntitiesRepository(IGaleryDatabase galeryDatabase)
             : base(galeryDatabase) { }
 
-        protected override DbSet<ContentEntity> TheDbSet => _galeryDatabase.Contents;
+        protected override DbSet<ContentEntity> TheDbSet => GaleryDatabase.Contents;
 
         public ContentEntity Get(string hash)
         {
-            return _galeryDatabase.Contents
+            return GaleryDatabase.Contents
                 .Where(h => h.Hash == hash)
                     .Include(ce => ce.Binders)
                         .ThenInclude(b => b.Binder)

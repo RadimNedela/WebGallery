@@ -1,25 +1,25 @@
-﻿using Domain.DbEntities.Maintenance;
-using Domain.Dtos.Maintenance;
-using Domain.InfrastructureInterfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.DbEntities.Maintenance;
+using Domain.Dtos.Maintenance;
+using Domain.Services.InfrastructureInterfaces;
 
 namespace Domain.Elements.Maintenance
 {
     public class DatabaseInfoElement
     {
-        private readonly IHasher hasher;
+        private readonly IHasher _hasher;
 
-        public string Hash { get; private set; }
+        public string Hash { get; }
         public string Name { get; private set; }
-        public IList<RackElement> Racks { get; private set; }
+        public IList<RackElement> Racks { get; }
 
         public DatabaseInfoEntity Entity { get; }
 
         public DatabaseInfoElement(IHasher hasher, DatabaseInfoEntity databaseInfoEntity)
         {
-            this.hasher = hasher;
+            _hasher = hasher;
             Entity = databaseInfoEntity;
             Hash = Entity.Hash;
             Name = Entity.Name;
@@ -28,7 +28,7 @@ namespace Domain.Elements.Maintenance
 
         public DatabaseInfoElement(IHasher hasher, string databaseName, string initialRackName, string initialMountPoint)
         {
-            this.hasher = hasher;
+            _hasher = hasher;
 
             Name = databaseName;
             Hash = hasher.ComputeRandomStringHash(databaseName);
@@ -68,7 +68,7 @@ namespace Domain.Elements.Maintenance
 
         public void AddNewRack(string name, string initialMountPointPath)
         {
-            AddNewRack(name, new string[] { initialMountPointPath });
+            AddNewRack(name, new[] { initialMountPointPath });
         }
 
         public void AddNewRack(string name, IEnumerable<string> initialMountPoints)
@@ -76,7 +76,7 @@ namespace Domain.Elements.Maintenance
             if (Racks.Any(r => r.Name == name))
                 throw new NotSupportedException("Cannot add new rack with already existing name, the name must be unique in the database");
 
-            var rack = new RackElement(Entity, hasher, name, initialMountPoints);
+            var rack = new RackElement(Entity, _hasher, name, initialMountPoints);
             Racks.Add(rack);
             Entity.Racks.Add(rack.Entity);
         }

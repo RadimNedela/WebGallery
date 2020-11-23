@@ -1,7 +1,6 @@
 ﻿function BinderView() {
 
     var DH = DirectoriesHandler();
-    const uri = 'api/Directories';
 
     function parseDirectoryContent() {
         var directory = $("#DirectoryNameInput").val();

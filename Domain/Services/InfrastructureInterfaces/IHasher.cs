@@ -1,6 +1,4 @@
-using System.IO;
-
-namespace Domain.InfrastructureInterfaces
+namespace Domain.Services.InfrastructureInterfaces
 {
     public interface IHasher
     {

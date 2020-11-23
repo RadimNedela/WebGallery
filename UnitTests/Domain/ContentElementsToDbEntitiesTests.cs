@@ -1,7 +1,6 @@
-﻿using Domain.Elements;
+﻿using System.Linq;
 using Domain.Services;
 using NUnit.Framework;
-using System.Linq;
 
 namespace UnitTests.Domain
 {

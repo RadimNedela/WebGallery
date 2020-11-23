@@ -2,16 +2,17 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using Domain.InfrastructureInterfaces;
-using Domain.Logging;
+using Domain.Services.InfrastructureInterfaces;
+using Domain.Services.Logging;
 
 namespace Infrastructure.DomainImpl
 {
     public class FileHasher : IHasher
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private bool IsSupportedImage(string path)
         {
@@ -24,11 +25,7 @@ namespace Infrastructure.DomainImpl
             Log.Begin($"{nameof(ComputeFileContentHash)}", path);
             Stream stream = GetStream(path);
 
-            string retVal = null;
-            if (IsSupportedImage(path))
-                retVal = ImageHash(stream);
-            else 
-            retVal = OtherFileHash(stream);
+            var retVal = IsSupportedImage(path) ? ImageHash(stream) : OtherFileHash(stream);
 
             Log.End($"{nameof(ComputeFileContentHash)}", retVal);
             return retVal;
@@ -47,40 +44,32 @@ namespace Infrastructure.DomainImpl
 
         private string OtherFileHash(Stream stream)
         {
-            string hash;
-            hash = ComputeHash(stream);
+            var hash = ComputeHash(stream);
             return hash;
         }
 
         private string ImageHash(Stream inputStream)
         {
             var image = Image.FromStream(inputStream);
-            string hash;
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                image.Save(memoryStream, ImageFormat.Bmp);
-                hash = ComputeHash(memoryStream);
-                memoryStream.Close();
-            }
+            using MemoryStream memoryStream = new MemoryStream();
+            image.Save(memoryStream, ImageFormat.Bmp);
+            var hash = ComputeHash(memoryStream);
+            memoryStream.Close();
             return hash;
         }
 
         private string ComputeHash(Stream stream)
         {
-            using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
-            {
-                byte[] hash = sha1.ComputeHash(stream);
-                return ConvertHashArrayToString(hash);
-            }
+            using SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
+            byte[] hash = sha1.ComputeHash(stream);
+            return ConvertHashArrayToString(hash);
         }
 
         private string ComputeHash(byte[] buffer)
         {
-            using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
-            {
-                byte[] hash = sha1.ComputeHash(buffer);
-                return ConvertHashArrayToString(hash);
-            }
+            using SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
+            byte[] hash = sha1.ComputeHash(buffer);
+            return ConvertHashArrayToString(hash);
         }
 
         private string ConvertHashArrayToString(byte[] hash)

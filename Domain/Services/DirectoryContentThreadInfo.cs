@@ -8,16 +8,16 @@ namespace Domain.Services
         public string FullPath { get; set; }
         public IEnumerable<string> FileNames
         {
-            get => fileNames;
+            get => _fileNames;
             set
             {
-                fileNames = value;
-                Files = fileNames.Count();
+                _fileNames = value;
+                Files = _fileNames.Count();
                 FilesDone = 0;
             }
         }
         public IEnumerable<string> DirNames { get; set; }
 
-        private IEnumerable<string> fileNames;
+        private IEnumerable<string> _fileNames;
     }
 }

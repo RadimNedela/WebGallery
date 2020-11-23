@@ -1,11 +1,9 @@
+using System.Linq;
 using Domain.Elements;
-using Domain.Elements.Maintenance;
-using Domain.InfrastructureInterfaces;
 using Domain.Services;
+using Domain.Services.InfrastructureInterfaces;
 using NSubstitute;
 using NUnit.Framework;
-using System.IO;
-using System.Linq;
 
 namespace UnitTests.Domain
 {
@@ -47,7 +45,7 @@ namespace UnitTests.Domain
         public static DirectoryContentBuilder CreateContentBuilder()
         {
             var directoryMethods = Substitute.For<IDirectoryMethods>();
-            directoryMethods.GetFileNames(TestDirectory).Returns(new string[] {
+            directoryMethods.GetFileNames(TestDirectory).Returns(new[] {
                 "2018-01-24-Chopok0335.JPG",
                 "2018-01-24-Chopok0357.JPG",
                 "2018-01-24-Chopok0361.JPG",
@@ -56,7 +54,7 @@ namespace UnitTests.Domain
             });
 
             var hasher = Substitute.For<IHasher>();
-            hasher.ComputeFileContentHash(Arg.Any<string>()).Returns((ci) => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
+            hasher.ComputeFileContentHash(Arg.Any<string>()).Returns(ci => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
 
             var dip = Substitute.For<IPathOptimizer>();
             dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));

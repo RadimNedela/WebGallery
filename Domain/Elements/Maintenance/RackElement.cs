@@ -1,10 +1,10 @@
-﻿using Domain.DbEntities.Maintenance;
-using Domain.Dtos.Maintenance;
-using Domain.InfrastructureInterfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Domain.DbEntities.Maintenance;
+using Domain.Dtos.Maintenance;
+using Domain.Services.InfrastructureInterfaces;
 
 namespace Domain.Elements.Maintenance
 {
@@ -13,9 +13,9 @@ namespace Domain.Elements.Maintenance
         private readonly IHasher _hasher;
         public RackEntity Entity { get; }
 
-        public string Hash { get; private set; }
+        public string Hash { get; }
         public string Name { get; private set; }
-        public List<string> MountPoints { get; private set; }
+        public List<string> MountPoints { get; }
 
         public RackElement(IHasher hasher, RackEntity entity)
         {
@@ -35,7 +35,7 @@ namespace Domain.Elements.Maintenance
             // buďto budu počítat hash při změně jména (což by asi mělo katastrofální dopad), nebo to bude muset být náhodné...
             string rackHash = hasher.ComputeRandomStringHash($"{diEntity.Hash} {name}");
 
-            Entity = new RackEntity()
+            Entity = new RackEntity
             {
                 Database = diEntity,
                 Hash = rackHash,
@@ -108,7 +108,7 @@ namespace Domain.Elements.Maintenance
                     return normalizedFullPath.Substring(normalizedMountPoint.Length + 1);
                 }
             }
-            throw new System.Exception($"Sorry, the given path {fullPath} does not start with any known mount point");
+            throw new Exception($"Sorry, the given path {fullPath} does not start with any known mount point");
         }
 
         public static string NormalizePath(string path)

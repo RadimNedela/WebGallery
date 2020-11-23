@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Logging
+namespace Domain.Services.Logging
 {
     public interface ISimpleLogger
     {

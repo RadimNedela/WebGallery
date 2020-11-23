@@ -1,5 +1,5 @@
-﻿using Domain.DbEntities.Maintenance;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Domain.DbEntities.Maintenance;
 
 namespace Domain.DbEntities
 {

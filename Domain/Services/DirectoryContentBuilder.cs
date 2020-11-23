@@ -1,5 +1,5 @@
 using Domain.Elements;
-using Domain.InfrastructureInterfaces;
+using Domain.Services.InfrastructureInterfaces;
 
 namespace Domain.Services
 {

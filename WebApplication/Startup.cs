@@ -1,19 +1,20 @@
+using System.Reflection;
+using Application.IoC;
+using Domain.IoC;
+using Domain.Services.Logging;
+using Infrastructure.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Application.IoC;
-using Infrastructure.IoC;
-using Domain.IoC;
-using Domain.Logging;
 using Microsoft.Extensions.Logging;
 
 namespace WebApplication
 {
     public class Startup
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public Startup(IConfiguration configuration)
         {

@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Reflection;
 using Application.Directories;
 using Domain.Dtos;
-using Domain.InfrastructureInterfaces;
-using Domain.Logging;
 using Domain.Services;
+using Domain.Services.InfrastructureInterfaces;
+using Domain.Services.Logging;
 using Infrastructure.Databases;
 using Infrastructure.DomainImpl;
 using IntegrationTests.IoC;
@@ -23,7 +22,7 @@ namespace IntegrationTests.Directories
     [TestFixture]
     public class DirectoryContentTests
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string TestPicturesPath = @"../../../../TestPictures";
         public const string TestPicturesInnerPath = TestPicturesPath + @"/Duha";
         public const string DoubledPictureName1 = "2017-08-20-Duha0383.JPG";
@@ -37,9 +36,6 @@ namespace IntegrationTests.Directories
 
             IDirectoryMethods directoryMethods = new DirectoryMethods();
             IHasher hasher = new FileHasher();
-            IDatabaseInfoEntityRepository repository = Substitute.For<IDatabaseInfoEntityRepository>();
-            //DatabasesMemoryStorage databasesMemoryStorage = new DatabasesMemoryStorage(repository, hasher);
-
 
             var directoryContentBuilder = new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage(), dip);
             var databaseInfoProvider = new DatabaseInfoProvider(null, directoryMethods, hasher);
@@ -53,11 +49,9 @@ namespace IntegrationTests.Directories
         [Test]
         public void DirectoriesController_IsResolvable()
         {
-            using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
-            {
-                var controller = serviceProvider.GetService<DirectoriesController>();
-                Assert.IsNotNull(controller);
-            }
+            using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
+            var controller = serviceProvider.GetService<DirectoriesController>();
+            Assert.IsNotNull(controller);
         }
 
         [Test]
@@ -65,7 +59,7 @@ namespace IntegrationTests.Directories
         {
             var application = GetTestApplication();
             var content = application.GetDirectoryContent(TestPicturesPath);
-            Assert.That(content.Binders.Count(), Is.EqualTo(2));
+            Assert.That(content.Binders.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -73,7 +67,7 @@ namespace IntegrationTests.Directories
         {
             var application = GetTestApplication();
             var content = application.GetDirectoryContent(TestPicturesPath);
-            Assert.That(content.ContentInfos.Count(), Is.EqualTo(0));
+            Assert.That(content.ContentInfos.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -125,42 +119,40 @@ namespace IntegrationTests.Directories
         }
 
         [Test]
-        public void TryIncludingDB()
+        public void TryIncludingDb()
         {
-            using (var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider())
+            using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
+            var directoryMethods = serviceProvider.GetService<IDirectoryMethods>();
+            var currPath = directoryMethods.GetCurrentDirectoryName();
+
+            var application = serviceProvider.GetService<DirectoryContentApplication>();
+            var contentRepository = serviceProvider.GetService<IContentEntityRepository>();
+            var binderRepository = serviceProvider.GetService<IBinderEntityRepository>();
+
+            var picsPath = Path.Combine(currPath, TestPicturesInnerPath);
+            var directoryContentDto = application.GetDirectoryContent(picsPath);
+
+            foreach (var contentInfo in directoryContentDto.ContentInfos)
             {
-                var directoryMethods = serviceProvider.GetService<IDirectoryMethods>();
-                var currPath = directoryMethods.GetCurrentDirectoryName();
+                var contentEntity = contentRepository.Get(contentInfo.Hash);
+                contentRepository.Remove(contentEntity);
+            }
+            var binderEntity = binderRepository.Get(directoryContentDto.TheBinder.Hash);
+            binderRepository.Remove(binderEntity);
 
-                var application = serviceProvider.GetService<DirectoryContentApplication>();
-                var contentRepository = serviceProvider.GetService<IContentEntityRepository>();
-                var binderRepository = serviceProvider.GetService<IBinderEntityRepository>();
-
-                var picsPath = Path.Combine(currPath, TestPicturesInnerPath);
-                var directoryContentDto = application.GetDirectoryContent(picsPath);
-
-                foreach (var contentInfo in directoryContentDto.ContentInfos)
-                {
-                    var contentEntity = contentRepository.Get(contentInfo.Hash);
-                    contentRepository.Remove(contentEntity);
-                }
-                var binderEntity = binderRepository.Get(directoryContentDto.TheBinder.Hash);
-                binderRepository.Remove(binderEntity);
-
-                contentRepository.Save();
+            contentRepository.Save();
                 
 
-                Log.Error("Právì jsem zavolal Save na content repository...");
-                //Thread.Sleep(2000);
-                //Log.Error("jsem za sleep");
+            Log.Error("Právì jsem zavolal Save na content repository...");
+            //Thread.Sleep(2000);
+            //Log.Error("jsem za sleep");
 
-                var dbStorage = serviceProvider.GetService<IDatabaseInfoElementRepository>();
-                var defaultDb = dbStorage.First(db => db.Name == "Default");
-                var db = serviceProvider.GetService<IGaleryDatabase>();
-                db.DatabaseInfo.Remove(defaultDb.Entity);
-                Log.Error("Další je zavolat SaveChanges na database infu...");
-                db.SaveChanges();
-            }
+            var dbStorage = serviceProvider.GetService<IDatabaseInfoElementRepository>();
+            var defaultDb = dbStorage.First(db => db.Name == "Default");
+            var db = serviceProvider.GetService<IGaleryDatabase>();
+            db.DatabaseInfo.Remove(defaultDb.Entity);
+            Log.Error("Další je zavolat SaveChanges na database infu...");
+            db.SaveChanges();
         }
         //[Test]
         //public void GetFileStream_ValidHashFromVisitedDirectory_ReturnsCorrectFileStream()

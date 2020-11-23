@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Domain.InfrastructureInterfaces;
+using Domain.Services.InfrastructureInterfaces;
 
 namespace Infrastructure.DomainImpl
 {

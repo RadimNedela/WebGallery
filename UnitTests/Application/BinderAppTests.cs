@@ -1,5 +1,4 @@
-﻿using Application.Directories;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace UnitTests.Application
 {

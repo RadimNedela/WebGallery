@@ -1,34 +1,34 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
+using Application.Maintenance;
 using Domain.Dtos.Maintenance;
-using Domain.Logging;
-using Domain.Services;
+using Domain.Services.Logging;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace WebApplication.Controllers
 {
     [Route("api/[controller]")]
     public class MaintenanceController : Controller
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly DatabaseInfoApplication databaseInfoApplication;
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly DatabaseInfoApplication _databaseInfoApplication;
         public MaintenanceController(DatabaseInfoApplication databaseInfoApplication)
         {
-            this.databaseInfoApplication = databaseInfoApplication;
+            _databaseInfoApplication = databaseInfoApplication;
         }
 
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<DatabaseInfoDto> Get()
         {
-            return databaseInfoApplication.GetAllDatabases();
+            return _databaseInfoApplication.GetAllDatabases();
         }
 
         [HttpGet("createNewDatabase")]
         public IEnumerable<DatabaseInfoDto> CreateNewDatabase(string databaseName)
         {
             Log.Info($"{nameof(CreateNewDatabase)} {databaseName}");
-            var notUsed = databaseInfoApplication.CreateNewDatabase(databaseName);
+            _databaseInfoApplication.CreateNewDatabase(databaseName);
             return Get();
         }
 
@@ -36,7 +36,7 @@ namespace WebApplication.Controllers
         public IEnumerable<DatabaseInfoDto> SaveDatabase(DatabaseInfoDto databaseDto)
         {
             Log.Info($"{nameof(SaveDatabase)} {databaseDto}");
-            var notUsed = databaseInfoApplication.PersistDatabase(databaseDto);
+            _databaseInfoApplication.PersistDatabase(databaseDto);
             return Get();
         }
 
@@ -44,21 +44,21 @@ namespace WebApplication.Controllers
         public IEnumerable<DatabaseInfoDto> AddNewRack(DatabaseInfoDto databaseDto)
         {
             Log.Info($"{nameof(AddNewRack)} {databaseDto}");
-            var notUsed = databaseInfoApplication.AddNewRack(databaseDto);
+            _databaseInfoApplication.AddNewRack(databaseDto);
             return Get();
         }
 
         public class NewMountPointDto
         {
-            public string databaseHash { get; set; }
-            public string rackHash { get; set; }
+            public string DatabaseHash { get; set; }
+            public string RackHash { get; set; }
         }
 
         [HttpPost("addNewMountPoint")]
         public IEnumerable<DatabaseInfoDto> AddNewMountPoint(NewMountPointDto dto)
         {
-            Log.Info($"{nameof(AddNewMountPoint)} {dto.databaseHash} {dto.rackHash}");
-            var notUsed = databaseInfoApplication.AddNewMountPoint(dto.databaseHash, dto.rackHash);
+            Log.Info($"{nameof(AddNewMountPoint)} {dto.DatabaseHash} {dto.RackHash}");
+            _databaseInfoApplication.AddNewMountPoint(dto.DatabaseHash, dto.RackHash);
             return Get();
         }
 

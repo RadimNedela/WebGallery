@@ -1,5 +1,5 @@
 using System;
-using Domain.InfrastructureInterfaces;
+using Domain.Services.InfrastructureInterfaces;
 using Infrastructure.Databases;
 using Infrastructure.Databases.MySqlDb;
 using Infrastructure.Databases.SqlServer;

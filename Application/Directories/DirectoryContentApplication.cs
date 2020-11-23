@@ -1,21 +1,21 @@
-using Domain.Dtos;
-using Domain.Elements;
-using Domain.Elements.Maintenance;
-using Domain.InfrastructureInterfaces;
-using Domain.Logging;
-using Domain.Services;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Domain.Dtos;
+using Domain.Dtos.Directories;
+using Domain.Elements;
+using Domain.Services;
+using Domain.Services.InfrastructureInterfaces;
+using Domain.Services.Logging;
 
 namespace Application.Directories
 {
     public class DirectoryContentApplication
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly DirectoryContentBuilder _directoryContentBuilder;
         private readonly IContentEntityRepository _contentRepository;
         private readonly IDatabaseInfoProvider _databaseInfoProvider;
@@ -61,7 +61,7 @@ namespace Application.Directories
             var activeDirectory = GetActiveDirectory();
             var fullPath = Path.Combine(activeDirectory, subDirectory);
 
-            var fileNames = _directoryMethods.GetFileNames(fullPath).Select(path => Path.GetFileName(path));
+            var fileNames = _directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
             var dirNames = _directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
 
             var normSubDir = rack.GetSubpath(fullPath);
@@ -82,11 +82,12 @@ namespace Application.Directories
 
         public string GetActiveDirectory(IList<string> mountPoints)
         {
-            for (var i = 0; i < mountPoints.Count; i++)
+            foreach (var t in mountPoints)
             {
-                if (_directoryMethods.DirectoryExists(mountPoints[i]))
-                    return mountPoints[i];
+                if (_directoryMethods.DirectoryExists(t))
+                    return t;
             }
+
             throw new Exception("Sorry, the rack cannot be used because no mount point is currently mounted");
         }
 
@@ -107,7 +108,7 @@ namespace Application.Directories
 
             var info = new DirectoryContentThreadInfo { FullPath = fullPath };
             DirectoryContentInfos.ContentInfos.Add(fullPath, info);
-            var notUsed = await Task.Run(() => GetDirectoryContent(info));
+            await Task.Run(() => GetDirectoryContent(info));
 
             var retVal = GetThreadInfo(subDirectory);
             DirectoryContentInfos.ContentInfos.Remove(fullPath);

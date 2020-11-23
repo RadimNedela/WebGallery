@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Domain.Dtos
+namespace Domain.Dtos.Directories
 {
     public class DirectoryInfoDto
     {

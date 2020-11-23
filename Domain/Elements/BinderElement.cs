@@ -1,8 +1,7 @@
-﻿using Domain.Dtos;
+﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Domain.DbEntities;
-using System;
+using Domain.Dtos;
 using Domain.Elements.Maintenance;
 
 namespace Domain.Elements
@@ -12,9 +11,9 @@ namespace Domain.Elements
         private readonly ISet<ContentElement> _contents = new HashSet<ContentElement>();
         private readonly ISet<BinderElement> _binders = new HashSet<BinderElement>();
         private readonly IDictionary<string, ContentElement> _attributes = new Dictionary<string, ContentElement>();
-        private BinderEntity _binderEntity;
+        private readonly BinderEntity _binderEntity;
 
-        public BinderTypeEnum BinderType { get; private set; }
+        public BinderTypeEnum BinderType { get; }
 
         public IEnumerable<ContentElement> Contents => _contents;
         public IEnumerable<BinderElement> Binders => _binders;
@@ -24,7 +23,7 @@ namespace Domain.Elements
         public BinderElement(RackElement rack, string hash, BinderTypeEnum type, string label)
         {
             Rack = rack;
-            base.Initialize(hash, type.ToString(), label);
+            Initialize(hash, type.ToString(), label);
             BinderType = type;
 
             _binderEntity = new BinderEntity
@@ -57,7 +56,7 @@ namespace Domain.Elements
 
         public BinderDto ToBinderDto()
         {
-            return new BinderDto()
+            return new BinderDto
             {
                 Hash = Hash,
                 Label = Label,
@@ -69,8 +68,7 @@ namespace Domain.Elements
         {
             if (bToC.Binder != null && bToC.Binder != _binderEntity)
                 throw new Exception("Something totaly wrong - bToC contains other binder as this one...");
-            if (bToC.Binder == null)
-                bToC.Binder = _binderEntity;
+            bToC.Binder ??= _binderEntity;
 
             return bToC;
         }

@@ -1,53 +1,51 @@
-﻿using Application.Directories;
+﻿using System.Threading.Tasks;
+using Application.Directories;
 using Domain.Dtos;
 using Domain.Dtos.Directories;
-using Domain.Logging;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace WebApplication.Controllers
 {
     [Route("api/[controller]")]
     public class FileImportController : Controller
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly DirectoryContentApplication directoryContentApplication;
-        private readonly IDatabaseInfoInitializer databaseInfoInitializer;
+        private readonly DirectoryContentApplication _directoryContentApplication;
+        private readonly IDatabaseInfoInitializer _databaseInfoInitializer;
         public FileImportController(
             DirectoryContentApplication directoryContentApplication,
             IDatabaseInfoInitializer databaseInfoInitializer)
         {
-            this.directoryContentApplication = directoryContentApplication;
-            this.databaseInfoInitializer = databaseInfoInitializer;
+            _directoryContentApplication = directoryContentApplication;
+            _databaseInfoInitializer = databaseInfoInitializer;
         }
 
         [HttpGet("getRackInfo")]
         public RackInfoDto GetRackInfo(string rackHash)
         {
-            databaseInfoInitializer.SetCurrentInfo(rackHash);
-            return directoryContentApplication.GetCurrentRackInfo();
+            _databaseInfoInitializer.SetCurrentInfo(rackHash);
+            return _directoryContentApplication.GetCurrentRackInfo();
         }
 
         [HttpGet("getDirectoryInfo")]
         public DirectoryInfoDto GetDirectoryInfo(DirectoriesCallDto dto)
         {
-            databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
-            return directoryContentApplication.GetSubDirectoryInfo(dto.SubDirectory);
+            _databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
+            return _directoryContentApplication.GetSubDirectoryInfo(dto.SubDirectory);
         }
 
         [HttpGet("parseDirectoryContent")]
         public async Task<DirectoryContentThreadInfoDto> ParseDirectoryContent(DirectoriesCallDto dto)
         {
-            databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
-            return await directoryContentApplication.ParseDirectoryContentAsync(dto.SubDirectory);
+            _databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
+            return await _directoryContentApplication.ParseDirectoryContentAsync(dto.SubDirectory);
         }
 
         [HttpGet("getThreadInfo")]
         public DirectoryContentThreadInfoDto GetThreadInfo(DirectoriesCallDto dto)
         {
-            databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
-            return directoryContentApplication.GetThreadInfo(dto.SubDirectory);
+            _databaseInfoInitializer.SetCurrentInfo(dto.RackHash);
+            return _directoryContentApplication.GetThreadInfo(dto.SubDirectory);
         }
 
     }

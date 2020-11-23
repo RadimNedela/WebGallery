@@ -1,6 +1,4 @@
-using System.Linq;
 using Domain.DbEntities;
-using Domain.InfrastructureInterfaces;
 using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +6,11 @@ namespace Infrastructure.DomainImpl
 {
     public abstract class EntitiesRepository<T> where T: HashedEntity
     {
-        protected readonly IGaleryDatabase _galeryDatabase;
+        protected readonly IGaleryDatabase GaleryDatabase;
 
-        public EntitiesRepository(IGaleryDatabase galeryDatabase)
+        protected EntitiesRepository(IGaleryDatabase galeryDatabase)
         {
-            _galeryDatabase = galeryDatabase;
+            GaleryDatabase = galeryDatabase;
         }
 
         protected abstract DbSet<T> TheDbSet { get; }
@@ -29,7 +27,7 @@ namespace Infrastructure.DomainImpl
 
         public void Save()
         {
-            _galeryDatabase.SaveChanges();
+            GaleryDatabase.SaveChanges();
         }
     }
 }

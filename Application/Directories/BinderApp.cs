@@ -1,6 +1,6 @@
+using System;
 using Domain.Dtos;
 using Domain.Services;
-using System;
 
 namespace Application.Directories
 {

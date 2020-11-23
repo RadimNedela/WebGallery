@@ -4,14 +4,14 @@ namespace Domain.Services
 {
     public class PathOptimizer : IPathOptimizer
     {
-        private readonly IDatabaseInfoProvider databaseInfoProvider;
+        private readonly IDatabaseInfoProvider _databaseInfoProvider;
 
         public PathOptimizer(IDatabaseInfoProvider databaseInfoProvider)
         {
-            this.databaseInfoProvider = databaseInfoProvider;
+            _databaseInfoProvider = databaseInfoProvider;
         }
 
-        public RackElement Rack => databaseInfoProvider.CurrentRack;
+        public RackElement Rack => _databaseInfoProvider.CurrentRack;
 
         public string CreateValidSubpathAccordingToCurrentConfiguration(string fullPath)
         {

@@ -1,9 +1,8 @@
-﻿using Domain.Dtos;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using Domain.DbEntities;
+using Domain.Dtos;
 
 namespace Domain.Elements
 {
@@ -24,20 +23,20 @@ namespace Domain.Elements
             string type = GetFileType(fullFilePath);
             string fileName = Path.GetFileName(fullFilePath);
 
-            base.Initialize(hash, type, fileName);
+            Initialize(hash, type, fileName);
             AddLastSeenFilePosition(fullFilePath, directoryBinder, fileName);
         }
 
         private string GetFileType(string path)
         {
-            string extension = System.IO.Path.GetExtension(path).ToLower();
+            string extension = Path.GetExtension(path).ToLower();
             switch (extension)
             {
                 case ".jpg":
                 case ".jpeg":
-                    return ContentElement.ImageType;
+                    return ImageType;
                 default:
-                    return ContentElement.UnknownType;
+                    return UnknownType;
             }
         }
 
@@ -72,12 +71,11 @@ namespace Domain.Elements
 
         public ContentEntity ToEntity()
         {
-            if (_contentEntity == null)
-                _contentEntity = new ContentEntity
-                {
-                    Hash = Hash,
-                    Type = Type
-                };
+            _contentEntity ??= new ContentEntity
+            {
+                Hash = Hash,
+                Type = Type
+            };
             _contentEntity.Label = Label;
             if (_contentEntity.AttributedBinders != null)
             {
@@ -88,7 +86,7 @@ namespace Domain.Elements
                 _contentEntity.AttributedBinders = new List<AttributedBinderEntityToContentEntity>();
                 foreach (var keyValue in AttributedBinders)
                 {
-                    var bToC = new AttributedBinderEntityToContentEntity()
+                    var bToC = new AttributedBinderEntityToContentEntity
                     {
                         Content = _contentEntity,
                         Attribute = keyValue.Key

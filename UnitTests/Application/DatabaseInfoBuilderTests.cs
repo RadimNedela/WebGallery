@@ -1,17 +1,18 @@
-﻿using Domain.Elements.Maintenance;
-using Domain.InfrastructureInterfaces;
-using Domain.Logging;
+﻿using System.Linq;
+using System.Reflection;
+using Domain.Elements.Maintenance;
 using Domain.Services;
+using Domain.Services.InfrastructureInterfaces;
+using Domain.Services.Logging;
 using NSubstitute;
 using NUnit.Framework;
-using System.Linq;
 
-namespace UnitTests.DbEntities
+namespace UnitTests.Application
 {
     [TestFixture]
     public class DatabaseInfoBuilderTests
     {
-        private static readonly ISimpleLogger log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Create new database info
         private DatabaseInfoBuilder GetTestBuilder()
@@ -32,7 +33,7 @@ namespace UnitTests.DbEntities
             var databaseBuilder = GetTestBuilder();
             var element = databaseBuilder.BuildNewDatabase("asdf");
 
-            log.Debug($"povedlo se mi vytvořit {element.Hash}");
+            Log.Debug($"povedlo se mi vytvořit {element.Hash}");
             Assert.That(element.Name, Is.EqualTo("asdf"));
         }
 

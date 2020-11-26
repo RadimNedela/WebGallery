@@ -3,7 +3,7 @@ using Domain.Elements;
 
 namespace Domain.Services
 {
-    public class ElementsMemoryStorage : IContentElementRepository
+    public class ContentElementsMemoryStorage : IContentElementsMemoryStorage
     {
         private readonly IDictionary<string, ContentElement> _theStorage = new Dictionary<string, ContentElement>();
 

@@ -59,7 +59,7 @@ namespace UnitTests.Domain
             var dip = Substitute.For<IPathOptimizer>();
             dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));
 
-            return new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage(), dip);
+            return new DirectoryContentBuilder(directoryMethods, hasher, new ContentElementsMemoryStorage(), dip);
         }
     }
 }

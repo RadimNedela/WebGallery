@@ -2,7 +2,7 @@
 
 namespace Domain.Services
 {
-    public interface IContentElementRepository
+    public interface IContentElementsMemoryStorage
     {
         void Add(ContentElement element);
         ContentElement Get(string hash);

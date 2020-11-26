@@ -37,7 +37,7 @@ namespace IntegrationTests.Directories
             IDirectoryMethods directoryMethods = new DirectoryMethods();
             IHasher hasher = new FileHasher();
 
-            var directoryContentBuilder = new DirectoryContentBuilder(directoryMethods, hasher, new ElementsMemoryStorage(), dip);
+            var directoryContentBuilder = new DirectoryContentBuilder(directoryMethods, hasher, new ContentElementsMemoryStorage(), dip);
             var databaseInfoProvider = new DatabaseInfoProvider(null, directoryMethods, hasher);
             var app = new DirectoryContentApplication(databaseInfoProvider,
                 directoryContentBuilder,
@@ -46,13 +46,13 @@ namespace IntegrationTests.Directories
 
             return app;
         }
-        [Test]
-        public void DirectoriesController_IsResolvable()
-        {
-            using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
-            var controller = serviceProvider.GetService<DirectoriesController>();
-            Assert.IsNotNull(controller);
-        }
+        //[Test]
+        //public void DirectoriesController_IsResolvable()
+        //{
+        //    using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
+        //    var controller = serviceProvider.GetService<DirectoriesController>();
+        //    Assert.IsNotNull(controller);
+        //}
 
         [Test]
         public void GetDirectoryContent_ValidTestPath_Returns2Directories()

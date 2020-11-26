@@ -7,13 +7,13 @@ namespace Domain.Services
     {
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
-        private readonly IContentElementRepository _elementsMemoryStorage;
+        private readonly IContentElementsMemoryStorage _elementsMemoryStorage;
         private readonly IPathOptimizer _pathOptimizer;
 
         public DirectoryContentBuilder(
             IDirectoryMethods directoryMethods,
             IHasher hasher,
-            IContentElementRepository elementsMemoryStorage,
+            IContentElementsMemoryStorage elementsMemoryStorage,
             IPathOptimizer pathOptimizer)
         {
             _directoryMethods = directoryMethods;

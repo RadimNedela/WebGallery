@@ -19,7 +19,6 @@ namespace IntegrationTests.IoC
             IServiceCollection services = new ServiceCollection();
 
             startup.ConfigureServices(services);
-            services.AddTransient<DirectoriesController>();
 
             return services;
         }

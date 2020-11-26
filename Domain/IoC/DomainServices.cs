@@ -14,7 +14,7 @@ namespace Domain.IoC
             services.AddScoped<DatabaseInfoProvider>();
             services.AddScoped<IDatabaseInfoProvider>(s => s.GetService<DatabaseInfoProvider>());
             services.AddScoped<IDatabaseInfoInitializer>(s => s.GetService<DatabaseInfoProvider>());
-            services.AddSingleton<IContentElementRepository, ElementsMemoryStorage>();
+            services.AddSingleton<IContentElementsMemoryStorage, ContentElementsMemoryStorage>();
         }
     }
 }

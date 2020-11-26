@@ -9,7 +9,6 @@ namespace Application.IoC
         public static void RegisterApplications(this IServiceCollection services)
         {
             services.AddScoped<DirectoryContentApplication>();
-            services.AddScoped<BinderApp>();
             services.AddScoped<DatabaseInfoApplication>();
         }
     }

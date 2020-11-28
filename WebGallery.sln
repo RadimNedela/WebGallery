@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Layers", "Layers", "{85559C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureViewer", "Viewer\PictureViewer.csproj", "{A1CB4663-9A01-4EC5-A758-8672593B4B26}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewerTests", "ViewerTests\ViewerTests.csproj", "{EA5194D6-09C6-4AA1-A049-8D8CDD0C06E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureViewerTests", "ViewerTests\PictureViewerTests.csproj", "{EA5194D6-09C6-4AA1-A049-8D8CDD0C06E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseEntities", "DatabaseEntities\DatabaseEntities.csproj", "{DC310550-4266-483E-B6A0-51634CD0190B}"
 EndProject

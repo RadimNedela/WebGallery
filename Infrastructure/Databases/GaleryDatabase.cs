@@ -46,43 +46,47 @@ namespace Infrastructure.Databases
                 entity.ToTable("Rack");
                 entity.HasKey(re => re.Hash);
                 entity.Property(re => re.Hash).HasColumnType("Char(40)");
-                entity.Property(re => re.DatabaseId).IsRequired();
+                entity.Property(re => re.DatabaseHash).IsRequired();
             });
 
             modelBuilder.Entity<MountPointEntity>(entity =>
             {
                 entity.ToTable("MountPoint");
-                entity.HasKey(mpe => new { mpe.RackId, mpe.Path});
+                entity.HasKey(mpe => new { mpe.RackHash, mpe.Path});
                 entity.Property(re => re.Path).HasMaxLength(200);
-                entity.Property(re => re.RackId).IsRequired();
+                entity.Property(re => re.RackHash).IsRequired();
             });
         }
 
         private void InitContentTables(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BinderEntityToContentEntity>()
-                .ToTable("BinderContent")
-                .HasKey(bc => new { bc.BinderId, bc.ContentId });
+            modelBuilder.Entity<BinderEntityToContentEntity>(entity =>
+            {
+                entity.ToTable("BinderContent");
+                entity.HasOne(bc => bc.Binder).WithMany(b => b.Contents).HasForeignKey(bc => bc.BinderHash);
+                entity.HasOne(bc => bc.Content).WithMany(c => c.Binders).HasForeignKey(bc => bc.ContentHash);
+                entity.HasKey(bc => new { bc.BinderHash, bc.ContentHash });
+            });
 
             modelBuilder.Entity<AttributedBinderEntityToContentEntity>(entity =>
             {
                 entity.ToTable("Attribute");
-                //entity.HasIndex(bac => new { bac.BinderId, bac.ContentId, bac.Attribute })
-                //    .IsUnique();
+                entity.HasOne(bc => bc.Binder).WithMany(b => b.AttributedContents).HasForeignKey(bc => bc.BinderHash);
+                entity.HasOne(bc => bc.Content).WithMany(c => c.AttributedBinders).HasForeignKey(bc => bc.ContentHash);
                 entity.Property(attr => attr.Attribute).HasMaxLength(250);
-                entity.HasKey(attr => new { attr.BinderId, attr.ContentId, attr.Attribute });
+                entity.HasKey(attr => new { attr.BinderHash, attr.ContentHash, attr.Attribute });
             });
 
             modelBuilder.Entity<ContentEntity>(entity =>
             {
-                entity.HasIndex(e => e.Hash).IsUnique();
+                entity.HasKey(ce => ce.Hash);
                 entity.Property(e => e.Hash).HasColumnType("Char(40)").IsRequired();
                 entity.ToTable("Content");
             });
 
             modelBuilder.Entity<BinderEntity>(entity =>
             {
-                entity.HasIndex(e => e.Hash).IsUnique();
+                entity.HasKey(e => e.Hash);
                 entity.Property(e => e.Hash).HasColumnType("Char(40)").IsRequired();
                 entity.ToTable("Binder");
             });

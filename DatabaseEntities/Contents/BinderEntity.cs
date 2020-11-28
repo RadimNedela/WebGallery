@@ -6,7 +6,6 @@ namespace Domain.DbEntities
 {
     public class BinderEntity : IDatabaseEntity
     {
-        public int Id { get; set; }
         public string Hash { get; set; }
         public string Type { get; set; }
         public string Label { get; set; }

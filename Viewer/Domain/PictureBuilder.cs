@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace WebGallery.PictureViewer.Domain
 {
@@ -13,9 +14,11 @@ namespace WebGallery.PictureViewer.Domain
 
         public Picture Get(string hash)
         {
-            if (pictureRepository.ContainsHash(hash))
+            var contentEntity = pictureRepository.GetContentEntity(hash);
+            if (contentEntity == null)
+                throw new Exception($"Entity with hash {hash} not found in the database");
+            //var pathBinders = contentEntity.AttributedBinders.Select(ab => ab.)
             return new Picture(hash, "hello");
-            throw new NotImplementedException();
         }
     }
 }

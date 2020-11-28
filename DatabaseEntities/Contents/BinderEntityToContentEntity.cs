@@ -4,10 +4,10 @@ namespace Domain.DbEntities
 {
     public class BinderEntityToContentEntity : IDatabaseEntity
     {
-        public int BinderId { get; set; }
+        public string BinderHash { get; set; }
         public BinderEntity Binder { get; set; }
 
-        public int ContentId { get; set; }
+        public string ContentHash { get; set; }
         public ContentEntity Content { get; set; }
     }
 }

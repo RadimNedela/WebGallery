@@ -1,7 +1,9 @@
-﻿namespace WebGallery.PictureViewer.Domain
+﻿using Domain.DbEntities;
+
+namespace WebGallery.PictureViewer.Domain
 {
     public interface IPictureRepository
     {
-        bool ContainsHash(string hash);
+        ContentEntity GetContentEntity(string hash);
     }
 }

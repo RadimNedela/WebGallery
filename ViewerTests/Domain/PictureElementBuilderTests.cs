@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using Domain.DbEntities;
+using NSubstitute;
 using NUnit.Framework;
 using WebGallery.PictureViewer.Domain;
 
@@ -42,7 +43,7 @@ namespace WebGallery.PictureViewer.Tests.Domain
         private PictureBuilder BuildPictureBuilder()
         {
             var pictureRepository = Substitute.For<IPictureRepository>();
-            pictureRepository.ContainsHash("TestHash").Returns(true);
+            pictureRepository.GetContentEntity("TestHash").Returns(new ContentEntity());
             return new PictureBuilder(pictureRepository);
         }
     }

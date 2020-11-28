@@ -6,6 +6,6 @@ namespace Domain.DbEntities.Maintenance
     {
         public string Path { get; set; }
         public RackEntity Rack { get; set; }
-        public string RackId { get; set; }
+        public string RackHash { get; set; }
     }
 }

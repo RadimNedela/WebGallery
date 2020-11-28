@@ -1,6 +1,8 @@
-﻿namespace Domain.DbEntities.Maintenance
+﻿using WebGallery.DatabaseEntities;
+
+namespace Domain.DbEntities.Maintenance
 {
-    public class MountPointEntity
+    public class MountPointEntity : IDatabaseEntity
     {
         public string Path { get; set; }
         public RackEntity Rack { get; set; }

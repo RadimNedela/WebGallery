@@ -11,12 +11,12 @@ namespace Domain.Elements
         public string Type { get; private set; }
         public string Label { get; private set; }
 
-        protected void Initialize(HashedContentBaseEntity hashedEntity)
+        protected void Initialize(int id, string hash, string type, string label)
         {
-            Id = hashedEntity.Id;
-            Hash = hashedEntity.Hash;
-            Type = hashedEntity.Type;
-            Label = hashedEntity.Label;
+            Id = id;
+            Hash = hash;
+            Type = type;
+            Label = label;
         }
 
         protected void Initialize(string hash, string type, string label)

@@ -1,10 +1,10 @@
-using Domain.DbEntities;
 using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
+using WebGallery.DatabaseEntities;
 
 namespace Infrastructure.DomainImpl
 {
-    public abstract class EntitiesRepository<T> where T: HashedEntity
+    public abstract class EntitiesRepository<T> where T: class, IDatabaseEntity
     {
         protected readonly IGaleryDatabase GaleryDatabase;
 

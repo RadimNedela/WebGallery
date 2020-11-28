@@ -1,8 +1,8 @@
-using Domain.DbEntities;
+using WebGallery.DatabaseEntities;
 
 namespace Domain.Services.InfrastructureInterfaces
 {
-    public interface IEntityRepository<T> where T : HashedEntity
+    public interface IEntityRepository<T> where T : IDatabaseEntity
     {
         T Get(string hash);
 

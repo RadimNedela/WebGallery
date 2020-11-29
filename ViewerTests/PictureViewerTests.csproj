@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>WebGallery.PictureViewer.Tests</RootNamespace>
+    <RootNamespace>WebGalery.PictureViewer.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@
 
     function parseDirectoryContent() {
         var directory = $("#DirectoryNameInput").val();
-        if (!directory) directory = "d:\\Sources\\WebGallery\\TestPictures\\Duha\\";
+        if (!directory) directory = "d:\\Sources\\WebGalery\\TestPictures\\Duha\\";
         DH.getDirectoryContent(directory)
             .then(function (data) {
                 var binders = data.binders;

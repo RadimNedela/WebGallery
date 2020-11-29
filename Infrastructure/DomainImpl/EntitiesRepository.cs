@@ -1,6 +1,6 @@
 using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
-using WebGallery.DatabaseEntities;
+using WebGalery.DatabaseEntities;
 
 namespace Infrastructure.DomainImpl
 {

@@ -4,6 +4,7 @@ using Domain.Services;
 using Domain.Services.InfrastructureInterfaces;
 using NSubstitute;
 using NUnit.Framework;
+using WebGalery.DatabaseEntities.Contents;
 
 namespace UnitTests.Domain
 {
@@ -37,7 +38,7 @@ namespace UnitTests.Domain
 
             var content = contentBuilder.GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = TestDirectory }).Contents.First();
 
-            Assert.That(content.Type, Is.EqualTo(ContentElement.ImageType));
+            Assert.That(content.Type, Is.EqualTo(ContentTypeEnum.ImageType.ToString()));
         }
 
         public const string TestDirectory = "Test directory - chopok";

@@ -1,4 +1,4 @@
-using WebGallery.PictureViewer.Domain;
+using WebGalery.PictureViewer.Domain;
 
 namespace Application.Directories
 {

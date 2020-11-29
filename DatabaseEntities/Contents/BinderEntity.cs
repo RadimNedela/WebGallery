@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Domain.DbEntities.Maintenance;
-using WebGallery.DatabaseEntities;
+using WebGalery.DatabaseEntities;
 
 namespace Domain.DbEntities
 {
@@ -12,6 +12,8 @@ namespace Domain.DbEntities
 
         public IList<BinderEntityToContentEntity> Contents { get; set; }
         public IList<AttributedBinderEntityToContentEntity> AttributedContents { get; set; }
+
         public RackEntity Rack { get; set; }
+        public string RackHash { get; set; }
     }
 }

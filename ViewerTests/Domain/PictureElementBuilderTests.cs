@@ -1,14 +1,15 @@
 ﻿using Domain.DbEntities;
+using Infrastructure.Databases;
 using NSubstitute;
 using NUnit.Framework;
-using WebGallery.PictureViewer.Domain;
+using WebGalery.DatabaseEntities;
+using WebGalery.PictureViewer.Domain;
 
-namespace WebGallery.PictureViewer.Tests.Domain
+namespace WebGalery.PictureViewer.Tests.Domain
 {
     [TestFixture]
     public class PictureElementBuilderTests
     {
-        public const string TestHash1 = "TestHash";
         public const string TestHash2 = "TestHashNr2";
 
         [Test]
@@ -16,9 +17,9 @@ namespace WebGallery.PictureViewer.Tests.Domain
         {
             var sut = BuildPictureBuilder();
 
-            var element = sut.Get(TestHash1);
+            var element = sut.Get(TestDatabase.Content1Hash);
 
-            Assert.That(element.Hash, Is.EqualTo(TestHash1));
+            Assert.That(element.Hash, Is.EqualTo(TestDatabase.Content1Hash));
         }
 
         [Test]
@@ -29,7 +30,7 @@ namespace WebGallery.PictureViewer.Tests.Domain
             Assert.That(() => builder.Get("NotExisting Hash"), Throws.Exception);
         }
 
-        [TestCase(TestHash1, @"/TestPictures/TestPicture.jpg")]
+        [TestCase(TestDatabase.Content1Hash, @"/TestPictures/TestPicture.jpg")]
         [TestCase(TestHash2, @"/TestPictures/AnotherTestPicture.jpg")]
         public void Get_Existing_PathIsValid(string hash, string expectedFilePath)
         {
@@ -37,14 +38,15 @@ namespace WebGallery.PictureViewer.Tests.Domain
 
             var element = builder.Get(hash);
 
-            Assert.That(element.Path, Contains.Substring(expectedFilePath));
+            Assert.That(element.FullPath, Contains.Substring(expectedFilePath));
         }
 
         private PictureBuilder BuildPictureBuilder()
         {
-            var pictureRepository = Substitute.For<IPictureRepository>();
-            pictureRepository.GetContentEntity("TestHash").Returns(new ContentEntity());
-            return new PictureBuilder(pictureRepository);
+            IGaleryReadDatabase database = new TestDatabase();
+            IUserInfo userInfo = Substitute.For<IUserInfo>();
+            userInfo.IsRackActive(Arg.Any<string>()).Returns(true);
+            return new PictureBuilder(userInfo, database);
         }
     }
 }

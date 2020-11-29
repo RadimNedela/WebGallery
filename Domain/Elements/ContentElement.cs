@@ -3,13 +3,12 @@ using System.IO;
 using System.Linq;
 using Domain.DbEntities;
 using Domain.Dtos;
+using WebGalery.DatabaseEntities.Contents;
 
 namespace Domain.Elements
 {
     public class ContentElement : HashedElement
     {
-        public const string ImageType = "Image";
-        public const string UnknownType = "Unknown";
         private readonly IList<BinderElement> _binders = new List<BinderElement>();
         private readonly IList<KeyValuePair<string, BinderElement>> _attributedBinders = new List<KeyValuePair<string, BinderElement>>();
         private ContentEntity _contentEntity;
@@ -20,23 +19,23 @@ namespace Domain.Elements
 
         internal ContentElement(string hash, BinderElement directoryBinder, string fullFilePath)
         {
-            string type = GetFileType(fullFilePath);
+            ContentTypeEnum type = GetFileType(fullFilePath);
             string fileName = Path.GetFileName(fullFilePath);
 
-            Initialize(hash, type, fileName);
+            Initialize(hash, type.ToString(), fileName);
             AddLastSeenFilePosition(fullFilePath, directoryBinder, fileName);
         }
 
-        private string GetFileType(string path)
+        private ContentTypeEnum GetFileType(string path)
         {
             string extension = Path.GetExtension(path).ToLower();
             switch (extension)
             {
                 case ".jpg":
                 case ".jpeg":
-                    return ImageType;
+                    return ContentTypeEnum.ImageType;
                 default:
-                    return UnknownType;
+                    return ContentTypeEnum.UnknownType;
             }
         }
 

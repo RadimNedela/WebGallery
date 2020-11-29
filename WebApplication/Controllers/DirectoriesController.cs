@@ -59,7 +59,7 @@
 //        public FileStreamResult DownloadAsync()
 //        {
 //            //var fileName = "/home/radim/Source/WebGalery/TestPictures/Duha/2017-08-20-Duha0367.JPG";
-//            var fileName = "d:\\Sources\\WebGallery\\TestPictures\\Duha\\2017-08-20-Duha0367.JPG";
+//            var fileName = "d:\\Sources\\WebGalery\\TestPictures\\Duha\\2017-08-20-Duha0367.JPG";
 //            new FileExtensionContentTypeProvider().TryGetContentType(fileName, out string mimeType);
 
 //            var stream = System.IO.File.OpenRead(fileName);

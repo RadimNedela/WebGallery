@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>WebGallery.PictureViewer</RootNamespace>
+    <RootNamespace>WebGalery.PictureViewer</RootNamespace>
   </PropertyGroup>
 
 </Project>

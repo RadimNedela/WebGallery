@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WebGallery.DatabaseEntities;
+using WebGalery.DatabaseEntities;
 
 namespace Domain.DbEntities
 {

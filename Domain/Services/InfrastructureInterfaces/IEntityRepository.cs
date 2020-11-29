@@ -1,4 +1,4 @@
-using WebGallery.DatabaseEntities;
+using WebGalery.DatabaseEntities;
 
 namespace Domain.Services.InfrastructureInterfaces
 {

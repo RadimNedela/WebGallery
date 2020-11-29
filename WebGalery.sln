@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureViewer", "Viewer\Pic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureViewerTests", "ViewerTests\PictureViewerTests.csproj", "{EA5194D6-09C6-4AA1-A049-8D8CDD0C06E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseEntities", "DatabaseEntities\DatabaseEntities.csproj", "{DC310550-4266-483E-B6A0-51634CD0190B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseEntities", "DatabaseEntities\DatabaseEntities.csproj", "{DC310550-4266-483E-B6A0-51634CD0190B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

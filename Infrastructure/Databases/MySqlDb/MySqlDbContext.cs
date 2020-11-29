@@ -3,7 +3,7 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Infrastructure.Databases.MySqlDb
 {
-    public class MySqlDbContext : GaleryDatabase, IGaleryDatabase
+    public class MySqlDbContext : GaleryDatabase, IGaleryDatabase, IGaleryReadDatabase
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Domain.DbEntities;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Databases
 {
-    public abstract class GaleryDatabase : DbContext
+    public abstract class GaleryDatabase : DbContext, IGaleryReadDatabase
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         protected static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
@@ -21,6 +22,12 @@ namespace Infrastructure.Databases
         public DbSet<ContentEntity> Contents { get; set; }
         public DbSet<BinderEntity> Binders { get; set; }
         public DbSet<DatabaseInfoEntity> DatabaseInfo { get; set; }
+
+        IEnumerable<ContentEntity> IGaleryReadDatabase.Contents => Contents;
+
+        IEnumerable<BinderEntity> IGaleryReadDatabase.Binders => Binders;
+
+        IEnumerable<DatabaseInfoEntity> IGaleryReadDatabase.DatabaseInfo => DatabaseInfo;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,7 +53,7 @@ namespace Infrastructure.Databases
                 entity.ToTable("Rack");
                 entity.HasKey(re => re.Hash);
                 entity.Property(re => re.Hash).HasColumnType("Char(40)");
-                entity.Property(re => re.DatabaseHash).IsRequired();
+                entity.HasMany(re => re.MountPoints).WithOne(mp => mp.Rack).HasForeignKey(re => re.RackHash);
             });
 
             modelBuilder.Entity<MountPointEntity>(entity =>

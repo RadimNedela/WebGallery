@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Databases
 {
-    public abstract class GaleryDatabase : DbContext, IGaleryReadDatabase
+    public abstract class GaleryDatabase : DbContext
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         protected static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
@@ -22,12 +22,6 @@ namespace Infrastructure.Databases
         public DbSet<ContentEntity> Contents { get; set; }
         public DbSet<BinderEntity> Binders { get; set; }
         public DbSet<DatabaseInfoEntity> DatabaseInfo { get; set; }
-
-        IEnumerable<ContentEntity> IGaleryReadDatabase.Contents => Contents;
-
-        IEnumerable<BinderEntity> IGaleryReadDatabase.Binders => Binders;
-
-        IEnumerable<DatabaseInfoEntity> IGaleryReadDatabase.DatabaseInfo => DatabaseInfo;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

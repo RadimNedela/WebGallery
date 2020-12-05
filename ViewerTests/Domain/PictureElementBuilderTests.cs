@@ -1,9 +1,6 @@
-﻿using Domain.DbEntities;
-using Infrastructure.Databases;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
 using WebGalery.DatabaseEntities;
-using WebGalery.PictureViewer.Domain;
 
 namespace WebGalery.PictureViewer.Tests.Domain
 {

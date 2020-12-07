@@ -1,8 +1,6 @@
-using System;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebApplication;
-using WebApplication.Controllers;
+using Infrastructure.IoC;
+using Microsoft.Extensions.Configuration;
 
 namespace IntegrationTests.IoC
 {
@@ -10,15 +8,14 @@ namespace IntegrationTests.IoC
     {
         public static IServiceCollection CreateServiceCollection()
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", false, false)
-                .Build();
-
-            var startup = new Startup(config);
             IServiceCollection services = new ServiceCollection();
 
-            startup.ConfigureServices(services);
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
+
+            services.RegisterInfrastructureServices(configuration);
 
             return services;
         }

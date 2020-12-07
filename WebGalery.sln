@@ -17,13 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureViewerTests", "Viewe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "DatabaseEntities\Core.csproj", "{DC310550-4266-483E-B6A0-51634CD0190B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureTests", "InfrastructureTests\InfrastructureTests.csproj", "{B804C225-5CCE-4D37-803A-B6AF4B3ECB29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfrastructureTests", "InfrastructureTests\InfrastructureTests.csproj", "{B804C225-5CCE-4D37-803A-B6AF4B3ECB29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maintenance", "Maintenance\Maintenance.csproj", "{3AB34B66-8767-423D-9453-8FCA45FBCDFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maintenance", "Maintenance\Maintenance.csproj", "{3AB34B66-8767-423D-9453-8FCA45FBCDFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaintenanceTests", "MaintenanceTests\MaintenanceTests.csproj", "{BD356C58-2866-4EDF-88E9-626521DB7442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaintenanceTests", "MaintenanceTests\MaintenanceTests.csproj", "{BD356C58-2866-4EDF-88E9-626521DB7442}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6A01A441-5536-402A-9808-555A3C3486F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{B1966869-7636-4A3A-836C-C284CCED4B1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{BD356C58-2866-4EDF-88E9-626521DB7442}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD356C58-2866-4EDF-88E9-626521DB7442}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD356C58-2866-4EDF-88E9-626521DB7442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1966869-7636-4A3A-836C-C284CCED4B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1966869-7636-4A3A-836C-C284CCED4B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1966869-7636-4A3A-836C-C284CCED4B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1966869-7636-4A3A-836C-C284CCED4B1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

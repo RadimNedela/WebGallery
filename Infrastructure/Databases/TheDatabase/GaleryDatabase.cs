@@ -47,6 +47,7 @@ namespace Infrastructure.Databases
                 entity.ToTable("Rack");
                 entity.HasKey(re => re.Hash);
                 entity.Property(re => re.Hash).HasColumnType("Char(40)");
+                entity.Property(re => re.DatabaseHash).IsRequired();
                 entity.HasMany(re => re.MountPoints).WithOne(mp => mp.Rack).HasForeignKey(re => re.RackHash);
             });
 

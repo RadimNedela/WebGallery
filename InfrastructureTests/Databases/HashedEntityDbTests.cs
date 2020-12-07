@@ -70,7 +70,7 @@ namespace IntegrationTests.DBTests
             _dirBinder.AttributedContents = new List<AttributedBinderEntityToContentEntity> { _dirBinderToContent };
             _content.AttributedBinders = new List<AttributedBinderEntityToContentEntity> { _dirBinderToContent };
 
-            using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
+            using var serviceProvider = InfrastructureTestsUtils.ServiceProvider;
             var database = serviceProvider.GetService<IGaleryDatabase>();
             database.Contents.Add(_content);
             database.SaveChanges();
@@ -79,7 +79,7 @@ namespace IntegrationTests.DBTests
 
         private void RemoveTestHashedEntityFromDb()
         {
-            using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
+            using var serviceProvider = InfrastructureTestsUtils.CreateServiceCollection().BuildServiceProvider();
             var database = serviceProvider.GetService<IGaleryDatabase>();
             database.Binders.Remove(_binder);
             database.Contents.Remove(_content);
@@ -91,7 +91,7 @@ namespace IntegrationTests.DBTests
         [Test]
         public void GetExistingHashedElement_WillReturnIt()
         {
-            using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
+            using var serviceProvider = InfrastructureTestsUtils.CreateServiceCollection().BuildServiceProvider();
             var database = serviceProvider.GetService<IGaleryDatabase>();
             var repo = new ContentEntitiesRepository(database);
             var fromDb = repo.Get(TestContentElementHash);

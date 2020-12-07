@@ -12,7 +12,7 @@ namespace IntegrationTests.DBTests
         [Test, Explicit("This is only for creating empty DB tables")]
         public void JustCreateTheDatabase()
         {
-            using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
+            using var serviceProvider = InfrastructureTestsUtils.CreateServiceCollection().BuildServiceProvider();
             var instance = serviceProvider.GetService<IGaleryDatabase>();
             DbContext context = instance as DbContext;
             context.Database.EnsureCreated();

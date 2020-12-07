@@ -1,15 +1,18 @@
-﻿
-select * from Content;
+﻿select * from attribute;
 
-select * from DatabaseInfo;
+select * from binder;
+
+select * from bindercontent;
+
+select * from content;
+
+select * from databaseinfo;
+
+select * from MountPoint;
 
 select * from rack;
 
 
-select * from MountPoint;
+delete from mountpoint where 1=1;
 
-delete from mountpoint where rackid in (select hash from rack where name = 'Default');
-
-delete from rack where name = 'Default';
-
-delete from databaseinfo where name = 'Default';
+delete from rack where 1=1;

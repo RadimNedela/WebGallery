@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace IntegrationTests.IoC
 {
-    public static class InitializationHelper
+    internal static class InfrastructureTestsUtils
     {
-        public static IServiceCollection CreateServiceCollection()
+        internal static IServiceCollection CreateServiceCollection()
         {
             IServiceCollection services = new ServiceCollection();
 
@@ -14,12 +14,11 @@ namespace IntegrationTests.IoC
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-
             services.RegisterInfrastructureServices(configuration);
 
             return services;
         }
 
-
+        internal static ServiceProvider ServiceProvider => CreateServiceCollection().BuildServiceProvider();
     }
 }

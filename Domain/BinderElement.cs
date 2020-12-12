@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain.DbEntities;
-using Domain.Dtos;
 using Domain.Elements.Maintenance;
 
 namespace Domain.Elements
@@ -52,16 +51,6 @@ namespace Domain.Elements
             _attributes.Add(attribute, contentElement);
             if (!_contents.Contains(contentElement))
                 _contents.Add(contentElement);
-        }
-
-        public BinderDto ToBinderDto()
-        {
-            return new BinderDto
-            {
-                Hash = Hash,
-                Label = Label,
-                Type = Type
-            };
         }
 
         internal AttributedBinderEntityToContentEntity ToEntity(AttributedBinderEntityToContentEntity bToC)

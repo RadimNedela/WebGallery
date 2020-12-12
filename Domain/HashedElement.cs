@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Domain.DbEntities;
-using Domain.Dtos;
 
 namespace Domain.Elements
 {
@@ -24,13 +22,6 @@ namespace Domain.Elements
             Hash = hash;
             Type = type;
             Label = label;
-        }
-
-        protected void InitializeDto(HashedElementDto dto)
-        {
-            dto.Hash = Hash;
-            dto.Type = Type;
-            dto.Label = Label;
         }
 
         public override bool Equals(object obj)

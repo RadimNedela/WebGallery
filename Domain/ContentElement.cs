@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using Domain.DbEntities;
-using Domain.Dtos;
 using WebGalery.DatabaseEntities.Contents;
 
 namespace Domain.Elements
@@ -53,19 +52,6 @@ namespace Domain.Elements
                 directoryBinder.AddContent(fileName, this);
             }
             LastSeenFileFullPath = fullFilePath;
-        }
-
-        protected void InitializeDto(ContentInfoDto dto)
-        {
-            base.InitializeDto(dto);
-            dto.FilePath = LastSeenFileFullPath;
-        }
-
-        public ContentInfoDto ToContentInfoDto()
-        {
-            var dto = new ContentInfoDto();
-            InitializeDto(dto);
-            return dto;
         }
 
         public ContentEntity ToEntity()

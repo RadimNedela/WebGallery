@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>WebGalery.Maintenance.Tests</RootNamespace>
+    <RootNamespace>WebGalery.Core.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,9 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreTests\CoreTests.csproj" />
     <ProjectReference Include="..\DatabaseEntities\Core.csproj" />
-    <ProjectReference Include="..\Maintenance\Maintenance.csproj" />
   </ItemGroup>
 
 </Project>

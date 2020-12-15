@@ -1,10 +1,10 @@
-﻿using Domain.Elements.Maintenance;
+﻿using Domain.DbEntities.Maintenance;
 
 namespace Domain.Services
 {
     public interface IDatabaseInfoProvider
     {
-        DatabaseInfoElement CurrentDatabaseInfo { get; }
-        RackElement CurrentRack { get; }
+        DatabaseInfoEntity CurrentDatabaseInfo { get; }
+        RackEntity CurrentRack { get; }
     }
 }

@@ -14,7 +14,7 @@ namespace Infrastructure.IoC
         public static void RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IDirectoryMethods, DirectoryMethods>();
-            services.AddSingleton<IHasher, FileHasher>();
+            services.AddSingleton<IHasher, SHA1Hasher>();
 
             services.AddScoped<IContentEntityRepository, ContentEntitiesRepository>();
             services.AddScoped<IBinderEntityRepository, BinderEntitiesRepository>();

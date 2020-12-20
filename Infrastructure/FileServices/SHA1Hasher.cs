@@ -10,7 +10,7 @@ using Domain.Services.Logging;
 
 namespace Infrastructure.DomainImpl
 {
-    public class FileHasher : IHasher
+    public class SHA1Hasher : IHasher
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -96,7 +96,7 @@ namespace Infrastructure.DomainImpl
                 stringChars[i] = chars[random.Next(chars.Length)];
             }
 
-            var finalString = new String(stringChars);
+            var finalString = new string(stringChars);
             return finalString;
         }
     }

@@ -12,8 +12,8 @@ namespace Domain.Services
         //private readonly IDirectoryMethods _directoryMethods;
 
         //public DatabaseInfoBuilder(
-        //    IHasher hasher, 
-        //    IDatabaseInfoEntityRepository repository, 
+        //    IHasher hasher,
+        //    IDatabaseInfoEntityRepository repository,
         //    IDirectoryMethods directoryMethods)
         //{
         //    _hasher = hasher;
@@ -40,11 +40,5 @@ namespace Domain.Services
         //    return element;
         //}
 
-        //public DatabaseInfoElement BuildNewDatabase(string databaseName)
-        //{
-        //    var infoElement = new DatabaseInfoElement(_hasher, databaseName, "Default", _directoryMethods.GetCurrentDirectoryName());
-
-        //    return infoElement;
-        //}
     }
 }

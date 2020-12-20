@@ -12,7 +12,7 @@ namespace WebGalery.Core.Tests
                     .Add(MountPointTestDataBuilder.CreateWindowsDefault())
                     .Add(MountPointTestDataBuilder.CreateLinuxDefault())
                     )
-                .Add(RackTestDataBuilder.CreateDefault()
+                .Add(RackTestDataBuilder.CreateDefault().WithName("Second Test Rack")
                     .Add(MountPointTestDataBuilder.CreateWindowsDefault().WithPath(@"D:\TEMP"))
                     );
             return builder.Build();

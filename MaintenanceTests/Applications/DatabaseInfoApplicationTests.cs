@@ -3,8 +3,10 @@ using Domain.Services.InfrastructureInterfaces;
 using NSubstitute;
 using NUnit.Framework;
 using System.Linq;
-using WebGalery.Maintenance.Services;
 using WebGalery.Core.Tests;
+using Domain.DbEntities.Maintenance;
+using System.Collections.Generic;
+using Domain.Dtos.Maintenance;
 
 namespace WebGalery.Maintenance.Tests.Applications
 {
@@ -14,11 +16,12 @@ namespace WebGalery.Maintenance.Tests.Applications
         private DatabaseInfoApplication CreateSut()
         {
             IDatabaseInfoEntityRepository repository = Substitute.For<IDatabaseInfoEntityRepository>();
-            repository.GetAll().Returns(new List { MaintenanceTestData.CreateTestDatabase() });
-            DatabaseInfoDtoConverter converter = new DatabaseInfoDtoConverter();
+            repository.GetAll().Returns(new List<DatabaseInfoEntity> { MaintenanceTestData.CreateTestDatabase() });
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
+            IHasher hasher = Substitute.For<IHasher>();
+            hasher.ComputeRandomStringHash(Arg.Any<string>()).Returns(a => a.ArgAt<string>(0) + " Random Hash");
 
-            return new DatabaseInfoApplication(repository, converter, directoryMethods);
+            return new DatabaseInfoApplication(repository, directoryMethods, hasher);
         }
 
         [Test]
@@ -29,8 +32,38 @@ namespace WebGalery.Maintenance.Tests.Applications
             var databases = application.GetAllDatabases();
 
             Assert.That(databases.Any());
-            var db = databases.First();
+            DatabaseInfoDto db = databases.First();
             Assert.That(db.Hash, Contains.Substring("Test Hash"));
+            Assert.That(db.Racks.Count, Is.EqualTo(2));
+
+            var firstRack = db.Racks.First(r => r.MountPoints.Contains(@"D:\TEMP"));
+            var secondRack = db.Racks.First(r => r.MountPoints.Contains(@"C:\temp"));
+            Assert.That(firstRack.MountPoints.Count, Is.EqualTo(1));
+            Assert.That(firstRack.Name, Contains.Substring("Second Test Rack"));
+            Assert.That(secondRack.MountPoints.Count, Is.EqualTo(2));
+            Assert.That(secondRack.Name, Contains.Substring("Rack Test Name"));
+        }
+
+        [Test]
+        public void CreateNewDatabase_WillReturnNewDatabase()
+        {
+            var application = CreateSut();
+            
+            var retVal = application.CreateNewDatabase("New database name");
+
+            Assert.That(retVal.Name, Contains.Substring("New database name"));
+            Assert.That(retVal.Hash, Contains.Substring("New database name Random Hash"));
+        }
+
+        [Test]
+        public void CreateNewDatabase_WillContainDefaultRack()
+        {
+            var application = CreateSut();
+
+            var rack = application.CreateNewDatabase("New database name").Racks.First();
+
+            Assert.That(rack.Name, Contains.Substring("Default"));
+            Assert.That(rack.Hash, Contains.Substring("Default Random Hash"));
         }
     }
 }

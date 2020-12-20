@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace WebGalery.Maintenance.Services
 {
-    public class DatabaseInfoDtoConverter
+    internal class DatabaseInfoDtoConverter
     {
-        public DatabaseInfoDto ToDto(DatabaseInfoEntity entity)
+        internal DatabaseInfoDto ToDto(DatabaseInfoEntity entity)
         {
             DatabaseInfoDto dto = new()
             {
@@ -17,7 +17,7 @@ namespace WebGalery.Maintenance.Services
             return dto;
         }
 
-        public RackDto ToDto(RackEntity entity)
+        private RackDto ToDto(RackEntity entity)
         {
             RackDto dto = new()
             {

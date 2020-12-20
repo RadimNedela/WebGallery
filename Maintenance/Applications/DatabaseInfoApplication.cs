@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.DbEntities.Maintenance;
 using Domain.Dtos.Maintenance;
-using Domain.Elements.Maintenance;
-using Domain.Services;
 using Domain.Services.InfrastructureInterfaces;
 using WebGalery.Maintenance.Services;
 
@@ -12,37 +11,63 @@ namespace Application.Maintenance
     public class DatabaseInfoApplication
     {
         private readonly IDatabaseInfoEntityRepository _repository;
-        private readonly DatabaseInfoDtoConverter _converter;
         private readonly IDirectoryMethods _directoryMethods;
+        private readonly IHasher _hasher;
 
         public DatabaseInfoApplication(
             IDatabaseInfoEntityRepository repository,
-            DatabaseInfoDtoConverter converter,
-            IDirectoryMethods directoryMethods)
+            IDirectoryMethods directoryMethods,
+            IHasher hasher)
         {
             _repository = repository;
-            _converter = converter;
             _directoryMethods = directoryMethods;
+            _hasher = hasher;
         }
 
         public IEnumerable<DatabaseInfoDto> GetAllDatabases()
         {
+            DatabaseInfoDtoConverter converter = new DatabaseInfoDtoConverter();
             var allDatabases = _repository.GetAll();
-            var allDtos = allDatabases.Select(entity => _converter.ToDto(entity));
+            var allDtos = allDatabases.Select(entity => converter.ToDto(entity));
 
             return allDtos;
         }
 
-        //public DatabaseInfoDto CreateNewDatabase(string databaseName)
-        //{
-        //    if (string.IsNullOrEmpty(databaseName))
-        //        throw new Exception("Please give correct name to the new created database");
-        //    var element = _infoBuilder.BuildNewDatabase(databaseName);
-        //    _repository.Add(element.Entity);
-        //    _repository.Save();
+        public DatabaseInfoDto CreateNewDatabase(string databaseName)
+        {
+            if (string.IsNullOrEmpty(databaseName))
+                throw new Exception("Please give correct name to the new created database");
+            var newEntity = BuildNewDatabase(databaseName);
+            _repository.Add(newEntity);
+            _repository.Save();
 
-        //    return element.ToDto();
-        //}
+            return new DatabaseInfoDtoConverter().ToDto(newEntity);
+        }
+
+        private DatabaseInfoEntity BuildNewDatabase(string databaseName)
+        {
+            string infoHash = _hasher.ComputeRandomStringHash(databaseName);
+            string rackHash = _hasher.ComputeRandomStringHash(infoHash + " Default");
+            var dbInfo = new DatabaseInfoEntity()
+            {
+                Hash = infoHash,
+                Name = databaseName,
+                Racks = new List<RackEntity> { new RackEntity
+                {
+                    Hash = rackHash,
+                    Name = "Default",
+                    MountPoints = new List<MountPointEntity>
+                    {
+                        new MountPointEntity
+                        {
+                            Path = _directoryMethods.GetCurrentDirectoryName()
+                        }
+                    }
+                } }
+            };
+            return dbInfo;
+        }
+
 
         //public DatabaseInfoDto PersistDatabase(DatabaseInfoDto dto)
         //{

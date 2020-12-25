@@ -1,8 +1,8 @@
-using Domain.DbEntities;
-using Domain.DbEntities.Maintenance;
 using Microsoft.EntityFrameworkCore;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.DbEntities.Maintenance;
 
-namespace Infrastructure.Databases
+namespace WebGalery.Infrastructure.Databases
 {
     public interface IGaleryDatabase
     {

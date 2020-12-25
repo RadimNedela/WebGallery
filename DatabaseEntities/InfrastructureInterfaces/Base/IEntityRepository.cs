@@ -1,6 +1,6 @@
-using WebGalery.DatabaseEntities;
+using WebGalery.Core.DbEntities;
 
-namespace Domain.Services.InfrastructureInterfaces
+namespace WebGalery.Core.InfrastructureInterfaces.Base
 {
     public interface IEntityRepository<T> where T : IDatabaseEntity
     {

@@ -1,10 +1,8 @@
-﻿using Domain.DbEntities;
-using Domain.DbEntities.Maintenance;
-using Domain.Elements;
-using Infrastructure.Databases;
+﻿using Infrastructure.Databases;
 using System.Collections.Generic;
 using System.Linq;
-using WebGalery.DatabaseEntities.Contents;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.DbEntities.Maintenance;
 
 namespace WebGalery.PictureViewer.Tests
 {

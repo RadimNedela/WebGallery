@@ -1,8 +1,8 @@
-using Microsoft.Extensions.DependencyInjection;
-using Infrastructure.IoC;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using WebGalery.Infrastructure.IoC;
 
-namespace IntegrationTests.IoC
+namespace WebGalery.Infrastructure.Tests.IoC
 {
     internal static class InfrastructureTestsUtils
     {

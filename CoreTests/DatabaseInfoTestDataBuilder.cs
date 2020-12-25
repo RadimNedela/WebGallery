@@ -1,8 +1,8 @@
-﻿using Domain.DbEntities.Maintenance;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using WebGalery.Core.DbEntities.Maintenance;
 
-namespace CoreTests
+namespace WebGalery.Core.Tests
 {
     public class DatabaseInfoTestDataBuilder
     {

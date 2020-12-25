@@ -1,4 +1,4 @@
-﻿namespace Domain.Dtos
+﻿namespace WebGalery.FileImport.Application.Dtos
 {
     public class HashedElementDto
     {

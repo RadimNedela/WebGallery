@@ -1,6 +1,4 @@
-﻿using Domain.Elements;
-
-namespace Domain.Services
+﻿namespace WebGalery.FileImport.Services
 {
     public interface IContentElementsMemoryStorage
     {

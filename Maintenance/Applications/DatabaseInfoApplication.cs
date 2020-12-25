@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Domain.DbEntities.Maintenance;
-using Domain.Dtos.Maintenance;
-using Domain.Services.InfrastructureInterfaces;
-using WebGalery.Maintenance.Services;
+using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Maintenance.Applications.InternalServices;
 
-namespace Application.Maintenance
+namespace WebGalery.Maintenance.Applications
 {
     public class DatabaseInfoApplication
     {

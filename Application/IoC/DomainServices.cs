@@ -1,7 +1,7 @@
-using Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
+using WebGalery.FileImport.Services;
 
-namespace Domain.IoC
+namespace WebGalery.FileImport.IoC
 {
     public static class DomainServices
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Application.Directories
+namespace WebGalery.PictureViewer
 {
     public class BinderApp
     {

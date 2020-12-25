@@ -1,6 +1,6 @@
-﻿using Domain.DbEntities.Maintenance;
+﻿using WebGalery.Core.DbEntities.Maintenance;
 
-namespace Domain.Services
+namespace WebGalery.Maintenance.Services
 {
     public interface IDatabaseInfoProvider
     {

@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Application.Directories;
-using Domain.Dtos;
-using Domain.Dtos.Directories;
-using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using WebGalery.FileImport.Application;
+using WebGalery.FileImport.Application.Dtos;
+using WebGalery.FileImport.Application.Dtos.Directories;
+using WebGalery.FileImport.Services;
 
-namespace WebApplication.Controllers
+namespace WebGalery.WebApplication.Controllers
 {
     [Route("api/[controller]")]
     public class FileImportController : Controller

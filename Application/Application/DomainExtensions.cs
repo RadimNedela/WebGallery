@@ -1,7 +1,6 @@
-﻿using Domain.Dtos;
-using Domain.Elements;
+﻿using WebGalery.FileImport.Application.Dtos;
 
-namespace Application.Directories
+namespace WebGalery.FileImport.Application
 {
     public static class DomainExtensions
     {

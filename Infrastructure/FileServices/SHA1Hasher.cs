@@ -5,10 +5,10 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using Domain.Services.InfrastructureInterfaces;
-using Domain.Services.Logging;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Logging;
 
-namespace Infrastructure.DomainImpl
+namespace WebGalery.Infrastructure.FileServices
 {
     public class SHA1Hasher : IHasher
     {

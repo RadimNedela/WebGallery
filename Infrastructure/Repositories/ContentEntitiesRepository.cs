@@ -1,10 +1,11 @@
 using System.Linq;
-using Domain.DbEntities;
-using Domain.Services.InfrastructureInterfaces;
-using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Infrastructure.Databases;
+using WebGalery.Infrastructure.Repositories.Base;
 
-namespace Infrastructure.DomainImpl
+namespace WebGalery.Infrastructure.Repositories
 {
     public class ContentEntitiesRepository : EntitiesRepository<ContentEntity>, IContentEntityRepository
     {

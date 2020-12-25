@@ -1,4 +1,4 @@
-﻿namespace Application.Directories
+﻿namespace WebGalery.PictureViewer
 {
     public class PictureInfoDto
     {

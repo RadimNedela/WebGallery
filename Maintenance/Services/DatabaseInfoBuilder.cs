@@ -1,9 +1,4 @@
-﻿using Domain.DbEntities.Maintenance;
-using Domain.Dtos.Maintenance;
-using Domain.Elements.Maintenance;
-using Domain.Services.InfrastructureInterfaces;
-
-namespace Domain.Services
+﻿namespace WebGalery.Maintenance.Services
 {
     public class DatabaseInfoBuilder
     {

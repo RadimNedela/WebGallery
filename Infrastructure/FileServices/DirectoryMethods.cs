@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Domain.Services.InfrastructureInterfaces;
+using WebGalery.Core.InfrastructureInterfaces;
 
-namespace Infrastructure.DomainImpl
+namespace WebGalery.Infrastructure.FileServices
 {
     public class DirectoryMethods : IDirectoryMethods
     {

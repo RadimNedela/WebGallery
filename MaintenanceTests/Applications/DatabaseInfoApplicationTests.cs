@@ -1,12 +1,11 @@
-﻿using Application.Maintenance;
-using Domain.Services.InfrastructureInterfaces;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
 using System.Linq;
 using WebGalery.Core.Tests;
-using Domain.DbEntities.Maintenance;
 using System.Collections.Generic;
-using Domain.Dtos.Maintenance;
+using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Maintenance.Applications;
 
 namespace WebGalery.Maintenance.Tests.Applications
 {

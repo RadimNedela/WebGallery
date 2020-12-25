@@ -1,8 +1,7 @@
-using Application.Directories;
-using Application.Maintenance;
 using Microsoft.Extensions.DependencyInjection;
+using WebGalery.FileImport.Application;
 
-namespace Application.IoC
+namespace WebGalery.FileImport.IoC
 {
     public static class ApplicationServices
     {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
-namespace Infrastructure.Databases.MySqlDb
+namespace WebGalery.Infrastructure.Databases.TheDatabase.MySqlDb
 {
     public class MySqlDbContext : GaleryDatabase, IGaleryDatabase
     {

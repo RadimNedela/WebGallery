@@ -1,13 +1,12 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Domain.DbEntities;
-using Domain.DbEntities.Maintenance;
-using Domain.Services.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.Logging;
 
-namespace Infrastructure.Databases
+namespace WebGalery.Infrastructure.Databases.TheDatabase
 {
     public abstract class GaleryDatabase : DbContext
     {

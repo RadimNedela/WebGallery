@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Application.Maintenance;
-using Domain.Dtos.Maintenance;
-using Domain.Services.Logging;
 using Microsoft.AspNetCore.Mvc;
+using WebGalery.Core.Logging;
 
-namespace WebApplication.Controllers
+namespace WebGalery.WebApplication.Controllers
 {
     [Route("api/[controller]")]
     public class MaintenanceController : Controller

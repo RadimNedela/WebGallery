@@ -1,10 +1,10 @@
-using Infrastructure.Databases;
-using IntegrationTests.IoC;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using WebGalery.Infrastructure.Databases;
+using WebGalery.Infrastructure.Tests.IoC;
 
-namespace IntegrationTests.DBTests
+namespace WebGalery.Infrastructure.Tests.Databases
 {
     [TestFixture]
     public class CeateDatabase

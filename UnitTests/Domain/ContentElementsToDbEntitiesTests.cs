@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using Domain.Services;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using WebGalery.FileImport.Services;
 
-namespace UnitTests.Domain
+namespace FileImportTests.Domain
 {
     [TestFixture]
     public class ContentElementsToDbEntitiesTests

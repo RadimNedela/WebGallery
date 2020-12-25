@@ -1,10 +1,9 @@
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebApplication;
-using WebApplication.Controllers;
+using WebGalery.WebApplication;
 
-namespace IntegrationTests.IoC
+namespace WebGalery.IntegrationTests.IoC
 {
     public static class InitializationHelper
     {

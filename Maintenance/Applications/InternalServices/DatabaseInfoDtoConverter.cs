@@ -1,8 +1,7 @@
-﻿using Domain.DbEntities.Maintenance;
-using Domain.Dtos.Maintenance;
-using System.Linq;
+﻿using System.Linq;
+using WebGalery.Core.DbEntities.Maintenance;
 
-namespace WebGalery.Maintenance.Services
+namespace WebGalery.Maintenance.Applications.InternalServices
 {
     internal class DatabaseInfoDtoConverter
     {

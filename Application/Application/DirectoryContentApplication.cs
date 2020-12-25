@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Domain.Dtos;
-using Domain.Dtos.Directories;
-using Domain.Elements;
-using Domain.Services;
-using Domain.Services.InfrastructureInterfaces;
-using Domain.Services.Logging;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Logging;
+using WebGalery.FileImport.Application.Dtos;
+using WebGalery.FileImport.Application.Dtos.Directories;
+using WebGalery.FileImport.Services;
 
-namespace Application.Directories
+namespace WebGalery.FileImport.Application
 {
     public class DirectoryContentApplication
     {

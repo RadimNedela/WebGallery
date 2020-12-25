@@ -1,14 +1,13 @@
-﻿using Domain.DbEntities.Maintenance;
-using Infrastructure.Databases;
-using Infrastructure.DomainImpl;
-using IntegrationTests.IoC;
+﻿using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
+using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.Tests;
+using WebGalery.Infrastructure.Databases;
+using WebGalery.Infrastructure.Repositories;
+using WebGalery.Infrastructure.Tests.IoC;
 
-namespace IntegrationTests.DBTests
+namespace WebGalery.Infrastructure.Tests.Databases
 {
     [TestFixture]
     public class DatabaseMaintenaceTests

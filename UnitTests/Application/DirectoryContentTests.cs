@@ -4,20 +4,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Application.Directories;
-using Domain.Dtos;
-using Domain.Services;
-using Domain.Services.InfrastructureInterfaces;
-using Domain.Services.Logging;
-using Infrastructure.Databases;
-using Infrastructure.DomainImpl;
-using IntegrationTests.IoC;
-using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using NUnit.Framework;
-using WebApplication.Controllers;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Logging;
+using WebGalery.FileImport.Application;
+using WebGalery.FileImport.Application.Dtos;
+using WebGalery.FileImport.Services;
 
-namespace IntegrationTests.Directories
+namespace FileImportTests.Application
 {
     [TestFixture]
     public class DirectoryContentTests

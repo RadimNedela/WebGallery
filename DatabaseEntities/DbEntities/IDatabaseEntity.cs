@@ -1,4 +1,4 @@
-﻿namespace WebGalery.DatabaseEntities
+﻿namespace WebGalery.Core.DbEntities
 {
     public interface IDatabaseEntity
     {

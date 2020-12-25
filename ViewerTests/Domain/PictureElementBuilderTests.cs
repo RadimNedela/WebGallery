@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using WebGalery.DatabaseEntities;
+using WebGalery.Core;
 
 namespace WebGalery.PictureViewer.Tests.Domain
 {

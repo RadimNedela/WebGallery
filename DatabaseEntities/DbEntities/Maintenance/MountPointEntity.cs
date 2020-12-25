@@ -1,6 +1,4 @@
-﻿using WebGalery.DatabaseEntities;
-
-namespace Domain.DbEntities.Maintenance
+﻿namespace WebGalery.Core.DbEntities.Maintenance
 {
     public class MountPointEntity : IDatabaseEntity
     {

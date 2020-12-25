@@ -1,5 +1,4 @@
-﻿using CoreTests;
-using Domain.DbEntities.Maintenance;
+﻿using WebGalery.Core.DbEntities.Maintenance;
 
 namespace WebGalery.Core.Tests
 {

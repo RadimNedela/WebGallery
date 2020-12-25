@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Services.Logging
+namespace WebGalery.Core.Logging
 {
     public interface ISimpleLogger
     {

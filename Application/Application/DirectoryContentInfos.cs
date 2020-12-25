@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Domain.Services;
+using WebGalery.FileImport.Services;
 
-namespace Application.Directories
+namespace WebGalery.FileImport.Application
 {
     public static class DirectoryContentInfos
     {

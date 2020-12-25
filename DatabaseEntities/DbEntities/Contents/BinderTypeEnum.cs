@@ -1,4 +1,4 @@
-﻿namespace Domain.Elements
+﻿namespace WebGalery.Core.DbEntities.Contents
 {
     public enum BinderTypeEnum
     {

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Domain.DbEntities.Maintenance;
-using Domain.Services.InfrastructureInterfaces;
-using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
+using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Infrastructure.Databases;
+using WebGalery.Infrastructure.Repositories.Base;
 
-namespace Infrastructure.DomainImpl
+namespace WebGalery.Infrastructure.Repositories
 {
     public class DatabaseInfoRepository : EntitiesRepository<DatabaseInfoEntity>, IDatabaseInfoEntityRepository
     {

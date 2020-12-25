@@ -1,7 +1,7 @@
-using Domain.Elements;
-using Domain.Services.InfrastructureInterfaces;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.InfrastructureInterfaces;
 
-namespace Domain.Services
+namespace WebGalery.FileImport.Services
 {
     public class DirectoryContentBuilder
     {

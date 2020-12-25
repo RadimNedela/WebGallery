@@ -1,4 +1,4 @@
-namespace Domain.Services.InfrastructureInterfaces
+namespace WebGalery.Core.InfrastructureInterfaces
 {
     public interface IHasher
     {

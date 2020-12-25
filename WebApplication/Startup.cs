@@ -1,16 +1,15 @@
 using System.Reflection;
-using Application.IoC;
-using Domain.IoC;
-using Domain.Services.Logging;
-using Infrastructure.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebGalery.Core.Logging;
+using WebGalery.FileImport.IoC;
+using WebGalery.Infrastructure.IoC;
 
-namespace WebApplication
+namespace WebGalery.WebApplication
 {
     public class Startup
     {

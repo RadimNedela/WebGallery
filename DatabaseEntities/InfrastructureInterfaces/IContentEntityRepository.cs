@@ -1,6 +1,7 @@
-using Domain.DbEntities;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.InfrastructureInterfaces.Base;
 
-namespace Domain.Services.InfrastructureInterfaces
+namespace WebGalery.Core.InfrastructureInterfaces
 {
     public interface IContentEntityRepository : IEntityRepository<ContentEntity>
     {

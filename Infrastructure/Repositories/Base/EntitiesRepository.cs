@@ -1,8 +1,8 @@
-using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
-using WebGalery.DatabaseEntities;
+using WebGalery.Core.DbEntities;
+using WebGalery.Infrastructure.Databases;
 
-namespace Infrastructure.DomainImpl
+namespace WebGalery.Infrastructure.Repositories.Base
 {
     public abstract class EntitiesRepository<T> where T: class, IDatabaseEntity
     {

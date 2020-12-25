@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using Domain.DbEntities.Maintenance;
-using WebGalery.DatabaseEntities;
+using WebGalery.Core.DbEntities.Maintenance;
 
-namespace Domain.DbEntities
+namespace WebGalery.Core.DbEntities.Contents
 {
     public class BinderEntity : IDatabaseEntity
     {

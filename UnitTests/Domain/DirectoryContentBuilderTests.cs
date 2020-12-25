@@ -1,12 +1,10 @@
-using System.Linq;
-using Domain.Elements;
-using Domain.Services;
-using Domain.Services.InfrastructureInterfaces;
 using NSubstitute;
 using NUnit.Framework;
-using WebGalery.DatabaseEntities.Contents;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.FileImport.Services;
 
-namespace UnitTests.Domain
+namespace FileImportTests.Domain
 {
     [TestFixture]
     public class DirectoryContentBuilderTests

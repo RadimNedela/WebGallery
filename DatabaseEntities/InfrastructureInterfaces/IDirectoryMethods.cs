@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Domain.Services.InfrastructureInterfaces
+namespace WebGalery.Core.InfrastructureInterfaces
 {
     public interface IDirectoryMethods
     {

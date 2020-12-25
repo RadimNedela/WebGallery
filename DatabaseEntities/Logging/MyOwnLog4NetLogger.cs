@@ -6,7 +6,7 @@ using log4net;
 using log4net.Config;
 using log4net.Repository;
 
-namespace Domain.Services.Logging
+namespace WebGalery.Core.Logging
 {
     public class MyOwnLog4NetLogger : ISimpleLogger
     {

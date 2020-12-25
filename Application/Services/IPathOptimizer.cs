@@ -1,6 +1,4 @@
-﻿using Domain.Elements.Maintenance;
-
-namespace Domain.Services
+﻿namespace WebGalery.FileImport.Services
 {
     public interface IPathOptimizer
     {

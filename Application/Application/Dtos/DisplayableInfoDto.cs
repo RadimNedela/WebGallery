@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Domain.Dtos
+namespace WebGalery.FileImport.Application.Dtos
 {
     public class DisplayableInfoDto
     {

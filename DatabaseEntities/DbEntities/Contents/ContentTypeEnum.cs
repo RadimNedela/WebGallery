@@ -1,4 +1,4 @@
-﻿namespace WebGalery.DatabaseEntities.Contents
+﻿namespace WebGalery.Core.DbEntities.Contents
 {
     public enum ContentTypeEnum
     {

@@ -1,6 +1,6 @@
-﻿using Domain.DbEntities.Maintenance;
+﻿using WebGalery.Core.DbEntities.Maintenance;
 
-namespace CoreTests
+namespace WebGalery.Core.Tests
 {
     public class MountPointTestDataBuilder
     {

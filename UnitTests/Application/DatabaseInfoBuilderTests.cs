@@ -1,13 +1,10 @@
-﻿using System.Linq;
-using System.Reflection;
-using Domain.Elements.Maintenance;
-using Domain.Services;
-using Domain.Services.InfrastructureInterfaces;
-using Domain.Services.Logging;
+﻿using System.Reflection;
 using NSubstitute;
 using NUnit.Framework;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Logging;
 
-namespace UnitTests.Application
+namespace FileImportTests.Application
 {
     [TestFixture]
     public class DatabaseInfoBuilderTests

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Databases.SqlServer
+namespace WebGalery.Infrastructure.Databases.TheDatabase.SqlServer
 {
     public class SqlServerDbContext : GaleryDatabase, IGaleryDatabase
     {

@@ -1,4 +1,4 @@
-﻿namespace WebGalery.DatabaseEntities
+﻿namespace WebGalery.Core
 {
     public interface IUserInfo
     {

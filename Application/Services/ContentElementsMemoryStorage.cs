@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Domain.Elements;
 
-namespace Domain.Services
+namespace WebGalery.FileImport.Services
 {
     public class ContentElementsMemoryStorage : IContentElementsMemoryStorage
     {

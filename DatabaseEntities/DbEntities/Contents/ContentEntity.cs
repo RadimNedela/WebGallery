@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using WebGalery.DatabaseEntities;
 
-namespace Domain.DbEntities
+namespace WebGalery.Core.DbEntities.Contents
 {
     public class ContentEntity : IDatabaseEntity
     {

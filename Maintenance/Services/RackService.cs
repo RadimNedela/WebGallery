@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Domain.DbEntities.Maintenance;
-using Domain.Dtos.Maintenance;
-using Domain.Services.InfrastructureInterfaces;
-
-namespace Domain.Elements.Maintenance
+﻿namespace WebGalery.Maintenance.Services
 {
     public class RackService
     {

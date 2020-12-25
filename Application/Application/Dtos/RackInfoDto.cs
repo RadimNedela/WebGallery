@@ -1,6 +1,6 @@
-﻿using Domain.Dtos.Directories;
+﻿using WebGalery.FileImport.Application.Dtos.Directories;
 
-namespace Domain.Dtos
+namespace WebGalery.FileImport.Application.Dtos
 {
     public class RackInfoDto
     {

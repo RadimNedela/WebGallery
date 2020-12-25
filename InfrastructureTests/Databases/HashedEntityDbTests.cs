@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using Domain.DbEntities;
-using Infrastructure.Databases;
-using Infrastructure.DomainImpl;
-using IntegrationTests.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Infrastructure.Databases;
+using WebGalery.Infrastructure.Repositories;
+using WebGalery.Infrastructure.Tests.IoC;
 
-namespace IntegrationTests.DBTests
+namespace WebGalery.Infrastructure.Tests.Databases
 {
     [TestFixture]
     public class HashedEntityDbTests

@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using Domain.Elements.Maintenance;
-using Domain.Services.InfrastructureInterfaces;
-
-namespace Domain.Services
+﻿namespace WebGalery.Maintenance.Services
 {
     public class DatabaseInfoProvider //: IDatabaseInfoProvider, IDatabaseInfoInitializer
     {

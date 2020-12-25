@@ -1,6 +1,4 @@
-﻿using WebGalery.DatabaseEntities;
-
-namespace Domain.DbEntities
+﻿namespace WebGalery.Core.DbEntities.Contents
 {
     public class BinderEntityToContentEntity : IDatabaseEntity
     {

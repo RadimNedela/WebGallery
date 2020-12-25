@@ -1,13 +1,14 @@
 using System;
-using Domain.Services.InfrastructureInterfaces;
-using Infrastructure.Databases;
-using Infrastructure.Databases.MySqlDb;
-using Infrastructure.Databases.SqlServer;
-using Infrastructure.DomainImpl;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Infrastructure.Databases;
+using WebGalery.Infrastructure.Databases.TheDatabase.MySqlDb;
+using WebGalery.Infrastructure.Databases.TheDatabase.SqlServer;
+using WebGalery.Infrastructure.FileServices;
+using WebGalery.Infrastructure.Repositories;
 
-namespace Infrastructure.IoC
+namespace WebGalery.Infrastructure.IoC
 {
     public static class InfrastructureServices
     {

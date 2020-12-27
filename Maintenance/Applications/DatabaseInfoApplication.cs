@@ -67,15 +67,16 @@ namespace WebGalery.Maintenance.Applications
             return dbInfo;
         }
 
+        public DatabaseInfoDto UpdateDatabase(DatabaseInfoDto dto)
+        {
+            var dbEntity = _repository.Get(dto.Hash);
+            var converter = new DatabaseInfoDtoConverter();
+            converter.Merge(dbEntity, dto);
 
-        //public DatabaseInfoDto PersistDatabase(DatabaseInfoDto dto)
-        //{
-        //    var element = _infoBuilder.Create(dto);
+            _repository.Save();
 
-        //    _repository.Save();
-
-        //    return element.ToDto();
-        //}
+            return converter.ToDto(dbEntity);
+        }
 
         //public DatabaseInfoDto AddNewRack(DatabaseInfoDto dto)
         //{

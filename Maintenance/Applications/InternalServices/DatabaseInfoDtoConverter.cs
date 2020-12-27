@@ -26,5 +26,10 @@ namespace WebGalery.Maintenance.Applications.InternalServices
             };
             return dto;
         }
+
+        public void Merge(DatabaseInfoEntity dbEntity, DatabaseInfoDto dto)
+        {
+            
+        }
     }
 }

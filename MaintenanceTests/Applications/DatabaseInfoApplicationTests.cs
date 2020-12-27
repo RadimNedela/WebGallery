@@ -64,5 +64,12 @@ namespace WebGalery.Maintenance.Tests.Applications
             Assert.That(rack.Name, Contains.Substring("Default"));
             Assert.That(rack.Hash, Contains.Substring("Default Random Hash"));
         }
+
+        [Test]
+        public void UpdateDatabase_MergesTheDto()
+        {
+            var application = CreateSut();
+
+        }
     }
 }

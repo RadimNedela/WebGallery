@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
-using WebGalery.Maintenance.Applications.InternalServices;
+using WebGalery.Maintenance.Domain;
 
 namespace WebGalery.Maintenance.Applications
 {
     public class DatabaseInfoApplication
     {
         private readonly IDatabaseInfoEntityRepository _repository;
-        private readonly IDirectoryMethods _directoryMethods;
-        private readonly IHasher _hasher;
+        private readonly DatabaseInfoHandler _databaseInfoHandler;
 
         public DatabaseInfoApplication(
             IDatabaseInfoEntityRepository repository,
@@ -19,8 +18,7 @@ namespace WebGalery.Maintenance.Applications
             IHasher hasher)
         {
             _repository = repository;
-            _directoryMethods = directoryMethods;
-            _hasher = hasher;
+            _databaseInfoHandler = new DatabaseInfoHandler(directoryMethods, hasher);
         }
 
         public IEnumerable<DatabaseInfoDto> GetAllDatabases()
@@ -36,24 +34,11 @@ namespace WebGalery.Maintenance.Applications
         {
             if (string.IsNullOrEmpty(databaseName))
                 throw new Exception("Please give correct name to the new created database");
-            var newEntity = BuildNewDatabase(databaseName);
+            var newEntity = _databaseInfoHandler.BuildNewDatabase(databaseName);
             _repository.Add(newEntity);
             _repository.Save();
 
             return new DatabaseInfoDtoConverter().ToDto(newEntity);
-        }
-
-        private DatabaseInfoEntity BuildNewDatabase(string databaseName)
-        {
-            string infoHash = _hasher.ComputeRandomStringHash(databaseName);
-            var dbInfo = new DatabaseInfoEntity()
-            {
-                Hash = infoHash,
-                Name = databaseName,
-                Racks = new List<RackEntity>()
-            };
-            AddNewRack(dbInfo);
-            return dbInfo;
         }
 
         public DatabaseInfoDto UpdateDatabaseNames(DatabaseInfoDto dto)
@@ -70,42 +55,20 @@ namespace WebGalery.Maintenance.Applications
         public DatabaseInfoDto AddNewRack(DatabaseInfoDto dto)
         {
             var dbEntity = _repository.Get(dto.Hash);
-            AddNewRack(dbEntity);
+            _databaseInfoHandler.AddNewRack(dbEntity);
             _repository.Save();
             return new DatabaseInfoDtoConverter().ToDto(dbEntity);
-        }
-
-        private void AddNewRack(DatabaseInfoEntity dbInfo)
-        {
-            string rackHash = _hasher.ComputeRandomStringHash(dbInfo.Hash + "Default");
-            var rackEntity = new RackEntity
-            {
-                Hash = rackHash,
-                Name = "Default",
-                MountPoints = new List<MountPointEntity>()
-            };
-            AddNewMountPoint(rackEntity);
-            dbInfo.Racks.Add(rackEntity);
         }
 
         public DatabaseInfoDto AddNewMountPoint(string databaseHash, string rackHash)
         {
             var infoEntity = _repository.Get(databaseHash);
             var rack = infoEntity.Racks.First(r => r.Hash == rackHash);
-            AddNewMountPoint(rack);
+            _databaseInfoHandler.AddNewMountPoint(rack);
 
             _repository.Save();
 
             return new DatabaseInfoDtoConverter().ToDto(infoEntity);
-        }
-
-        private void AddNewMountPoint(RackEntity rackEntity)
-        {
-            var mountPoint = new MountPointEntity
-            {
-                Path = _directoryMethods.GetCurrentDirectoryName()
-            };
-            rackEntity.MountPoints.Add(mountPoint);
         }
     }
 }

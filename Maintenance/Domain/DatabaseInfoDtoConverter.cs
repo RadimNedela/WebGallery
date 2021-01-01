@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Maintenance.Applications;
 
-namespace WebGalery.Maintenance.Applications.InternalServices
+namespace WebGalery.Maintenance.Domain
 {
     internal class DatabaseInfoDtoConverter
     {

@@ -29,7 +29,16 @@ namespace WebGalery.Maintenance.Applications.InternalServices
 
         public void Merge(DatabaseInfoEntity dbEntity, DatabaseInfoDto dto)
         {
-            
+            dbEntity.Name = dto.Name;
+            foreach (var rack in dbEntity.Racks)
+            {
+                var newRack = dto.Racks.First(nr => nr.Hash == rack.Hash);
+                rack.Name = newRack.Name;
+                for (var i=0; i<rack.MountPoints.Count; i++)
+                {
+                    rack.MountPoints[i].Path = newRack.MountPoints[i];
+                }
+            }
         }
     }
 }

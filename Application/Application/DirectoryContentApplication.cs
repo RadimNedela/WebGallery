@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.Application.Dtos;
@@ -143,5 +144,11 @@ namespace WebGalery.FileImport.Application
 
             Log.End($"{nameof(PersistDirectoryContent)}.{directoryBinder}");
         }
+    }
+
+    public interface IDatabaseInfoProvider
+    {
+        DatabaseInfoEntity CurrentDatabaseInfo { get; }
+        RackEntity CurrentRack { get; }
     }
 }

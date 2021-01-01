@@ -46,28 +46,17 @@ namespace WebGalery.Maintenance.Applications
         private DatabaseInfoEntity BuildNewDatabase(string databaseName)
         {
             string infoHash = _hasher.ComputeRandomStringHash(databaseName);
-            string rackHash = _hasher.ComputeRandomStringHash(infoHash + " Default");
             var dbInfo = new DatabaseInfoEntity()
             {
                 Hash = infoHash,
                 Name = databaseName,
-                Racks = new List<RackEntity> { new RackEntity
-                {
-                    Hash = rackHash,
-                    Name = "Default",
-                    MountPoints = new List<MountPointEntity>
-                    {
-                        new MountPointEntity
-                        {
-                            Path = _directoryMethods.GetCurrentDirectoryName()
-                        }
-                    }
-                } }
+                Racks = new List<RackEntity>()
             };
+            AddNewRack(dbInfo);
             return dbInfo;
         }
 
-        public DatabaseInfoDto UpdateDatabase(DatabaseInfoDto dto)
+        public DatabaseInfoDto UpdateDatabaseNames(DatabaseInfoDto dto)
         {
             var dbEntity = _repository.Get(dto.Hash);
             var converter = new DatabaseInfoDtoConverter();
@@ -78,29 +67,45 @@ namespace WebGalery.Maintenance.Applications
             return converter.ToDto(dbEntity);
         }
 
-        //public DatabaseInfoDto AddNewRack(DatabaseInfoDto dto)
-        //{
-        //    return AddNewRack(dto.Hash, "Default", _directoryMethods.GetCurrentDirectoryName());
-        //}
+        public DatabaseInfoDto AddNewRack(DatabaseInfoDto dto)
+        {
+            var dbEntity = _repository.Get(dto.Hash);
+            AddNewRack(dbEntity);
+            _repository.Save();
+            return new DatabaseInfoDtoConverter().ToDto(dbEntity);
+        }
 
-        //public DatabaseInfoDto AddNewRack(string databaseHash, string name, string initialMountPointPath)
-        //{
-        //    var element = _infoBuilder.GetDatabase(databaseHash);
-        //    element.AddNewRack(name, initialMountPointPath);
-        //    _repository.Save();
+        private void AddNewRack(DatabaseInfoEntity dbInfo)
+        {
+            string rackHash = _hasher.ComputeRandomStringHash(dbInfo.Hash + "Default");
+            var rackEntity = new RackEntity
+            {
+                Hash = rackHash,
+                Name = "Default",
+                MountPoints = new List<MountPointEntity>()
+            };
+            AddNewMountPoint(rackEntity);
+            dbInfo.Racks.Add(rackEntity);
+        }
 
-        //    return element.ToDto();
-        //}
+        public DatabaseInfoDto AddNewMountPoint(string databaseHash, string rackHash)
+        {
+            var infoEntity = _repository.Get(databaseHash);
+            var rack = infoEntity.Racks.First(r => r.Hash == rackHash);
+            AddNewMountPoint(rack);
 
-        //public object AddNewMountPoint(string databaseHash, string rackHash)
-        //{
-        //    var database = _infoBuilder.GetDatabase(databaseHash);
-        //    var rack = database.Racks.First(r => r.Hash == rackHash);
-        //    rack.AddMountPoint(_directoryMethods.GetCurrentDirectoryName());
+            _repository.Save();
 
-        //    _repository.Save();
+            return new DatabaseInfoDtoConverter().ToDto(infoEntity);
+        }
 
-        //    return database.ToDto();
-        //}
+        private void AddNewMountPoint(RackEntity rackEntity)
+        {
+            var mountPoint = new MountPointEntity
+            {
+                Path = _directoryMethods.GetCurrentDirectoryName()
+            };
+            rackEntity.MountPoints.Add(mountPoint);
+        }
     }
 }

@@ -15,7 +15,9 @@ namespace WebGalery.Maintenance.Tests.Applications
         private DatabaseInfoApplication CreateSut()
         {
             IDatabaseInfoEntityRepository repository = Substitute.For<IDatabaseInfoEntityRepository>();
-            repository.GetAll().Returns(new List<DatabaseInfoEntity> { MaintenanceTestData.CreateTestDatabase() });
+            var testDatabase = MaintenanceTestData.CreateTestDatabase();
+            repository.GetAll().Returns(new List<DatabaseInfoEntity> { testDatabase });
+            repository.Get(testDatabase.Hash).Returns(testDatabase);
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
             IHasher hasher = Substitute.For<IHasher>();
             hasher.ComputeRandomStringHash(Arg.Any<string>()).Returns(a => a.ArgAt<string>(0) + " Random Hash");
@@ -47,7 +49,7 @@ namespace WebGalery.Maintenance.Tests.Applications
         public void CreateNewDatabase_WillReturnNewDatabase()
         {
             var application = CreateSut();
-            
+
             var retVal = application.CreateNewDatabase("New database name");
 
             Assert.That(retVal.Name, Contains.Substring("New database name"));
@@ -66,10 +68,48 @@ namespace WebGalery.Maintenance.Tests.Applications
         }
 
         [Test]
-        public void UpdateDatabase_MergesTheDto()
+        public void UpdateDatabase_ChangedNameFields_ReturnsSameContentDto()
         {
             var application = CreateSut();
+            DatabaseInfoDto dto = application.GetAllDatabases().First();
 
+            dto.Name = "New test database name";
+            var rack = dto.Racks.First();
+            rack.Name = "New test database first rack name";
+            rack.MountPoints[0] = @"z:\NewMountPoint";
+
+            var updated = application.UpdateDatabaseNames(dto);
+            Assert.That(updated.Name, Is.EqualTo("New test database name"));
+            Assert.That(updated.Racks.First().Name, Is.EqualTo("New test database first rack name"));
+            Assert.That(updated.Racks.First().MountPoints[0], Is.EqualTo(@"z:\NewMountPoint"));
+            Assert.That(updated.Racks.First().MountPoints[1], Is.EqualTo(@"/tmp"), "Second mount point was not changed, it should stay as it was");
+        }
+
+        [Test]
+        public void CreateNewRack_WillCreateIt()
+        {
+            var application = CreateSut();
+            DatabaseInfoDto dto = application.GetAllDatabases().First();
+
+            var updated = application.AddNewRack(dto);
+
+            Assert.That(updated.Racks.Count, Is.EqualTo(3));
+            var rack = updated.Racks.Last();
+            Assert.That(rack.Name, Contains.Substring("Default"));
+            Assert.That(rack.Hash, Contains.Substring("Default Random Hash"));
+        }
+
+        [Test]
+        public void AddNewMountPoint_WillAdd()
+        {
+            var application = CreateSut();
+            DatabaseInfoDto dto = application.GetAllDatabases().First();
+            var rack = dto.Racks.First();
+
+            var updated = application.AddNewMountPoint(dto.Hash, rack.Hash);
+
+            var updatedRack = updated.Racks.First(r => r.Hash == rack.Hash);
+            Assert.That(updatedRack.MountPoints.Count, Is.EqualTo(3));
         }
     }
 }

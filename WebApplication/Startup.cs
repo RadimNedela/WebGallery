@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WebGalery.Core.Logging;
-using WebGalery.FileImport.IoC;
 using WebGalery.Infrastructure.IoC;
+using WebGalery.Maintenance.Applications;
 
 namespace WebGalery.WebApplication
 {
@@ -26,8 +26,11 @@ namespace WebGalery.WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.RegisterApplications();
-            services.RegisterDomainServices();
+
+            //services.AddScoped<DirectoryContentApplication>();
+            services.AddScoped<DatabaseInfoApplication>();
+
+            //services.RegisterDomainServices();
             services.RegisterInfrastructureServices(Configuration);
         }
 

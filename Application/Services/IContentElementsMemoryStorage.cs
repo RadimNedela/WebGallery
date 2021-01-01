@@ -2,7 +2,7 @@
 {
     public interface IContentElementsMemoryStorage
     {
-        void Add(ContentElement element);
-        ContentElement Get(string hash);
+        //void Add(ContentElement element);
+        //ContentElement Get(string hash);
     }
 }

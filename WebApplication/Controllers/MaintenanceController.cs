@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using WebGalery.Core.Logging;
+using WebGalery.Maintenance.Applications;
 
 namespace WebGalery.WebApplication.Controllers
 {
@@ -34,7 +35,7 @@ namespace WebGalery.WebApplication.Controllers
         public IEnumerable<DatabaseInfoDto> SaveDatabase(DatabaseInfoDto databaseDto)
         {
             Log.Info($"{nameof(SaveDatabase)} {databaseDto}");
-            _databaseInfoApplication.PersistDatabase(databaseDto);
+            _databaseInfoApplication.UpdateDatabaseNames(databaseDto);
             return Get();
         }
 

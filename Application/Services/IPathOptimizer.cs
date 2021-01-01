@@ -2,7 +2,7 @@
 {
     public interface IPathOptimizer
     {
-        string CreateValidSubpathAccordingToCurrentConfiguration(string fullPath);
-        RackElement Rack { get; }
+        //string CreateValidSubpathAccordingToCurrentConfiguration(string fullPath);
+        //RackElement Rack { get; }
     }
 }

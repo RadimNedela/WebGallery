@@ -7,8 +7,6 @@ namespace WebGalery.FileImport.IoC
     {
         public static void RegisterApplications(this IServiceCollection services)
         {
-            services.AddScoped<DirectoryContentApplication>();
-            services.AddScoped<DatabaseInfoApplication>();
         }
     }
 }

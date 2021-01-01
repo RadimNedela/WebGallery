@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Maintenance.Domain;
 
@@ -10,7 +9,7 @@ namespace WebGalery.Maintenance.Applications
     public class DatabaseInfoApplication
     {
         private readonly IDatabaseInfoEntityRepository _repository;
-        private readonly DatabaseInfoHandler _databaseInfoHandler;
+        private readonly DatabaseInfo _databaseInfoHandler;
 
         public DatabaseInfoApplication(
             IDatabaseInfoEntityRepository repository,
@@ -18,7 +17,7 @@ namespace WebGalery.Maintenance.Applications
             IHasher hasher)
         {
             _repository = repository;
-            _databaseInfoHandler = new DatabaseInfoHandler(directoryMethods, hasher);
+            _databaseInfoHandler = new DatabaseInfo(directoryMethods, hasher);
         }
 
         public IEnumerable<DatabaseInfoDto> GetAllDatabases()

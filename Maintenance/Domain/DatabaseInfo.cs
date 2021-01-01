@@ -4,12 +4,12 @@ using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Maintenance.Domain
 {
-    public class DatabaseInfoHandler
+    public class DatabaseInfo
     {
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
 
-        public DatabaseInfoHandler(IDirectoryMethods directoryMethods, IHasher hasher)
+        public DatabaseInfo(IDirectoryMethods directoryMethods, IHasher hasher)
         {
             _directoryMethods = directoryMethods;
             _hasher = hasher;

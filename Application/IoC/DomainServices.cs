@@ -8,12 +8,12 @@ namespace WebGalery.FileImport.IoC
         public static void RegisterDomainServices(this IServiceCollection services)
         {
             services.AddScoped<DirectoryContentBuilder>();
-            services.AddSingleton<IDatabaseInfoElementRepository, DatabaseInfoMemoryStorage2>();
-            services.AddSingleton<DatabaseInfoBuilder>();
-            services.AddScoped<IPathOptimizer, PathOptimizer>();
-            services.AddScoped<DatabaseInfoProvider>();
-            services.AddScoped<IDatabaseInfoProvider>(s => s.GetService<DatabaseInfoProvider>());
-            services.AddScoped<IDatabaseInfoInitializer>(s => s.GetService<DatabaseInfoProvider>());
+            //services.AddSingleton<IDatabaseInfoElementRepository, DatabaseInfoMemoryStorage2>();
+            //services.AddSingleton<DatabaseInfoBuilder>();
+            //services.AddScoped<IPathOptimizer, PathOptimizer>();
+            //services.AddScoped<DatabaseInfoProvider>();
+            //services.AddScoped<IDatabaseInfoProvider>(s => s.GetService<DatabaseInfoProvider>());
+            //services.AddScoped<IDatabaseInfoInitializer>(s => s.GetService<DatabaseInfoProvider>());
             services.AddSingleton<IContentElementsMemoryStorage, ContentElementsMemoryStorage>();
         }
     }

@@ -22,45 +22,46 @@ namespace WebGalery.FileImport.Services
             _pathOptimizer = pathOptimizer;
         }
 
-        public BinderElement GetDirectoryContent(DirectoryContentThreadInfo info)
+        public object GetDirectoryContent(DirectoryContentThreadInfo info)
         {
-            info.FileNames = _directoryMethods.GetFileNames(info.FullPath);
-            info.DirNames = _directoryMethods.GetDirectories(info.FullPath);
-            BinderElement directoryBinder = CreateDirectoryBinder(info.FullPath);
-            foreach (var fn in info.FileNames)
-            {
-                CreateFileContentElement(fn, directoryBinder);
-                info.FilesDone++;
-            }
-            foreach (var dn in info.DirNames)
-            {
-                directoryBinder.AddBinder(CreateDirectoryBinder(dn));
-            }
+            return null;
+            //info.FileNames = _directoryMethods.GetFileNames(info.FullPath);
+            //info.DirNames = _directoryMethods.GetDirectories(info.FullPath);
+            //BinderElement directoryBinder = CreateDirectoryBinder(info.FullPath);
+            //foreach (var fn in info.FileNames)
+            //{
+            //    CreateFileContentElement(fn, directoryBinder);
+            //    info.FilesDone++;
+            //}
+            //foreach (var dn in info.DirNames)
+            //{
+            //    directoryBinder.AddBinder(CreateDirectoryBinder(dn));
+            //}
 
-            return directoryBinder;
+            //return directoryBinder;
         }
 
-        private void CreateFileContentElement(string path, BinderElement directoryBinder)
-        {
-            var hash = _hasher.ComputeFileContentHash(path);
+        //private void CreateFileContentElement(string path, BinderElement directoryBinder)
+        //{
+        //    var hash = _hasher.ComputeFileContentHash(path);
 
-            var theElement = _elementsMemoryStorage.Get(hash);
+        //    var theElement = _elementsMemoryStorage.Get(hash);
 
-            if (theElement == null)
-            {
-                theElement = new ContentElement(hash, directoryBinder, path);
-                _elementsMemoryStorage.Add(theElement);
-            }
-            else
-            {
-                theElement.AddLastSeenFilePosition(path, directoryBinder);
-            }
-        }
+        //    if (theElement == null)
+        //    {
+        //        theElement = new ContentElement(hash, directoryBinder, path);
+        //        _elementsMemoryStorage.Add(theElement);
+        //    }
+        //    else
+        //    {
+        //        theElement.AddLastSeenFilePosition(path, directoryBinder);
+        //    }
+        //}
 
-        private BinderElement CreateDirectoryBinder(string path)
-        {
-            string subpath = _pathOptimizer.CreateValidSubpathAccordingToCurrentConfiguration(path);
-            return new BinderElement(_pathOptimizer.Rack, _hasher.ComputeStringHash(subpath), BinderTypeEnum.DirectoryType, subpath);
-        }
+        //private BinderElement CreateDirectoryBinder(string path)
+        //{
+        //    string subpath = _pathOptimizer.CreateValidSubpathAccordingToCurrentConfiguration(path);
+        //    return new BinderElement(_pathOptimizer.Rack, _hasher.ComputeStringHash(subpath), BinderTypeEnum.DirectoryType, subpath);
+        //}
     }
 }

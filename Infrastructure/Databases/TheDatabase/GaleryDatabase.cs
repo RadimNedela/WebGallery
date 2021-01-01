@@ -53,7 +53,7 @@ namespace WebGalery.Infrastructure.Databases.TheDatabase
             modelBuilder.Entity<MountPointEntity>(entity =>
             {
                 entity.ToTable("MountPoint");
-                entity.HasKey(mpe => new { mpe.RackHash, mpe.Path});
+                //entity.HasKey(mpe => new { mpe.RackHash, mpe.Path});
                 entity.Property(re => re.Path).HasMaxLength(200);
                 entity.Property(re => re.RackHash).IsRequired();
             });

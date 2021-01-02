@@ -36,23 +36,22 @@ namespace WebGalery.FileImport.Application
 
         public RackInfoDto GetCurrentRackInfo()
         {
-            return null;
-            //var db = _databaseInfoProvider.CurrentDatabaseHash;
-            //var rack = _databaseInfoProvider.CurrentRackHash;
-            //var activeDirectory = GetActiveDirectory(rack.MountPoints);
+            var db = _databaseInfoProvider.CurrentDatabaseHash;
+            var rack = _databaseInfoProvider.CurrentRackHash;
+            var activeDirectory = GetActiveDirectory(rack.MountPoints);
 
-            //var retVal = new RackInfoDto
-            //{
-            //    ActiveDatabaseName = db.Name,
-            //    ActiveDatabaseHash = db.Hash,
-            //    ActiveRackName = rack.Name,
-            //    ActiveRackHash = rack.Hash,
-            //    ActiveDirectory = activeDirectory,
-            //    DirectoryInfo = GetSubDirectoryInfo(".")
-            //};
+            var retVal = new RackInfoDto
+            {
+                ActiveDatabaseName = db.Name,
+                ActiveDatabaseHash = db.Hash,
+                ActiveRackName = rack.Name,
+                ActiveRackHash = rack.Hash,
+                ActiveDirectory = activeDirectory,
+                DirectoryInfo = GetSubDirectoryInfo(".")
+            };
 
 
-            //return retVal;
+            return retVal;
         }
 
         public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)

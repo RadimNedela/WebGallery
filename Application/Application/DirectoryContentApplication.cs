@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.Application.Dtos;
@@ -18,11 +18,11 @@ namespace WebGalery.FileImport.Application
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly DirectoryContentBuilder _directoryContentBuilder;
         private readonly IContentEntityRepository _contentRepository;
-        private readonly IDatabaseInfoProvider _databaseInfoProvider;
+        private readonly IGalerySession _databaseInfoProvider;
         private readonly IDirectoryMethods _directoryMethods;
 
         public DirectoryContentApplication(
-            IDatabaseInfoProvider databaseInfoProvider,
+            IGalerySession databaseInfoProvider,
             DirectoryContentBuilder directoryContentBuilder,
             IContentEntityRepository contentRepository,
             IDirectoryMethods directoryMethods)
@@ -36,8 +36,8 @@ namespace WebGalery.FileImport.Application
         public RackInfoDto GetCurrentRackInfo()
         {
             return null;
-            //var db = _databaseInfoProvider.CurrentDatabaseInfo;
-            //var rack = _databaseInfoProvider.CurrentRack;
+            //var db = _databaseInfoProvider.CurrentDatabaseHash;
+            //var rack = _databaseInfoProvider.CurrentRackHash;
             //var activeDirectory = GetActiveDirectory(rack.MountPoints);
 
             //var retVal = new RackInfoDto
@@ -149,11 +149,5 @@ namespace WebGalery.FileImport.Application
 
         //    Log.End($"{nameof(PersistDirectoryContent)}.{directoryBinder}");
         //}
-    }
-
-    public interface IDatabaseInfoProvider
-    {
-        DatabaseInfoEntity CurrentDatabaseInfo { get; }
-        RackEntity CurrentRack { get; }
     }
 }

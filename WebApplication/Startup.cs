@@ -7,7 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WebGalery.Core.Logging;
 using WebGalery.Infrastructure.IoC;
-using WebGalery.Maintenance.Applications;
+using WebGalery.Maintenance.IoC;
+using WebGalery.SessionHandling.IoC;
 
 namespace WebGalery.WebApplication
 {
@@ -25,13 +26,14 @@ namespace WebGalery.WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.RegisterSessionHandling();
+            services.RegisterMaintenance();
+            //services.RegisterDomainServices();
+            services.RegisterInfrastructureServices(Configuration);
+
             services.AddControllersWithViews();
 
             //services.AddScoped<DirectoryContentApplication>();
-            services.AddScoped<DatabaseInfoApplication>();
-
-            //services.RegisterDomainServices();
-            services.RegisterInfrastructureServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

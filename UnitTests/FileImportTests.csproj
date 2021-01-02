@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\FileImport.csproj" />
+    <ProjectReference Include="..\DatabaseEntities\Core.csproj" />
   </ItemGroup>
 
 </Project>

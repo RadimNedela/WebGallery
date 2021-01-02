@@ -21,7 +21,5 @@ namespace WebGalery.IntegrationTests.IoC
 
             return services;
         }
-
-
     }
 }

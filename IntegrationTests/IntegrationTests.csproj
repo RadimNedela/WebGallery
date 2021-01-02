@@ -18,6 +18,7 @@
     <ProjectReference Include="..\DatabaseEntities\Core.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Maintenance\Maintenance.csproj" />
+    <ProjectReference Include="..\SessionHandling\SessionHandling.csproj" />
     <ProjectReference Include="..\Viewer\PictureViewer.csproj" />
     <ProjectReference Include="..\WebApplication\WebApplication.csproj" />
   </ItemGroup>

@@ -24,23 +24,36 @@ namespace FileImportTests.Application
         public const string DoubledPictureName2 = "2017-08-20-Duha0383_2.JPG";
 
 
-        //private DirectoryContentApplication GetTestApplication()
-        //{
-        //    var dip = Substitute.For<IPathOptimizer>();
-        //    dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));
+        private DirectoryContentApplication GetTestApplication()
+        {
+            //var dip = Substitute.For<IPathOptimizer>();
+            //dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));
 
-        //    IDirectoryMethods directoryMethods = new DirectoryMethods();
-        //    IHasher hasher = new FileHasher();
+            //IDirectoryMethods directoryMethods = new DirectoryMethods();
+            //IHasher hasher = new FileHasher();
 
-        //    var directoryContentBuilder = new DirectoryContentBuilder(directoryMethods, hasher, new ContentElementsMemoryStorage(), dip);
-        //    var databaseInfoProvider = new DatabaseInfoProvider(null, directoryMethods, hasher);
-        //    var app = new DirectoryContentApplication(databaseInfoProvider,
-        //        directoryContentBuilder,
-        //        new ContentEntitiesRepository(Substitute.For<IGaleryDatabase>()),
-        //        null);
+            //var directoryContentBuilder = new DirectoryContentBuilder(directoryMethods, hasher, new ContentElementsMemoryStorage(), dip);
+            //var databaseInfoProvider = new DatabaseInfoProvider(null, directoryMethods, hasher);
+            var app = new DirectoryContentApplication(
+                //databaseInfoProvider,
+                //directoryContentBuilder,
+                //new ContentEntitiesRepository(Substitute.For<IGaleryDatabase>()),
+                //null
+                );
 
-        //    return app;
-        //}
+            return app;
+        }
+
+        [Test]
+        public void GetCurrentRackInfo_ReturnsRackInfo()
+        {
+            var application = GetTestApplication();
+
+            var rackInfo = application.GetCurrentRackInfo();
+
+            Assert.That(rackInfo, Is.Not.Null);
+
+        }
 
         //[Test]
         //public void GetDirectoryContent_ValidTestPath_Returns2Directories()

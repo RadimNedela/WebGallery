@@ -22,15 +22,16 @@ namespace WebGalery.FileImport.Application
         private readonly IDirectoryMethods _directoryMethods;
 
         public DirectoryContentApplication(
-            IGalerySession databaseInfoProvider,
-            DirectoryContentBuilder directoryContentBuilder,
-            IContentEntityRepository contentRepository,
-            IDirectoryMethods directoryMethods)
+            //IGalerySession databaseInfoProvider,
+            //DirectoryContentBuilder directoryContentBuilder,
+            //IContentEntityRepository contentRepository,
+            //IDirectoryMethods directoryMethods
+            )
         {
-            _directoryContentBuilder = directoryContentBuilder;
-            _contentRepository = contentRepository;
-            _databaseInfoProvider = databaseInfoProvider;
-            _directoryMethods = directoryMethods;
+            //_directoryContentBuilder = directoryContentBuilder;
+            //_contentRepository = contentRepository;
+            //_databaseInfoProvider = databaseInfoProvider;
+            //_directoryMethods = directoryMethods;
         }
 
         public RackInfoDto GetCurrentRackInfo()

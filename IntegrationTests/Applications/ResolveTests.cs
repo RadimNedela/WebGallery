@@ -10,7 +10,7 @@ namespace WebGalery.IntegrationTests.Applications
     public class ResolveTests
     {
         [Test]
-        public void FileImportController_IsResolvable()
+        public void FirectoryContentApplication_IsResolvable()
         {
             using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
             var controller = serviceProvider.GetService<DirectoryContentApplication>();

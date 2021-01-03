@@ -2,8 +2,6 @@
 using NUnit.Framework;
 using System.Linq;
 using WebGalery.Core.Tests;
-using System.Collections.Generic;
-using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Maintenance.Applications;
 
@@ -14,15 +12,12 @@ namespace WebGalery.Maintenance.Tests.Applications
     {
         private DatabaseInfoApplication CreateSut()
         {
-            IDatabaseInfoEntityRepository repository = Substitute.For<IDatabaseInfoEntityRepository>();
-            var testDatabase = MaintenanceTestData.CreateTestDatabase();
-            repository.GetAll().Returns(new List<DatabaseInfoEntity> { testDatabase });
-            repository.Get(testDatabase.Hash).Returns(testDatabase);
+            MaintenanceTestData mtd = new();
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
             IHasher hasher = Substitute.For<IHasher>();
             hasher.ComputeRandomStringHash(Arg.Any<string>()).Returns(a => a.ArgAt<string>(0) + " Random Hash");
 
-            return new DatabaseInfoApplication(repository, directoryMethods, hasher);
+            return new DatabaseInfoApplication(mtd.CreateTestDatabaseRepositorySubstitute(), directoryMethods, hasher);
         }
 
         [Test]

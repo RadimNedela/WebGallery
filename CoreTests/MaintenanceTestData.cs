@@ -1,10 +1,24 @@
-﻿using WebGalery.Core.DbEntities.Maintenance;
+﻿using NSubstitute;
+using System.Collections.Generic;
+using System.Linq;
+using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.DomainInterfaces;
+using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Core.Tests
 {
-    public static class MaintenanceTestData
+    public class MaintenanceTestData
     {
-        public static DatabaseInfoEntity CreateTestDatabase()
+        private DatabaseInfoEntity testDatabase;
+        public DatabaseInfoEntity TestDatabase
+        {
+            get
+            {
+                return testDatabase ??= CreateTestDatabase();
+            }
+        }
+
+        private DatabaseInfoEntity CreateTestDatabase()
         {
             var builder = DatabaseInfoTestDataBuilder.CreateDefault()
                 .Add(RackTestDataBuilder.CreateDefault()
@@ -15,6 +29,34 @@ namespace WebGalery.Core.Tests
                     .Add(MountPointTestDataBuilder.CreateWindowsDefault().WithPath(@"D:\TEMP"))
                     );
             return builder.Build();
+        }
+
+        public IDatabaseInfoEntityRepository CreateTestDatabaseRepositorySubstitute()
+        {
+            IDatabaseInfoEntityRepository repository = Substitute.For<IDatabaseInfoEntityRepository>();
+            var testDatabase = TestDatabase;
+            repository.GetAll().Returns(new List<DatabaseInfoEntity> { testDatabase });
+            repository.Get(testDatabase.Hash).Returns(testDatabase);
+
+            return repository;
+        }
+
+        public IGalerySession CreateTestDatabaseSession()
+        {
+            IGalerySession session = Substitute.For<IGalerySession>();
+            session.CurrentDatabaseHash.Returns(TestDatabase.Hash);
+            session.CurrentRackHash.Returns(TestDatabase.Racks.First().Hash);
+            return session;
+        }
+
+        public IDatabaseInfo CreateTestDatabaseInfo()
+        {
+            IDatabaseInfo databaseInfo = Substitute.For<IDatabaseInfo>();
+            databaseInfo.GetCurrentRack().Returns(TestDatabase.Racks.First());
+            databaseInfo.GetCurrentDatabaseInfo().Returns(TestDatabase);
+            databaseInfo.GetActiveDirectory().Returns(TestDatabase.Racks.First().MountPoints.Last().Path);
+
+            return databaseInfo;
         }
     }
 }

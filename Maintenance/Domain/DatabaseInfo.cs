@@ -1,53 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System.IO;
+using System.Linq;
+using WebGalery.Core;
 using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.DomainInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Maintenance.Domain
 {
-    public class DatabaseInfo
+    public class DatabaseInfo : IDatabaseInfo
     {
-        private readonly IDirectoryMethods _directoryMethods;
-        private readonly IHasher _hasher;
+        private readonly IGalerySession session;
+        private readonly IDatabaseInfoEntityRepository repository;
 
-        public DatabaseInfo(IDirectoryMethods directoryMethods, IHasher hasher)
+        private DatabaseInfoEntity entity;
+
+        public DatabaseInfo(IGalerySession session,
+            IDatabaseInfoEntityRepository repository)
         {
-            _directoryMethods = directoryMethods;
-            _hasher = hasher;
+            this.session = session;
+            this.repository = repository;
+            entity = 
         }
 
-        internal DatabaseInfoEntity BuildNewDatabase(string databaseName)
+        public string GetActiveDirectory()
         {
-            string infoHash = _hasher.ComputeRandomStringHash(databaseName);
-            var dbInfo = new DatabaseInfoEntity()
-            {
-                Hash = infoHash,
-                Name = databaseName,
-                Racks = new List<RackEntity>()
-            };
-            AddNewRack(dbInfo);
-            return dbInfo;
+            var rack = GetCurrentRack();
+            return rack.MountPoints.First(mp => Directory.Exists(mp.Path)).Path;
         }
 
-        internal void AddNewRack(DatabaseInfoEntity dbInfo)
+        public RackEntity GetCurrentRack()
         {
-            string rackHash = _hasher.ComputeRandomStringHash(dbInfo.Hash + "Default");
-            var rackEntity = new RackEntity
-            {
-                Hash = rackHash,
-                Name = "Default",
-                MountPoints = new List<MountPointEntity>()
-            };
-            AddNewMountPoint(rackEntity);
-            dbInfo.Racks.Add(rackEntity);
+            var infoElement = GetCurrentDatabaseInfo();
+            return infoElement.Racks.First(r => r.Hash == session.CurrentRackHash);
         }
 
-        internal void AddNewMountPoint(RackEntity rackEntity)
+        public DatabaseInfoEntity GetCurrentDatabaseInfo()
         {
-            var mountPoint = new MountPointEntity
-            {
-                Path = _directoryMethods.GetCurrentDirectoryName()
-            };
-            rackEntity.MountPoints.Add(mountPoint);
+            return repository.Get(session.CurrentDatabaseHash);
         }
     }
 }

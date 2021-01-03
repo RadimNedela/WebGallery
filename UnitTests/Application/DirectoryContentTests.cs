@@ -6,8 +6,10 @@ using System.Linq;
 using System.Reflection;
 using NSubstitute;
 using NUnit.Framework;
+using WebGalery.Core.DomainInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
+using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Application.Dtos;
 using WebGalery.FileImport.Services;
@@ -26,19 +28,9 @@ namespace FileImportTests.Application
 
         private DirectoryContentApplication GetTestApplication()
         {
-            //var dip = Substitute.For<IPathOptimizer>();
-            //dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));
-
-            //IDirectoryMethods directoryMethods = new DirectoryMethods();
-            //IHasher hasher = new FileHasher();
-
-            //var directoryContentBuilder = new DirectoryContentBuilder(directoryMethods, hasher, new ContentElementsMemoryStorage(), dip);
-            //var databaseInfoProvider = new DatabaseInfoProvider(null, directoryMethods, hasher);
+            MaintenanceTestData mtd = new();
             var app = new DirectoryContentApplication(
-                //databaseInfoProvider,
-                //directoryContentBuilder,
-                //new ContentEntitiesRepository(Substitute.For<IGaleryDatabase>()),
-                //null
+                mtd.CreateTestDatabaseInfo()
                 );
 
             return app;

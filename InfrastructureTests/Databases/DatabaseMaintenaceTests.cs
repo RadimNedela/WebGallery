@@ -18,7 +18,7 @@ namespace WebGalery.Infrastructure.Tests.Databases
         [SetUp]
         public void SetUp()
         {
-            _info = MaintenanceTestData.CreateTestDatabase();
+            _info = new MaintenanceTestData().TestDatabase;
             _testDatabaseInfoEntityHash = _info.Hash;
             AddTestDataToDB();
         }

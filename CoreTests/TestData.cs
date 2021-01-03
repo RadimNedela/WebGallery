@@ -9,7 +9,7 @@ namespace WebGalery.Core.Tests
         [Test]
         public void DatabaseInfo_TestData_AreConstructedWell()
         {
-            var dbInfo = MaintenanceTestData.CreateTestDatabase();
+            var dbInfo = new MaintenanceTestData().TestDatabase;
 
             Assert.That(dbInfo.Racks.Count, Is.GreaterThan(1), "Test database should contain at least 2 racks, add them...");
             foreach (var rack in dbInfo.Racks)

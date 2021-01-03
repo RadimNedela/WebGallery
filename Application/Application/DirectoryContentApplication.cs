@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using WebGalery.Core;
+using WebGalery.Core.DomainInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.Application.Dtos;
@@ -18,27 +18,28 @@ namespace WebGalery.FileImport.Application
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly DirectoryContentBuilder _directoryContentBuilder;
         private readonly IContentEntityRepository _contentRepository;
-        private readonly IGalerySession _databaseInfoProvider;
-        private readonly IDirectoryMethods _directoryMethods;
+        private readonly IDatabaseInfo databaseInfo;
+        private readonly IDirectoryMethods directoryMethods;
+
 
         public DirectoryContentApplication(
-            //IGalerySession databaseInfoProvider,
+            IDatabaseInfo databaseInfo,
             //DirectoryContentBuilder directoryContentBuilder,
             //IContentEntityRepository contentRepository,
-            //IDirectoryMethods directoryMethods
+            IDirectoryMethods directoryMethods
             )
         {
             //_directoryContentBuilder = directoryContentBuilder;
             //_contentRepository = contentRepository;
-            //_databaseInfoProvider = databaseInfoProvider;
-            //_directoryMethods = directoryMethods;
+            this.databaseInfo = databaseInfo;
+            this.directoryMethods = directoryMethods;
         }
 
         public RackInfoDto GetCurrentRackInfo()
         {
-            var db = _databaseInfoProvider.CurrentDatabaseHash;
-            var rack = _databaseInfoProvider.CurrentRackHash;
-            var activeDirectory = GetActiveDirectory(rack.MountPoints);
+            var db = databaseInfo.GetCurrentDatabaseInfo();
+            var rack = databaseInfo.GetCurrentRack();
+            var activeDirectory = databaseInfo.GetActiveDirectory();
 
             var retVal = new RackInfoDto
             {
@@ -50,53 +51,34 @@ namespace WebGalery.FileImport.Application
                 DirectoryInfo = GetSubDirectoryInfo(".")
             };
 
-
             return retVal;
         }
 
-        public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
+        private DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
-            return null;
-            //var rack = _databaseInfoProvider.CurrentRack;
+            var rack = databaseInfo.GetCurrentRack();
 
-            //var directoryInfo = new DirectoryInfoDto();
-            //var activeDirectory = GetActiveDirectory();
-            //var fullPath = Path.Combine(activeDirectory, subDirectory);
+            var directoryInfo = new DirectoryInfoDto();
+            var activeDirectory = databaseInfo.GetActiveDirectory();
+            var fullPath = Path.Combine(activeDirectory, subDirectory);
 
-            //var fileNames = _directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
-            //var dirNames = _directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
+            var fileNames = directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
+            var dirNames = directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
 
-            //var normSubDir = rack.GetSubpath(fullPath);
-            //if (normSubDir != ".")
-            //    dirNames = new[] { Path.Combine(normSubDir, @"..") }.Union(dirNames);
+            var normSubDir = rack.GetSubpath(fullPath);
+            if (normSubDir != ".")
+                dirNames = new[] { Path.Combine(normSubDir, @"..") }.Union(dirNames);
 
-            //directoryInfo.SubDirectories = dirNames;
-            //directoryInfo.Files = fileNames;
-            //directoryInfo.CurrentDirectory = subDirectory;
+            directoryInfo.SubDirectories = dirNames;
+            directoryInfo.Files = fileNames;
+            directoryInfo.CurrentDirectory = subDirectory;
 
-            //return directoryInfo;
-        }
-
-        public string GetActiveDirectory()
-        {
-            return null;
-            //return GetActiveDirectory(_databaseInfoProvider.CurrentRack.MountPoints);
-        }
-
-        public string GetActiveDirectory(IList<string> mountPoints)
-        {
-            foreach (var t in mountPoints)
-            {
-                if (_directoryMethods.DirectoryExists(t))
-                    return t;
-            }
-
-            throw new Exception("Sorry, the rack cannot be used because no mount point is currently mounted");
+            return directoryInfo;
         }
 
         public DirectoryContentThreadInfoDto GetThreadInfo(string subDirectory)
         {
-            var activeDirectory = GetActiveDirectory();
+            var activeDirectory = databaseInfo.GetActiveDirectory();
             var fullPath = Path.Combine(activeDirectory, subDirectory);
 
             if (DirectoryContentInfos.ContentInfos.ContainsKey(fullPath))

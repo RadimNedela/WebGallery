@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
+using WebGalery.Core.DomainInterfaces;
 using WebGalery.Maintenance.Applications;
+using WebGalery.Maintenance.Domain;
 
 namespace WebGalery.Maintenance.IoC
 {
@@ -8,6 +10,7 @@ namespace WebGalery.Maintenance.IoC
         public static void RegisterMaintenance(this IServiceCollection services)
         {
             services.AddScoped<DatabaseInfoApplication>();
+            services.AddScoped<IDatabaseInfo, DatabaseInfo>();
         }
     }
 }

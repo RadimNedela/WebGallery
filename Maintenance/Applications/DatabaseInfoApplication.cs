@@ -9,7 +9,7 @@ namespace WebGalery.Maintenance.Applications
     public class DatabaseInfoApplication
     {
         private readonly IDatabaseInfoEntityRepository _repository;
-        private readonly DatabaseInfo _databaseInfoHandler;
+        private readonly DatabaseInfoHelper _databaseInfoHandler;
 
         public DatabaseInfoApplication(
             IDatabaseInfoEntityRepository repository,
@@ -17,7 +17,7 @@ namespace WebGalery.Maintenance.Applications
             IHasher hasher)
         {
             _repository = repository;
-            _databaseInfoHandler = new DatabaseInfo(directoryMethods, hasher);
+            _databaseInfoHandler = new DatabaseInfoHelper(directoryMethods, hasher);
         }
 
         public IEnumerable<DatabaseInfoDto> GetAllDatabases()

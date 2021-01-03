@@ -30,6 +30,7 @@ namespace FileImportTests.Application
         {
             MaintenanceTestData mtd = new();
             var app = new DirectoryContentApplication(
+                mtd.CreateTestDatabaseSession(),
                 mtd.CreateTestDatabaseInfo()
                 );
 

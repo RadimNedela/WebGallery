@@ -52,9 +52,9 @@ namespace WebGalery.Core.Tests
         public IDatabaseInfo CreateTestDatabaseInfo()
         {
             IDatabaseInfo databaseInfo = Substitute.For<IDatabaseInfo>();
-            databaseInfo.GetCurrentRack().Returns(TestDatabase.Racks.First());
-            databaseInfo.GetCurrentDatabaseInfo().Returns(TestDatabase);
-            databaseInfo.GetActiveDirectory().Returns(TestDatabase.Racks.First().MountPoints.Last().Path);
+            databaseInfo.CurrentRackName.Returns(TestDatabase.Racks.First().Name);
+            databaseInfo.CurrentDatabaseInfoName.Returns(TestDatabase.Name);
+            databaseInfo.ActiveDirectory.Returns(TestDatabase.Racks.First().MountPoints.Last().Path);
 
             return databaseInfo;
         }

@@ -12,31 +12,22 @@ namespace WebGalery.Maintenance.Domain
         private readonly IGalerySession session;
         private readonly IDatabaseInfoEntityRepository repository;
 
-        private DatabaseInfoEntity entity;
+        private DatabaseInfoEntity _entity;
+        private DatabaseInfoEntity Entity => _entity ??= repository.Get(session.CurrentDatabaseHash);
+
+        public string CurrentDatabaseInfoName => Entity.Name;
+
+        public RackEntity CurrentRack => Entity.Racks.First(r => r.Hash == session.CurrentRackHash);
+
+        public string CurrentRackName => CurrentRack.Name;
+
+        public string ActiveDirectory => CurrentRack.MountPoints.First(mp => Directory.Exists(mp.Path)).Path;
 
         public DatabaseInfo(IGalerySession session,
             IDatabaseInfoEntityRepository repository)
         {
             this.session = session;
             this.repository = repository;
-            entity = 
-        }
-
-        public string GetActiveDirectory()
-        {
-            var rack = GetCurrentRack();
-            return rack.MountPoints.First(mp => Directory.Exists(mp.Path)).Path;
-        }
-
-        public RackEntity GetCurrentRack()
-        {
-            var infoElement = GetCurrentDatabaseInfo();
-            return infoElement.Racks.First(r => r.Hash == session.CurrentRackHash);
-        }
-
-        public DatabaseInfoEntity GetCurrentDatabaseInfo()
-        {
-            return repository.Get(session.CurrentDatabaseHash);
         }
     }
 }

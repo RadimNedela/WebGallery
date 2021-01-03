@@ -19,7 +19,7 @@ namespace WebGalery.Maintenance.Tests.Domain
         {
             var dbInfo = CreateSut();
 
-            var path = dbInfo.GetActiveDirectory();
+            var path = dbInfo.ActiveDirectory;
 
             Assert.That(Directory.Exists(path), $"Path {path} does not exist");
         }

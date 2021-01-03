@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using WebGalery.Core.DbEntities.Maintenance;
-using WebGalery.Core.DomainInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Core.Tests
@@ -47,16 +46,6 @@ namespace WebGalery.Core.Tests
             session.CurrentDatabaseHash.Returns(TestDatabase.Hash);
             session.CurrentRackHash.Returns(TestDatabase.Racks.First().Hash);
             return session;
-        }
-
-        public IDatabaseInfo CreateTestDatabaseInfo()
-        {
-            IDatabaseInfo databaseInfo = Substitute.For<IDatabaseInfo>();
-            databaseInfo.CurrentRackName.Returns(TestDatabase.Racks.First().Name);
-            databaseInfo.CurrentDatabaseInfoName.Returns(TestDatabase.Name);
-            databaseInfo.ActiveDirectory.Returns(TestDatabase.Racks.First().MountPoints.Last().Path);
-
-            return databaseInfo;
         }
     }
 }

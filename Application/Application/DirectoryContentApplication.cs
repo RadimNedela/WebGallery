@@ -5,49 +5,49 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using WebGalery.Core;
-using WebGalery.Core.DomainInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.Application.Dtos;
 using WebGalery.FileImport.Application.Dtos.Directories;
 using WebGalery.FileImport.Services;
+using WebGalery.Maintenance.Domain;
 
 namespace WebGalery.FileImport.Application
 {
     public class DirectoryContentApplication
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly DirectoryContentBuilder _directoryContentBuilder;
-        private readonly IContentEntityRepository _contentRepository;
+        //private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private readonly DirectoryContentBuilder _directoryContentBuilder;
+        //private readonly IContentEntityRepository _contentRepository;
         private readonly IGalerySession session;
-        private readonly IDatabaseInfo databaseInfo;
+        private readonly CurrentDatabaseInfoProvider dbInfoProvider;
         private readonly IDirectoryMethods directoryMethods;
 
 
         public DirectoryContentApplication(
             IGalerySession session,
-            IDatabaseInfo databaseInfo
+            CurrentDatabaseInfoProvider dbInfoProvider,
             //DirectoryContentBuilder directoryContentBuilder,
             //IContentEntityRepository contentRepository,
-            //IDirectoryMethods directoryMethods
+            IDirectoryMethods directoryMethods
             )
         {
             this.session = session;
+            this.dbInfoProvider = dbInfoProvider;
             //_directoryContentBuilder = directoryContentBuilder;
             //_contentRepository = contentRepository;
-            this.databaseInfo = databaseInfo;
-            //this.directoryMethods = directoryMethods;
+            this.directoryMethods = directoryMethods;
         }
 
         public RackInfoDto GetCurrentRackInfo()
         {
             var retVal = new RackInfoDto
             {
-                ActiveDatabaseName = databaseInfo.CurrentDatabaseInfoName,
+                ActiveDatabaseName = dbInfoProvider.CurrentInfo.CurrentDatabaseInfoName,
                 ActiveDatabaseHash = session.CurrentDatabaseHash,
-                ActiveRackName = databaseInfo.CurrentRackName,
+                ActiveRackName = dbInfoProvider.CurrentInfo.CurrentRack.Name,
                 ActiveRackHash = session.CurrentRackHash,
-                ActiveDirectory = databaseInfo.ActiveDirectory,
+                ActiveDirectory = dbInfoProvider.CurrentInfo.CurrentRack.ActiveDirectory,
                 DirectoryInfo = GetSubDirectoryInfo(".")
             };
 
@@ -56,25 +56,23 @@ namespace WebGalery.FileImport.Application
 
         private DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
-            return null;
-            //var rack = databaseInfo.GetCurrentRack();
+            var rack = dbInfoProvider.CurrentInfo.CurrentRack;
+            var directoryInfo = new DirectoryInfoDto();
+            var activeDirectory = rack.ActiveDirectory;
+            var fullPath = Path.Combine(activeDirectory, subDirectory);
 
-            //var directoryInfo = new DirectoryInfoDto();
-            //var activeDirectory = databaseInfo.GetActiveDirectory();
-            //var fullPath = Path.Combine(activeDirectory, subDirectory);
+            var fileNames = directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
+            var dirNames = directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
 
-            //var fileNames = directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
-            //var dirNames = directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
+            var normSubDir = rack.GetSubpath(fullPath);
+            if (normSubDir != ".")
+                dirNames = new[] { Path.Combine(normSubDir, @"..") }.Union(dirNames);
 
-            //var normSubDir = rack.GetSubpath(fullPath);
-            //if (normSubDir != ".")
-            //    dirNames = new[] { Path.Combine(normSubDir, @"..") }.Union(dirNames);
+            directoryInfo.SubDirectories = dirNames;
+            directoryInfo.Files = fileNames;
+            directoryInfo.CurrentDirectory = subDirectory;
 
-            //directoryInfo.SubDirectories = dirNames;
-            //directoryInfo.Files = fileNames;
-            //directoryInfo.CurrentDirectory = subDirectory;
-
-            //return directoryInfo;
+            return directoryInfo;
         }
 
         public DirectoryContentThreadInfoDto GetThreadInfo(string subDirectory)

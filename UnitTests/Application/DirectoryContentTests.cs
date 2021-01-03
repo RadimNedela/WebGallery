@@ -6,13 +6,13 @@ using System.Linq;
 using System.Reflection;
 using NSubstitute;
 using NUnit.Framework;
-using WebGalery.Core.DomainInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Application.Dtos;
 using WebGalery.FileImport.Services;
+using WebGalery.Maintenance.Domain;
 
 namespace FileImportTests.Application
 {
@@ -28,10 +28,12 @@ namespace FileImportTests.Application
 
         private DirectoryContentApplication GetTestApplication()
         {
+            IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
             MaintenanceTestData mtd = new();
             var app = new DirectoryContentApplication(
                 mtd.CreateTestDatabaseSession(),
-                mtd.CreateTestDatabaseInfo()
+                new CurrentDatabaseInfoProvider(mtd.CreateTestDatabaseSession(), mtd.CreateTestDatabaseRepositorySubstitute()),
+                directoryMethods
                 );
 
             return app;
@@ -45,7 +47,17 @@ namespace FileImportTests.Application
             var rackInfo = application.GetCurrentRackInfo();
 
             Assert.That(rackInfo, Is.Not.Null);
+        }
 
+        [Test]
+        public void GetCurrentRackInfo_DirectoryInfo_ReturnsInfo()
+        {
+            var application = GetTestApplication();
+
+            var rackInfo = application.GetCurrentRackInfo();
+
+            Assert.That(rackInfo.DirectoryInfo, Is.Not.Null);
+            Assert.That(rackInfo.DirectoryInfo.SubDirectories, Is.Not.Empty);
         }
 
         //[Test]

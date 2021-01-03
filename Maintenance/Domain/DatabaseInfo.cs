@@ -1,33 +1,22 @@
-﻿using System.IO;
-using System.Linq;
-using WebGalery.Core;
+﻿using System.Linq;
 using WebGalery.Core.DbEntities.Maintenance;
-using WebGalery.Core.DomainInterfaces;
-using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Maintenance.Domain
 {
-    public class DatabaseInfo : IDatabaseInfo
+    public class DatabaseInfo
     {
-        private readonly IGalerySession session;
-        private readonly IDatabaseInfoEntityRepository repository;
+        private DatabaseInfoEntity entity;
+        private readonly string currentRackHash;
 
-        private DatabaseInfoEntity _entity;
-        private DatabaseInfoEntity Entity => _entity ??= repository.Get(session.CurrentDatabaseHash);
+        public string CurrentDatabaseInfoName => entity.Name;
 
-        public string CurrentDatabaseInfoName => Entity.Name;
+        private Rack _rack;
+        public Rack CurrentRack => _rack ??= new Rack(entity.Racks.First(r => r.Hash == currentRackHash));
 
-        public RackEntity CurrentRack => Entity.Racks.First(r => r.Hash == session.CurrentRackHash);
-
-        public string CurrentRackName => CurrentRack.Name;
-
-        public string ActiveDirectory => CurrentRack.MountPoints.First(mp => Directory.Exists(mp.Path)).Path;
-
-        public DatabaseInfo(IGalerySession session,
-            IDatabaseInfoEntityRepository repository)
+        public DatabaseInfo(DatabaseInfoEntity entity, string currentRackHash)
         {
-            this.session = session;
-            this.repository = repository;
+            this.entity = entity;
+            this.currentRackHash = currentRackHash;
         }
     }
 }

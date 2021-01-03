@@ -8,10 +8,10 @@ namespace WebGalery.Maintenance.Tests.Domain
     [TestFixture]
     public class DatabaseInfoTests
     {
-        private DatabaseInfo CreateSut()
+        private CurrentDatabaseInfoProvider CreateSut()
         {
             MaintenanceTestData mtd = new();
-            return new DatabaseInfo(mtd.CreateTestDatabaseSession(), mtd.CreateTestDatabaseRepositorySubstitute());
+            return new CurrentDatabaseInfoProvider(mtd.CreateTestDatabaseSession(), mtd.CreateTestDatabaseRepositorySubstitute());
         }
 
         [Test]
@@ -19,7 +19,7 @@ namespace WebGalery.Maintenance.Tests.Domain
         {
             var dbInfo = CreateSut();
 
-            var path = dbInfo.ActiveDirectory;
+            var path = dbInfo.CurrentInfo.CurrentRack.ActiveDirectory;
 
             Assert.That(Directory.Exists(path), $"Path {path} does not exist");
         }

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DatabaseEntities\Core.csproj" />
+    <ProjectReference Include="..\Maintenance\Maintenance.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

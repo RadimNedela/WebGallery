@@ -87,27 +87,5 @@
         //    }
         //}
 
-        //public string GetSubpath(string fullPath)
-        //{
-        //    var normalizedFullPath = NormalizePath(fullPath);
-        //    foreach (var mountPoint in MountPoints)
-        //    {
-        //        var normalizedMountPoint = NormalizePath(mountPoint);
-        //        if (normalizedFullPath.StartsWith(normalizedMountPoint, StringComparison.InvariantCultureIgnoreCase))
-        //        {
-        //            if (normalizedFullPath.Length == normalizedMountPoint.Length)
-        //                return ".";
-        //            return normalizedFullPath.Substring(normalizedMountPoint.Length + 1);
-        //        }
-        //    }
-        //    throw new Exception($"Sorry, the given path {fullPath} does not start with any known mount point");
-        //}
-
-        //public static string NormalizePath(string path)
-        //{
-        //    return Path.GetFullPath(new Uri(path).LocalPath)
-        //               .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-        //               //.ToUpperInvariant();
-        //}
     }
 }

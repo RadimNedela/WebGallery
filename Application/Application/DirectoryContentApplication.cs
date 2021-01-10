@@ -16,7 +16,7 @@ namespace WebGalery.FileImport.Application
 {
     public class DirectoryContentApplication
     {
-        //private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         //private readonly DirectoryContentBuilder _directoryContentBuilder;
         //private readonly IContentEntityRepository _contentRepository;
         private readonly IGalerySession session;
@@ -54,7 +54,7 @@ namespace WebGalery.FileImport.Application
             return retVal;
         }
 
-        private DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
+        public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
             var rack = dbInfoProvider.CurrentInfo.CurrentRack;
             var directoryInfo = new DirectoryInfoDto();
@@ -77,46 +77,48 @@ namespace WebGalery.FileImport.Application
 
         public DirectoryContentThreadInfoDto GetThreadInfo(string subDirectory)
         {
-            //var activeDirectory = databaseInfo.GetActiveDirectory();
-            //var fullPath = Path.Combine(activeDirectory, subDirectory);
-
-            //if (DirectoryContentInfos.ContentInfos.ContainsKey(fullPath))
-            //    return DirectoryContentInfos.ContentInfos[fullPath];
+            var fullPath = GetFullPath(subDirectory);
+            if (DirectoryContentInfos.ContentInfos.ContainsKey(fullPath))
+                return DirectoryContentInfos.ContentInfos[fullPath];
             return null;
         }
 
         public async Task<DirectoryContentThreadInfoDto> ParseDirectoryContentAsync(string subDirectory)
         {
-            throw new NotImplementedException();
-            //var activeDirectory = GetActiveDirectory();
-            //var fullPath = Path.Combine(activeDirectory, subDirectory);
+            var fullPath = GetFullPath(subDirectory);
+            var info = new DirectoryContentThreadInfo { FullPath = fullPath };
+            DirectoryContentInfos.ContentInfos.Add(fullPath, info);
+            await Task.Run(() => GetDirectoryContent(info));
 
-            //var info = new DirectoryContentThreadInfo { FullPath = fullPath };
-            //DirectoryContentInfos.ContentInfos.Add(fullPath, info);
-            //await Task.Run(() => GetDirectoryContent(info));
-
-            //var retVal = GetThreadInfo(subDirectory);
-            //DirectoryContentInfos.ContentInfos.Remove(fullPath);
-            //return retVal;
+            var retVal = GetThreadInfo(subDirectory);
+            DirectoryContentInfos.ContentInfos.Remove(fullPath);
+            return retVal;
         }
 
-        public DisplayableInfoDto GetDirectoryContent(string path)
+        private string GetFullPath(string subDirectory)
         {
-            throw new NotImplementedException();
-            //return GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = path });
+            var activeDirectory = dbInfoProvider.CurrentInfo.CurrentRack.ActiveDirectory;
+            var fullPath = Path.Combine(activeDirectory, subDirectory);
+            return fullPath;
         }
 
-        //private DisplayableInfoDto GetDirectoryContent(DirectoryContentThreadInfo info)
+        //public DisplayableInfoDto GetDirectoryContent(string path)
         //{
-        //    Log.Begin($"{nameof(GetDirectoryContent)}.{info.FullPath}");
-
-        //    var directoryBinder = _directoryContentBuilder.GetDirectoryContent(info);
-        //    PersistDirectoryContent(directoryBinder);
-        //    var retVal = directoryBinder.ToDisplayableInfoDto();
-
-        //    Log.End($"{nameof(GetDirectoryContent)}.{info.FullPath}");
-        //    return retVal;
+        //    throw new NotImplementedException();
+        //    //return GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = path });
         //}
+
+        private DisplayableInfoDto GetDirectoryContent(DirectoryContentThreadInfo info)
+        {
+            Log.Begin($"{nameof(GetDirectoryContent)}.{info.FullPath}");
+
+            var directoryBinder = _directoryContentBuilder.GetDirectoryContent(info);
+            PersistDirectoryContent(directoryBinder);
+            var retVal = directoryBinder.ToDisplayableInfoDto();
+
+            Log.End($"{nameof(GetDirectoryContent)}.{info.FullPath}");
+            return retVal;
+        }
 
         //private void PersistDirectoryContent(BinderElement directoryBinder)
         //{

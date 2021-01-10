@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using NSubstitute;
@@ -10,8 +7,6 @@ using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
-using WebGalery.FileImport.Application.Dtos;
-using WebGalery.FileImport.Services;
 using WebGalery.Maintenance.Domain;
 
 namespace FileImportTests.Application
@@ -29,6 +24,8 @@ namespace FileImportTests.Application
         private DirectoryContentApplication GetTestApplication()
         {
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
+            directoryMethods.GetDirectories(Arg.Any<string>()).Returns(
+                p => new List<string> { p.ArgAt<string>(0) + @"\TestSubDir1", p.ArgAt<string>(0) + @"\TestSubDir2" });
             MaintenanceTestData mtd = new();
             var app = new DirectoryContentApplication(
                 mtd.CreateTestDatabaseSession(),
@@ -58,6 +55,19 @@ namespace FileImportTests.Application
 
             Assert.That(rackInfo.DirectoryInfo, Is.Not.Null);
             Assert.That(rackInfo.DirectoryInfo.SubDirectories, Is.Not.Empty);
+            Assert.That(rackInfo.DirectoryInfo.SubDirectories.First(), Does.StartWith("TestSubDir"));
+        }
+
+        [Test]
+        public void GetSubDirectoryInfo_TestSubDir_ReturnsAlsoParentDir()
+        {
+            var application = GetTestApplication();
+
+            var dirInfo = application.GetSubDirectoryInfo("TestSubDir");
+
+            Assert.That(dirInfo.SubDirectories, Is.Not.Empty);
+            Assert.That(dirInfo.SubDirectories.First(), Does.EndWith(".."));
+            Assert.That(dirInfo.SubDirectories.Last(), Does.StartWith("TestSubDir"));
         }
 
         //[Test]

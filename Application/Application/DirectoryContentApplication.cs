@@ -17,7 +17,7 @@ namespace WebGalery.FileImport.Application
     public class DirectoryContentApplication
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        //private readonly DirectoryContentBuilder _directoryContentBuilder;
+        private readonly IDirectoryContentBuilder directoryContentBuilder;
         //private readonly IContentEntityRepository _contentRepository;
         private readonly IGalerySession session;
         private readonly CurrentDatabaseInfoProvider dbInfoProvider;
@@ -27,14 +27,14 @@ namespace WebGalery.FileImport.Application
         public DirectoryContentApplication(
             IGalerySession session,
             CurrentDatabaseInfoProvider dbInfoProvider,
-            //DirectoryContentBuilder directoryContentBuilder,
+            IDirectoryContentBuilder directoryContentBuilder,
             //IContentEntityRepository contentRepository,
             IDirectoryMethods directoryMethods
             )
         {
             this.session = session;
             this.dbInfoProvider = dbInfoProvider;
-            //_directoryContentBuilder = directoryContentBuilder;
+            this.directoryContentBuilder = directoryContentBuilder;
             //_contentRepository = contentRepository;
             this.directoryMethods = directoryMethods;
         }
@@ -112,7 +112,7 @@ namespace WebGalery.FileImport.Application
         {
             Log.Begin($"{nameof(GetDirectoryContent)}.{info.FullPath}");
 
-            var directoryBinder = _directoryContentBuilder.GetDirectoryContent(info);
+            var directoryBinder = directoryContentBuilder.GetDirectoryContent(info);
             PersistDirectoryContent(directoryBinder);
             var retVal = directoryBinder.ToDisplayableInfoDto();
 

@@ -7,6 +7,8 @@ using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
+using WebGalery.FileImport.Domain;
+using WebGalery.FileImport.Services;
 using WebGalery.Maintenance.Domain;
 
 namespace FileImportTests.Application
@@ -27,9 +29,14 @@ namespace FileImportTests.Application
             directoryMethods.GetDirectories(Arg.Any<string>()).Returns(
                 p => new List<string> { p.ArgAt<string>(0) + @"\TestSubDir1", p.ArgAt<string>(0) + @"\TestSubDir2" });
             MaintenanceTestData mtd = new();
+            IDirectoryContentBuilder directoryContentBuilder = Substitute.For<IDirectoryContentBuilder>();
+            IContentEntityRepository contentRepository = Substitute.For<IContentEntityRepository>();
+
             var app = new DirectoryContentApplication(
                 mtd.CreateTestDatabaseSession(),
                 new CurrentDatabaseInfoProvider(mtd.CreateTestDatabaseSession(), mtd.CreateTestDatabaseRepositorySubstitute()),
+                directoryContentBuilder,
+                contentRepository,
                 directoryMethods
                 );
 

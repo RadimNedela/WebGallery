@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WebGalery.FileImport.Domain;
 using WebGalery.FileImport.Services;
 
 namespace WebGalery.FileImport.Application

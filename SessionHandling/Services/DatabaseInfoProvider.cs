@@ -1,4 +1,4 @@
-﻿namespace WebGalery.Maintenance.Services
+﻿namespace WebGalery.SessionHandling.Services
 {
     public class DatabaseInfoProvider //: IDatabaseInfoProvider, IDatabaseInfoInitializer
     {

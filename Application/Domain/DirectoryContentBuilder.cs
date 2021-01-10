@@ -1,9 +1,10 @@
-using WebGalery.Core.DbEntities.Contents;
+using System.Collections.Generic;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.FileImport.Services;
 
-namespace WebGalery.FileImport.Services
+namespace WebGalery.FileImport.Domain
 {
-    public class DirectoryContentBuilder
+    public class DirectoryContentBuilder : IDirectoryContentBuilder
     {
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
@@ -63,5 +64,9 @@ namespace WebGalery.FileImport.Services
         //    string subpath = _pathOptimizer.CreateValidSubpathAccordingToCurrentConfiguration(path);
         //    return new BinderElement(_pathOptimizer.Rack, _hasher.ComputeStringHash(subpath), BinderTypeEnum.DirectoryType, subpath);
         //}
+        public IEnumerable<PhysicalFile> PhysicalFiles()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

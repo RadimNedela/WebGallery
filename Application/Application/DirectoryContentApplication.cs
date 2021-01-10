@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,16 +7,16 @@ using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.Application.Dtos;
 using WebGalery.FileImport.Application.Dtos.Directories;
-using WebGalery.FileImport.Services;
+using WebGalery.FileImport.Domain;
 using WebGalery.Maintenance.Domain;
 
 namespace WebGalery.FileImport.Application
 {
     public class DirectoryContentApplication
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly IDirectoryContentBuilder directoryContentBuilder;
-        //private readonly IContentEntityRepository _contentRepository;
+        private readonly IContentEntityRepository contentRepository;
         private readonly IGalerySession session;
         private readonly CurrentDatabaseInfoProvider dbInfoProvider;
         private readonly IDirectoryMethods directoryMethods;
@@ -28,14 +26,14 @@ namespace WebGalery.FileImport.Application
             IGalerySession session,
             CurrentDatabaseInfoProvider dbInfoProvider,
             IDirectoryContentBuilder directoryContentBuilder,
-            //IContentEntityRepository contentRepository,
+            IContentEntityRepository contentRepository,
             IDirectoryMethods directoryMethods
             )
         {
             this.session = session;
             this.dbInfoProvider = dbInfoProvider;
             this.directoryContentBuilder = directoryContentBuilder;
-            //_contentRepository = contentRepository;
+            this.contentRepository = contentRepository;
             this.directoryMethods = directoryMethods;
         }
 
@@ -88,7 +86,7 @@ namespace WebGalery.FileImport.Application
             var fullPath = GetFullPath(subDirectory);
             var info = new DirectoryContentThreadInfo { FullPath = fullPath };
             DirectoryContentInfos.ContentInfos.Add(fullPath, info);
-            await Task.Run(() => GetDirectoryContent(info));
+            await Task.Run(() => ParseDirectoryContent(info));
 
             var retVal = GetThreadInfo(subDirectory);
             DirectoryContentInfos.ContentInfos.Remove(fullPath);
@@ -102,35 +100,33 @@ namespace WebGalery.FileImport.Application
             return fullPath;
         }
 
-        //public DisplayableInfoDto GetDirectoryContent(string path)
-        //{
-        //    throw new NotImplementedException();
-        //    //return GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = path });
-        //}
-
-        private DisplayableInfoDto GetDirectoryContent(DirectoryContentThreadInfo info)
+        public DirectoryContentThreadInfoDto ParseDirectoryContent(string path)
         {
-            Log.Begin($"{nameof(GetDirectoryContent)}.{info.FullPath}");
-
-            var directoryBinder = directoryContentBuilder.GetDirectoryContent(info);
-            PersistDirectoryContent(directoryBinder);
-            var retVal = directoryBinder.ToDisplayableInfoDto();
-
-            Log.End($"{nameof(GetDirectoryContent)}.{info.FullPath}");
-            return retVal;
+            var info = new DirectoryContentThreadInfo {FullPath = path};
+            ParseDirectoryContent(info);
+            return info;
         }
 
-        //private void PersistDirectoryContent(BinderElement directoryBinder)
-        //{
-        //    Log.Begin($"{nameof(PersistDirectoryContent)}.{directoryBinder}");
+        private void ParseDirectoryContent(DirectoryContentThreadInfo info)
+        {
+            Log.Begin($"{nameof(ParseDirectoryContent)}.{info.FullPath}");
 
-        //    foreach (var content in directoryBinder.Contents)
-        //    {
-        //        _contentRepository.Add(content.ToEntity());
-        //    }
-        //    _contentRepository.Save();
+            foreach (PhysicalFile file in directoryContentBuilder.PhysicalFiles())
+            {
+                PersistPhysicalFile(file);
+            }
 
-        //    Log.End($"{nameof(PersistDirectoryContent)}.{directoryBinder}");
-        //}
+            Log.End($"{nameof(ParseDirectoryContent)}.{info.FullPath}");
+        }
+
+        private void PersistPhysicalFile(PhysicalFile physicalFile)
+        {
+            Log.Begin($"{nameof(PersistPhysicalFile)}.{physicalFile}");
+
+            contentRepository.Add(physicalFile.ContentEntity);
+            contentRepository.Save();
+
+            Log.End($"{nameof(PersistPhysicalFile)}.{physicalFile}");
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
+using WebGalery.FileImport.Application.Helpers;
 using WebGalery.FileImport.Domain;
 using WebGalery.FileImport.Dtos;
 using WebGalery.Maintenance.Domain;
@@ -13,7 +14,6 @@ namespace WebGalery.FileImport.Application
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly PhysicalFilesParser directoryContentBuilder;
-        private readonly IContentEntityRepository contentRepository;
         private readonly RackInfoBuilder rackInfoBuilder;
         private readonly CurrentDatabaseInfoProvider dbInfoProvider;
 
@@ -27,7 +27,6 @@ namespace WebGalery.FileImport.Application
             this.rackInfoBuilder = rackInfoBuilder;
             this.dbInfoProvider = dbInfoProvider;
             this.directoryContentBuilder = directoryContentBuilder;
-            this.contentRepository = contentRepository;
         }
 
         public RackInfoDto GetCurrentRackInfo()
@@ -89,8 +88,6 @@ namespace WebGalery.FileImport.Application
         private void PersistPhysicalFile(PhysicalFile physicalFile)
         {
             Log.Begin($"{nameof(PersistPhysicalFile)}.{physicalFile}");
-
-            var existingEntity = contentRepository.Get(physicalFile.Hash);
 
             //contentRepository.Add(physicalFile.ContentEntity);
             //contentRepository.Save();

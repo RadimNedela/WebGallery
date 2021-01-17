@@ -59,6 +59,5 @@ namespace WebGalery.FileImport.Domain
 
             return directoryInfo;
         }
-
     }
 }

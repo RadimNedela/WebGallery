@@ -111,7 +111,7 @@ namespace WebGalery.FileImport.Application
         {
             Log.Begin($"{nameof(ParseDirectoryContent)}.{info.FullPath}");
 
-            foreach (PhysicalFile file in directoryContentBuilder.PhysicalFiles())
+            foreach (PhysicalFile file in directoryContentBuilder.ParsePhysicalFiles(info))
             {
                 PersistPhysicalFile(file);
             }

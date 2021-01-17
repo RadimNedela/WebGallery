@@ -4,6 +4,6 @@ namespace WebGalery.FileImport.Domain
 {
     public interface IDirectoryContentBuilder
     {
-        IEnumerable<PhysicalFile> PhysicalFiles();
+        IEnumerable<PhysicalFile> ParsePhysicalFiles(DirectoryContentThreadInfo info);
     }
 }

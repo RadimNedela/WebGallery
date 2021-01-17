@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using WebGalery.FileImport.Application;
+using WebGalery.FileImport.Domain;
 
 namespace WebGalery.FileImport.IoC
 {
@@ -8,7 +9,7 @@ namespace WebGalery.FileImport.IoC
         public static void RegisterFileImportServices(this IServiceCollection services)
         {
             services.AddScoped<DirectoryContentApplication>();
-            //services.AddScoped<DirectoryContentBuilder>();
+            services.AddScoped<IDirectoryContentBuilder, DirectoryContentBuilder>();
             //services.AddSingleton<IDatabaseInfoElementRepository, DatabaseInfoMemoryStorage2>();
             //services.AddSingleton<DatabaseInfoBuilder>();
             //services.AddScoped<IPathOptimizer, PathOptimizer>();

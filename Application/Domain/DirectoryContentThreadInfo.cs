@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WebGalery.FileImport.Application.Dtos;
 
 namespace WebGalery.FileImport.Domain
 {

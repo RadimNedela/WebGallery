@@ -1,9 +1,8 @@
 using NSubstitute;
 using NUnit.Framework;
-using WebGalery.Core.DbEntities.Contents;
+using System.Linq;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.FileImport.Domain;
-using WebGalery.FileImport.Services;
 
 namespace FileImportTests.Domain
 {
@@ -15,9 +14,9 @@ namespace FileImportTests.Domain
         {
             DirectoryContentBuilder contentBuilder = CreateContentBuilder();
 
-            var binder = contentBuilder.GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = TestDirectory });
+            var files = contentBuilder.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = TestDirectory });
 
-            Assert.That(binder.Contents.Count(), Is.EqualTo(4));
+            Assert.That(files.Count(), Is.EqualTo(4));
         }
 
         //        [Test]
@@ -56,10 +55,7 @@ namespace FileImportTests.Domain
             var hasher = Substitute.For<IHasher>();
             hasher.ComputeFileContentHash(Arg.Any<string>()).Returns(ci => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
 
-            var dip = Substitute.For<IPathOptimizer>();
-            dip.CreateValidSubpathAccordingToCurrentConfiguration(Arg.Any<string>()).Returns(i => i.ArgAt<string>(0));
-
-            return new DirectoryContentBuilder(directoryMethods, hasher, new ContentElementsMemoryStorage(), dip);
+            return new DirectoryContentBuilder(directoryMethods, hasher);
         }
     }
 }

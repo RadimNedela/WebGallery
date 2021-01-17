@@ -4,6 +4,6 @@ namespace WebGalery.FileImport.Domain
 {
     public class PhysicalFile
     {
-        public ContentEntity ContentEntity { get; }
+        public ContentEntity ContentEntity { get; set; }
     }
 }

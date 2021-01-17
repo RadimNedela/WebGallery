@@ -8,7 +8,6 @@ using WebGalery.Core.Logging;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Domain;
-using WebGalery.FileImport.Services;
 using WebGalery.Maintenance.Domain;
 
 namespace FileImportTests.Application

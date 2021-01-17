@@ -1,7 +1,10 @@
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.InfrastructureInterfaces.Base;
 using WebGalery.Infrastructure.Databases;
 using WebGalery.Infrastructure.Databases.TheDatabase.MySqlDb;
 using WebGalery.Infrastructure.Databases.TheDatabase.SqlServer;
@@ -17,9 +20,17 @@ namespace WebGalery.Infrastructure.IoC
             services.AddSingleton<IDirectoryMethods, DirectoryMethods>();
             services.AddSingleton<IHasher, SHA1Hasher>();
 
-            services.AddScoped<IContentEntityRepository, ContentEntitiesRepository>();
-            services.AddScoped<IBinderEntityRepository, BinderEntitiesRepository>();
-            services.AddSingleton<IDatabaseInfoEntityRepository, DatabaseInfoRepository>();
+            services.AddScoped<ContentEntitiesRepository>();
+            services.AddScoped<IContentEntityRepository>(x => x.GetRequiredService<ContentEntitiesRepository>());
+            services.AddScoped<IEntityPersister<ContentEntity>>(x => x.GetRequiredService<ContentEntitiesRepository>());
+
+            services.AddScoped<BinderEntitiesRepository>();
+            services.AddScoped<IBinderEntityRepository>(x => x.GetRequiredService<BinderEntitiesRepository>());
+            services.AddScoped<IEntityPersister<BinderEntity>>(x => x.GetRequiredService<BinderEntitiesRepository>());
+
+            services.AddSingleton<DatabaseInfoRepository>();
+            services.AddSingleton<IDatabaseInfoEntityRepository>(x => x.GetRequiredService<DatabaseInfoRepository>());
+            services.AddSingleton<IEntityPersister<DatabaseInfoEntity>>(x => x.GetRequiredService<DatabaseInfoRepository>());
 
             var provider = configuration["GaleryDatabaseProvider"];
             if (provider == "MySql")

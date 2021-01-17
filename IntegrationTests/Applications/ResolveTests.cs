@@ -13,7 +13,7 @@ namespace WebGalery.IntegrationTests.Applications
         public void DirectoryContentApplication_IsResolvable()
         {
             using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
-            var controller = serviceProvider.GetService<DirectoryContentApplication>();
+            var controller = serviceProvider.GetService<FileImportApplication>();
             Assert.IsNotNull(controller);
         }
 

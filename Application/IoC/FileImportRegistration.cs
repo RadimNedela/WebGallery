@@ -8,8 +8,9 @@ namespace WebGalery.FileImport.IoC
     {
         public static void RegisterFileImportServices(this IServiceCollection services)
         {
-            services.AddScoped<DirectoryContentApplication>();
-            services.AddScoped<IDirectoryContentBuilder, DirectoryContentBuilder>();
+            services.AddScoped<FileImportApplication>();
+            services.AddScoped<PhysicalFilesParser>();
+            services.AddScoped<RackInfoBuilder>();
             //services.AddSingleton<IDatabaseInfoElementRepository, DatabaseInfoMemoryStorage2>();
             //services.AddSingleton<DatabaseInfoBuilder>();
             //services.AddScoped<IPathOptimizer, PathOptimizer>();

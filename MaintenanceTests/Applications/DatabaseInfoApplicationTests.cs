@@ -4,6 +4,8 @@ using System.Linq;
 using WebGalery.Core.Tests;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Maintenance.Applications;
+using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.InfrastructureInterfaces.Base;
 
 namespace WebGalery.Maintenance.Tests.Applications
 {
@@ -16,8 +18,9 @@ namespace WebGalery.Maintenance.Tests.Applications
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
             IHasher hasher = Substitute.For<IHasher>();
             hasher.ComputeRandomStringHash(Arg.Any<string>()).Returns(a => a.ArgAt<string>(0) + " Random Hash");
+            IEntityPersister<DatabaseInfoEntity> persister = Substitute.For<IEntityPersister<DatabaseInfoEntity>>();
 
-            return new DatabaseInfoApplication(mtd.CreateTestDatabaseRepositorySubstitute(), directoryMethods, hasher);
+            return new DatabaseInfoApplication(mtd.CreateTestDatabaseRepositorySubstitute(), persister, directoryMethods, hasher);
         }
 
         [Test]

@@ -1,4 +1,4 @@
-﻿namespace WebGalery.FileImport.Domain
+﻿namespace WebGalery.FileImport.Dtos
 {
     public class DirectoryContentThreadInfoDto
     {

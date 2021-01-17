@@ -1,76 +1,43 @@
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using WebGalery.Core;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
-using WebGalery.FileImport.Application.Dtos;
-using WebGalery.FileImport.Application.Dtos.Directories;
 using WebGalery.FileImport.Domain;
+using WebGalery.FileImport.Dtos;
 using WebGalery.Maintenance.Domain;
 
 namespace WebGalery.FileImport.Application
 {
-    public class DirectoryContentApplication
+    public class FileImportApplication
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private readonly IDirectoryContentBuilder directoryContentBuilder;
+        private readonly PhysicalFilesParser directoryContentBuilder;
         private readonly IContentEntityRepository contentRepository;
-        private readonly IGalerySession session;
+        private readonly RackInfoBuilder rackInfoBuilder;
         private readonly CurrentDatabaseInfoProvider dbInfoProvider;
-        private readonly IDirectoryMethods directoryMethods;
 
-
-        public DirectoryContentApplication(
-            IGalerySession session,
+        public FileImportApplication(
+            RackInfoBuilder rackInfoBuilder,
             CurrentDatabaseInfoProvider dbInfoProvider,
-            IDirectoryContentBuilder directoryContentBuilder,
-            IContentEntityRepository contentRepository,
-            IDirectoryMethods directoryMethods
+            PhysicalFilesParser directoryContentBuilder,
+            IContentEntityRepository contentRepository
             )
         {
-            this.session = session;
+            this.rackInfoBuilder = rackInfoBuilder;
             this.dbInfoProvider = dbInfoProvider;
             this.directoryContentBuilder = directoryContentBuilder;
             this.contentRepository = contentRepository;
-            this.directoryMethods = directoryMethods;
         }
 
         public RackInfoDto GetCurrentRackInfo()
         {
-            var retVal = new RackInfoDto
-            {
-                ActiveDatabaseName = dbInfoProvider.CurrentInfo.CurrentDatabaseInfoName,
-                ActiveDatabaseHash = session.CurrentDatabaseHash,
-                ActiveRackName = dbInfoProvider.CurrentInfo.CurrentRack.Name,
-                ActiveRackHash = session.CurrentRackHash,
-                ActiveDirectory = dbInfoProvider.CurrentInfo.CurrentRack.ActiveDirectory,
-                DirectoryInfo = GetSubDirectoryInfo(".")
-            };
-
-            return retVal;
+            return rackInfoBuilder.GetCurrentRackInfo();
         }
 
         public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
-            var rack = dbInfoProvider.CurrentInfo.CurrentRack;
-            var directoryInfo = new DirectoryInfoDto();
-            var activeDirectory = rack.ActiveDirectory;
-            var fullPath = Path.Combine(activeDirectory, subDirectory);
-
-            var fileNames = directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
-            var dirNames = directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
-
-            var normSubDir = rack.GetSubpath(fullPath);
-            if (normSubDir != ".")
-                dirNames = new[] { Path.Combine(normSubDir, @"..") }.Union(dirNames);
-
-            directoryInfo.SubDirectories = dirNames;
-            directoryInfo.Files = fileNames;
-            directoryInfo.CurrentDirectory = subDirectory;
-
-            return directoryInfo;
+            return rackInfoBuilder.GetSubDirectoryInfo(subDirectory);
         }
 
         public DirectoryContentThreadInfoDto GetThreadInfo(string subDirectory)
@@ -123,8 +90,10 @@ namespace WebGalery.FileImport.Application
         {
             Log.Begin($"{nameof(PersistPhysicalFile)}.{physicalFile}");
 
-            contentRepository.Add(physicalFile.ContentEntity);
-            contentRepository.Save();
+            var existingEntity = contentRepository.Get(physicalFile.Hash);
+
+            //contentRepository.Add(physicalFile.ContentEntity);
+            //contentRepository.Save();
 
             Log.End($"{nameof(PersistPhysicalFile)}.{physicalFile}");
         }

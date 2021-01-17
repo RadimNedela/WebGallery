@@ -6,14 +6,13 @@ using NUnit.Framework;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.Core.Tests;
-using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Domain;
 using WebGalery.Maintenance.Domain;
 
-namespace FileImportTests.Application
+namespace FileImportTests.Domain
 {
     [TestFixture]
-    public class DirectoryContentTests
+    public class RackInfoBuilderTests
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string TestPicturesPath = @"../../../../TestPictures";
@@ -22,30 +21,26 @@ namespace FileImportTests.Application
         public const string DoubledPictureName2 = "2017-08-20-Duha0383_2.JPG";
 
 
-        private DirectoryContentApplication GetTestApplication()
+        private RackInfoBuilder CreateSUT()
         {
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
             directoryMethods.GetDirectories(Arg.Any<string>()).Returns(
                 p => new List<string> { p.ArgAt<string>(0) + @"\TestSubDir1", p.ArgAt<string>(0) + @"\TestSubDir2" });
             MaintenanceTestData mtd = new();
-            IDirectoryContentBuilder directoryContentBuilder = Substitute.For<IDirectoryContentBuilder>();
-            IContentEntityRepository contentRepository = Substitute.For<IContentEntityRepository>();
 
-            var app = new DirectoryContentApplication(
+            var builder = new RackInfoBuilder(
                 mtd.CreateTestDatabaseSession(),
                 new CurrentDatabaseInfoProvider(mtd.CreateTestDatabaseSession(), mtd.CreateTestDatabaseRepositorySubstitute()),
-                directoryContentBuilder,
-                contentRepository,
                 directoryMethods
                 );
 
-            return app;
+            return builder;
         }
 
         [Test]
         public void GetCurrentRackInfo_ReturnsRackInfo()
         {
-            var application = GetTestApplication();
+            var application = CreateSUT();
 
             var rackInfo = application.GetCurrentRackInfo();
 
@@ -55,7 +50,7 @@ namespace FileImportTests.Application
         [Test]
         public void GetCurrentRackInfo_DirectoryInfo_ReturnsInfo()
         {
-            var application = GetTestApplication();
+            var application = CreateSUT();
 
             var rackInfo = application.GetCurrentRackInfo();
 
@@ -67,7 +62,7 @@ namespace FileImportTests.Application
         [Test]
         public void GetSubDirectoryInfo_TestSubDir_ReturnsAlsoParentDir()
         {
-            var application = GetTestApplication();
+            var application = CreateSUT();
 
             var dirInfo = application.GetSubDirectoryInfo("TestSubDir");
 
@@ -75,14 +70,6 @@ namespace FileImportTests.Application
             Assert.That(dirInfo.SubDirectories.First(), Does.EndWith(".."));
             Assert.That(dirInfo.SubDirectories.Last(), Does.StartWith("TestSubDir"));
         }
-
-        //[Test]
-        //public void GetDirectoryContent_ValidTestPath_Returns2Directories()
-        //{
-        //    var application = GetTestApplication();
-        //    var content = application.GetDirectoryContent(TestPicturesPath);
-        //    Assert.That(content.Binders.Count, Is.EqualTo(2));
-        //}
 
         //[Test]
         //public void GetDirectoryContent_ValidTestPath_Returns0Files()

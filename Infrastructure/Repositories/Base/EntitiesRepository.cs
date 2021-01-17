@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using WebGalery.Core.DbEntities;
+using WebGalery.Core.InfrastructureInterfaces.Base;
 using WebGalery.Infrastructure.Databases;
 
 namespace WebGalery.Infrastructure.Repositories.Base
 {
-    public abstract class EntitiesRepository<T> where T: class, IDatabaseEntity
+    public abstract class EntitiesRepository<T> : IEntityPersister<T> where T: class, IDatabaseEntity
     {
         protected readonly IGaleryDatabase GaleryDatabase;
 

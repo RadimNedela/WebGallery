@@ -1,4 +1,4 @@
-﻿namespace WebGalery.FileImport.Application.Dtos
+﻿namespace WebGalery.FileImport.Dtos
 {
     public class BinderDto : HashedElementDto
     {

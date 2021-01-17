@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebGalery.FileImport.Application;
-using WebGalery.FileImport.Application.Dtos;
-using WebGalery.FileImport.Application.Dtos.Directories;
+using WebGalery.FileImport.Dtos;
+using WebGalery.FileImport.Dtos.Directories;
 using WebGalery.SessionHandling.Applications;
 
 namespace WebGalery.WebApplication.Controllers
@@ -9,10 +9,10 @@ namespace WebGalery.WebApplication.Controllers
     [Route("api/[controller]")]
     public class FileImportController : Controller
     {
-        private readonly DirectoryContentApplication _directoryContentApplication;
+        private readonly FileImportApplication _directoryContentApplication;
         private readonly IDatabaseInfoInitializer _databaseInfoInitializer;
         public FileImportController(
-            DirectoryContentApplication directoryContentApplication,
+            FileImportApplication directoryContentApplication,
             IDatabaseInfoInitializer databaseInfoInitializer)
         {
             _directoryContentApplication = directoryContentApplication;

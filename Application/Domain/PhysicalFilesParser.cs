@@ -1,42 +1,37 @@
 using System.Collections.Generic;
-using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
-using WebGalery.FileImport.Domain.Elements;
 
 namespace WebGalery.FileImport.Domain
 {
-    public class DirectoryContentBuilder : IDirectoryContentBuilder
+    public class PhysicalFilesParser
     {
         private readonly IDirectoryMethods directoryMethods;
         private readonly IHasher hasher;
-        //private readonly IContentElementsMemoryStorage elementsMemoryStorage;
 
-        public DirectoryContentBuilder(
+        public PhysicalFilesParser(
             IDirectoryMethods directoryMethods,
             IHasher hasher
-            //IContentElementsMemoryStorage elementsMemoryStorage,
             )
         {
             this.directoryMethods = directoryMethods;
             this.hasher = hasher;
-            //this.elementsMemoryStorage = elementsMemoryStorage;
         }
 
         public IEnumerable<PhysicalFile> ParsePhysicalFiles(DirectoryContentThreadInfo info)
         {
             info.FileNames = directoryMethods.GetFileNames(info.FullPath);
-            //Binder directoryBinder = CreateDirectoryBinder(info.FullPath);
             foreach (var fn in info.FileNames)
             {
-                //CreateFileContentElement(fn, directoryBinder);
                 info.FilesDone++;
 
-                ContentEntity contentEntity = new ContentEntity()
+                PhysicalFile physicalFile = new()
                 {
-                    //Hash = hasher.ComputeFileContentHash(fn),
+                    Hash = hasher.ComputeFileContentHash(fn),
+                    Type = PhysicalFile.GetContentTypeByExtension(fn),
+                    FullPath = fn
                 };
 
-                yield return new PhysicalFile { ContentEntity = contentEntity };
+                yield return physicalFile;
             }
         }
 

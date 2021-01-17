@@ -1,6 +1,7 @@
 using NSubstitute;
 using NUnit.Framework;
 using System.Linq;
+using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.FileImport.Domain;
 
@@ -12,36 +13,52 @@ namespace FileImportTests.Domain
         [Test]
         public void GetDirectoryContent_ValidPath_ReturnsCorrectNumberOfPictures()
         {
-            DirectoryContentBuilder contentBuilder = CreateContentBuilder();
+            PhysicalFilesParser contentBuilder = CreateContentBuilder();
 
             var files = contentBuilder.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = TestDirectory });
 
-            Assert.That(files.Count(), Is.EqualTo(4));
+            Assert.That(files.Count(), Is.EqualTo(5));
         }
 
-        //        [Test]
-        //        public void GetDirectoryContent_ValidPath_FirstElementHasCorrectHash()
-        //        {
-        //            DirectoryContentBuilder contentBuilder = CreateContentBuilder();
+        [Test]
+        public void GetDirectoryContent_ValidPath_FirstElementHasCorrectHash()
+        {
+            PhysicalFilesParser contentBuilder = CreateContentBuilder();
 
-        //            var content = contentBuilder.GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = TestDirectory }).Contents.First();
+            var content = contentBuilder.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = TestDirectory }).First();
 
-        //            Assert.That(content.Hash, Contains.Substring("2018-01-24-Chopok0335.JPGHash"));
-        //        }
+            Assert.That(content.Hash, Contains.Substring("2018-01-24-Chopok0335.JPGHash"));
+        }
 
-        //        [Test]
-        //        public void JpgElement_IsImageType()
-        //        {
-        //            DirectoryContentBuilder contentBuilder = CreateContentBuilder();
+        [Test]
+        public void JpgElement_IsImageType()
+        {
+            PhysicalFilesParser contentBuilder = CreateContentBuilder();
 
-        //            var content = contentBuilder.GetDirectoryContent(new DirectoryContentThreadInfo { FullPath = TestDirectory }).Contents.First();
+            var content = contentBuilder.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = TestDirectory }).First();
 
-        //            Assert.That(content.Type, Is.EqualTo(ContentTypeEnum.ImageType.ToString()));
-        //        }
+            Assert.That(content.Type, Is.EqualTo(ContentTypeEnum.ImageType));
+        }
+
+        [Test]
+        public void ParsingFiles_ChangesFilesAndFilesDoneCounts()
+        {
+            PhysicalFilesParser contentBuilder = CreateContentBuilder();
+
+            var info = new DirectoryContentThreadInfo { FullPath = TestDirectory };
+            contentBuilder.ParsePhysicalFiles(info).First();
+
+            Assert.That(info.Files, Is.EqualTo(5));
+            Assert.That(info.FilesDone, Is.EqualTo(1));
+
+            contentBuilder.ParsePhysicalFiles(info).Last();
+            Assert.That(info.Files, Is.EqualTo(5));
+            Assert.That(info.FilesDone, Is.EqualTo(5));
+        }
 
         public const string TestDirectory = "Test directory - chopok";
 
-        public static DirectoryContentBuilder CreateContentBuilder()
+        public static PhysicalFilesParser CreateContentBuilder()
         {
             var directoryMethods = Substitute.For<IDirectoryMethods>();
             directoryMethods.GetFileNames(TestDirectory).Returns(new[] {
@@ -55,7 +72,7 @@ namespace FileImportTests.Domain
             var hasher = Substitute.For<IHasher>();
             hasher.ComputeFileContentHash(Arg.Any<string>()).Returns(ci => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
 
-            return new DirectoryContentBuilder(directoryMethods, hasher);
+            return new PhysicalFilesParser(directoryMethods, hasher);
         }
     }
 }

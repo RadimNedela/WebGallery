@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Maintenance.Domain;
 
 namespace WebGalery.FileImport.Domain
 {
@@ -7,18 +8,22 @@ namespace WebGalery.FileImport.Domain
     {
         private readonly IDirectoryMethods directoryMethods;
         private readonly IHasher hasher;
+        private readonly CurrentDatabaseInfoProvider dbInfoProvider;
 
         public PhysicalFilesParser(
             IDirectoryMethods directoryMethods,
-            IHasher hasher
+            IHasher hasher,
+            CurrentDatabaseInfoProvider dbInfoProvider
             )
         {
             this.directoryMethods = directoryMethods;
             this.hasher = hasher;
+            this.dbInfoProvider = dbInfoProvider;
         }
 
         public IEnumerable<PhysicalFile> ParsePhysicalFiles(DirectoryContentThreadInfo info)
         {
+            var rack = dbInfoProvider.CurrentInfo.CurrentRack;
             info.FileNames = directoryMethods.GetFileNames(info.FullPath);
             foreach (var fn in info.FileNames)
             {
@@ -28,7 +33,8 @@ namespace WebGalery.FileImport.Domain
                 {
                     Hash = hasher.ComputeFileContentHash(fn),
                     Type = PhysicalFile.GetContentTypeByExtension(fn),
-                    FullPath = fn
+                    FullPath = fn,
+                    SubPath = rack.GetSubpath(fn)
                 };
 
                 yield return physicalFile;

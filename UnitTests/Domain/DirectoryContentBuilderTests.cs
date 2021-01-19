@@ -4,6 +4,7 @@ using System.Linq;
 using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.FileImport.Domain;
+using WebGalery.Maintenance.Domain;
 
 namespace FileImportTests.Domain
 {
@@ -37,7 +38,7 @@ namespace FileImportTests.Domain
 
             var content = contentBuilder.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = TestDirectory }).First();
 
-            Assert.That(content.Type, Is.EqualTo(ContentTypeEnum.ImageType));
+            Assert.That(content.Type, Is.EqualTo(ContentTypeEnum.Image));
         }
 
         [Test]
@@ -71,8 +72,9 @@ namespace FileImportTests.Domain
 
             var hasher = Substitute.For<IHasher>();
             hasher.ComputeFileContentHash(Arg.Any<string>()).Returns(ci => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
+            CurrentDatabaseInfoProvider cdiProvider = new CurrentDatabaseInfoProvider(null, null);
 
-            return new PhysicalFilesParser(directoryMethods, hasher);
+            return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider);
         }
     }
 }

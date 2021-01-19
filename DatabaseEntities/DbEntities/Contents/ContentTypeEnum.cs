@@ -2,7 +2,7 @@
 {
     public enum ContentTypeEnum
     {
-        ImageType = 1,
-        UnknownType = 2,
+        Image = 1,
+        Unknown = 2,
     }
 }

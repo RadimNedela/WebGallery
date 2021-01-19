@@ -8,6 +8,7 @@ namespace WebGalery.FileImport.Domain
         public string Hash { get; set; }
         public ContentTypeEnum Type { get; set; }
         public string FullPath { get; set; }
+        public string SubPath { get; set; }
 
         public static ContentTypeEnum GetContentTypeByExtension(string fileName)
         {
@@ -16,9 +17,9 @@ namespace WebGalery.FileImport.Domain
             {
                 case ".JPG":
                 case ".JPEG":
-                    return ContentTypeEnum.ImageType;
+                    return ContentTypeEnum.Image;
                 default:
-                    return ContentTypeEnum.UnknownType;
+                    return ContentTypeEnum.Unknown;
             }
         }
     }

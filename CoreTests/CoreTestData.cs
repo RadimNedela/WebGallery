@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using WebGalery.Core.DbEntities.Maintenance;
@@ -6,8 +7,20 @@ using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Core.Tests
 {
-    public class MaintenanceTestData
+    public class CoreTestData
     {
+        [Test]
+        public void CoreTestData_AreConstructedWell()
+        {
+            var dbInfo = new CoreTestData().TestDatabase;
+
+            Assert.That(dbInfo.Racks.Count, Is.GreaterThan(1), "Test database should contain at least 2 racks, add them...");
+            foreach (var rack in dbInfo.Racks)
+            {
+                Assert.That(rack.MountPoints.Any(), $"Rack {rack} does not contain any mount points");
+            }
+        }
+
         private DatabaseInfoEntity testDatabase;
         public DatabaseInfoEntity TestDatabase
         {
@@ -46,6 +59,28 @@ namespace WebGalery.Core.Tests
             session.CurrentDatabaseHash.Returns(TestDatabase.Hash);
             session.CurrentRackHash.Returns(TestDatabase.Racks.First().Hash);
             return session;
+        }
+
+        public const string TestDirectory = "Test directory - chopok";
+
+        public IDirectoryMethods CreateTestDirectoryMethods()
+        {
+            var directoryMethods = Substitute.For<IDirectoryMethods>();
+            directoryMethods.GetFileNames(TestDirectory).Returns(new[] {
+                        "2018-01-24-Chopok0335.JPG",
+                        "2018-01-24-Chopok0357.JPG",
+                        "2018-01-24-Chopok0361.JPG",
+                        "2018-01-24-Chopok0366.JPG",
+                        "2018-01-24-Chopok0366ASDF.JPG"
+                    });
+            return directoryMethods;
+        }
+
+        public IHasher CreateTestHasher()
+        {
+            var hasher = Substitute.For<IHasher>();
+            hasher.ComputeFileContentHash(Arg.Any<string>()).Returns(ci => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
+            return hasher;
         }
     }
 }

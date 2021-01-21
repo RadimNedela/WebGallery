@@ -3,7 +3,7 @@ using WebGalery.Core.DbEntities.Contents;
 
 namespace WebGalery.FileImport.Domain
 {
-    public class PhysicalFile
+    internal class PhysicalFile
     {
         public string Hash { get; set; }
         public ContentTypeEnum Type { get; set; }

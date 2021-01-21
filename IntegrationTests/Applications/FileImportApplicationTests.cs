@@ -8,10 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Domain;
+using WebGalery.Infrastructure.FileServices;
 using WebGalery.IntegrationTests.IoC;
 using WebGalery.Maintenance.Domain;
+using WebGalery.Maintenance.Tests;
 
 namespace FileImportTests.Application
 {
@@ -30,14 +33,17 @@ namespace FileImportTests.Application
 
         private FileImportApplication CreateSUT()
         {
-            using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
-            
-            RackInfoBuilder rackInfoBuilder = serviceProvider.GetService<RackInfoBuilder>();
-            CurrentDatabaseInfoProvider dbInfoProvider = serviceProvider.GetService<CurrentDatabaseInfoProvider>();
-            PhysicalFilesParser directoryContentBuilder = serviceProvider.GetService<PhysicalFilesParser>();
-            IContentEntityRepository contentRepository = Substitute.For<IContentEntityRepository>();
+            CoreTestData ctd = new();
+            MaintenanceTestData mtd = new();
+            FileImportTestData fitd = new();
 
-            FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, directoryContentBuilder, contentRepository);
+            var dbInfoProvider = mtd.CreateCurrentDatabaseInfoProvider();
+
+            RackInfoBuilder rackInfoBuilder;
+            PhysicalFilesParser physicalFilesParser = fitd.CreateTestPhysicalFilesParser();
+            IContentEntityRepository contentRepository;
+
+            FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentRepository);
 
             return sut;
         }

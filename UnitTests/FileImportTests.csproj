@@ -17,6 +17,7 @@
     <ProjectReference Include="..\Application\FileImport.csproj" />
     <ProjectReference Include="..\CoreTests\CoreTests.csproj" />
     <ProjectReference Include="..\DatabaseEntities\Core.csproj" />
+    <ProjectReference Include="..\MaintenanceTests\MaintenanceTests.csproj" />
   </ItemGroup>
 
 </Project>

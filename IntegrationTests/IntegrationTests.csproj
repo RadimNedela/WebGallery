@@ -15,10 +15,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\FileImport.csproj" />
+    <ProjectReference Include="..\CoreTests\CoreTests.csproj" />
     <ProjectReference Include="..\DatabaseEntities\Core.csproj" />
+    <ProjectReference Include="..\InfrastructureTests\InfrastructureTests.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\MaintenanceTests\MaintenanceTests.csproj" />
     <ProjectReference Include="..\Maintenance\Maintenance.csproj" />
     <ProjectReference Include="..\SessionHandling\SessionHandling.csproj" />
+    <ProjectReference Include="..\UnitTests\FileImportTests.csproj" />
+    <ProjectReference Include="..\ViewerTests\PictureViewerTests.csproj" />
     <ProjectReference Include="..\Viewer\PictureViewer.csproj" />
     <ProjectReference Include="..\WebApplication\WebApplication.csproj" />
   </ItemGroup>

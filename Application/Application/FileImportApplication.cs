@@ -1,6 +1,7 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.Application.Helpers;
@@ -13,20 +14,22 @@ namespace WebGalery.FileImport.Application
     public class FileImportApplication
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private readonly PhysicalFilesParser directoryContentBuilder;
+        private readonly PhysicalFilesParser physicalFilesParser;
+        private readonly IContentEntityRepository contentRepository;
         private readonly RackInfoBuilder rackInfoBuilder;
         private readonly CurrentDatabaseInfoProvider dbInfoProvider;
 
         public FileImportApplication(
             RackInfoBuilder rackInfoBuilder,
             CurrentDatabaseInfoProvider dbInfoProvider,
-            PhysicalFilesParser directoryContentBuilder,
+            PhysicalFilesParser physicalFilesParser,
             IContentEntityRepository contentRepository
             )
         {
             this.rackInfoBuilder = rackInfoBuilder;
             this.dbInfoProvider = dbInfoProvider;
-            this.directoryContentBuilder = directoryContentBuilder;
+            this.physicalFilesParser = physicalFilesParser;
+            this.contentRepository = contentRepository;
         }
 
         public RackInfoDto GetCurrentRackInfo()
@@ -77,22 +80,22 @@ namespace WebGalery.FileImport.Application
         {
             Log.Begin($"{nameof(ParseDirectoryContent)}.{info.FullPath}");
 
-            foreach (PhysicalFile file in directoryContentBuilder.ParsePhysicalFiles(info))
+            foreach (ContentEntity entity in physicalFilesParser.ParsePhysicalFiles(info))
             {
-                PersistPhysicalFile(file);
+                PersistContentEntity(entity);
             }
 
             Log.End($"{nameof(ParseDirectoryContent)}.{info.FullPath}");
         }
 
-        private void PersistPhysicalFile(PhysicalFile physicalFile)
+        private void PersistContentEntity(ContentEntity contentEntity)
         {
-            Log.Begin($"{nameof(PersistPhysicalFile)}.{physicalFile}");
+            Log.Begin($"{nameof(PersistContentEntity)}.{contentEntity}");
 
             //contentRepository.Add(physicalFile.ContentEntity);
             //contentRepository.Save();
 
-            Log.End($"{nameof(PersistPhysicalFile)}.{physicalFile}");
+            Log.End($"{nameof(PersistContentEntity)}.{contentEntity}");
         }
     }
 }

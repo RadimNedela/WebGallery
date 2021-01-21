@@ -26,7 +26,7 @@ namespace FileImportTests.Domain
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
             directoryMethods.GetDirectories(Arg.Any<string>()).Returns(
                 p => new List<string> { p.ArgAt<string>(0) + @"\TestSubDir1", p.ArgAt<string>(0) + @"\TestSubDir2" });
-            MaintenanceTestData mtd = new();
+            CoreTestData mtd = new();
 
             var builder = new RackInfoBuilder(
                 mtd.CreateTestDatabaseSession(),

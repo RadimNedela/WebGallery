@@ -14,7 +14,7 @@ namespace WebGalery.Maintenance.Tests.Applications
     {
         private DatabaseInfoApplication CreateSut()
         {
-            MaintenanceTestData mtd = new();
+            CoreTestData mtd = new();
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
             IHasher hasher = Substitute.For<IHasher>();
             hasher.ComputeRandomStringHash(Arg.Any<string>()).Returns(a => a.ArgAt<string>(0) + " Random Hash");

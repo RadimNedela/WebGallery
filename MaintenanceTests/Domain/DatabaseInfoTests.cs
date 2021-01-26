@@ -12,7 +12,7 @@ namespace WebGalery.Maintenance.Tests.Domain
         [Test]
         public void GetActiveDirectory_ReturnsExistingPath()
         {
-            var dbInfo = new MaintenanceTestData().CreateCurrentDatabaseInfoProvider();
+            var dbInfo = new MaintenanceTestData().CreateTestCurrentDatabaseInfoProvider();
 
             var path = dbInfo.CurrentInfo.CurrentRack.ActiveDirectory;
 

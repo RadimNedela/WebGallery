@@ -13,9 +13,23 @@ namespace FileImportTests
             var hasher = ctd.CreateTestHasher();
 
             var mtd = new MaintenanceTestData();
-            var cdiProvider = mtd.CreateCurrentDatabaseInfoProvider();
+            var cdiProvider = mtd.CreateTestCurrentDatabaseInfoProvider();
 
             return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, null, null);
+        }
+
+        public RackInfoBuilder CreateTestRackInfoBuilder()
+        {
+            CoreTestData ctd = new();
+            MaintenanceTestData mtd = new();
+
+            var builder = new RackInfoBuilder(
+                ctd.CreateTestDatabaseSession(),
+                mtd.CreateTestCurrentDatabaseInfoProvider(),
+                ctd.CreateTestDirectoryMethods()
+                );
+
+            return builder;
         }
     }
 }

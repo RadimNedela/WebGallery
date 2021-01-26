@@ -1,13 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NSubstitute;
 using NUnit.Framework;
-using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
-using WebGalery.Core.Tests;
-using WebGalery.FileImport.Domain;
-using WebGalery.Maintenance.Domain;
 
 namespace FileImportTests.Domain
 {
@@ -21,26 +15,11 @@ namespace FileImportTests.Domain
         public const string DoubledPictureName2 = "2017-08-20-Duha0383_2.JPG";
 
 
-        private RackInfoBuilder CreateSUT()
-        {
-            IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
-            directoryMethods.GetDirectories(Arg.Any<string>()).Returns(
-                p => new List<string> { p.ArgAt<string>(0) + @"\TestSubDir1", p.ArgAt<string>(0) + @"\TestSubDir2" });
-            CoreTestData mtd = new();
-
-            var builder = new RackInfoBuilder(
-                mtd.CreateTestDatabaseSession(),
-                new CurrentDatabaseInfoProvider(mtd.CreateTestDatabaseSession(), mtd.CreateTestDatabaseRepositorySubstitute()),
-                directoryMethods
-                );
-
-            return builder;
-        }
 
         [Test]
         public void GetCurrentRackInfo_ReturnsRackInfo()
         {
-            var application = CreateSUT();
+            var application = new FileImportTestData().CreateTestRackInfoBuilder();
 
             var rackInfo = application.GetCurrentRackInfo();
 
@@ -50,7 +29,7 @@ namespace FileImportTests.Domain
         [Test]
         public void GetCurrentRackInfo_DirectoryInfo_ReturnsInfo()
         {
-            var application = CreateSUT();
+            var application = new FileImportTestData().CreateTestRackInfoBuilder();
 
             var rackInfo = application.GetCurrentRackInfo();
 
@@ -62,7 +41,7 @@ namespace FileImportTests.Domain
         [Test]
         public void GetSubDirectoryInfo_TestSubDir_ReturnsAlsoParentDir()
         {
-            var application = CreateSUT();
+            var application = new FileImportTestData().CreateTestRackInfoBuilder();
 
             var dirInfo = application.GetSubDirectoryInfo("TestSubDir");
 

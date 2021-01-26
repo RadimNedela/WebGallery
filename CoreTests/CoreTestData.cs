@@ -73,6 +73,11 @@ namespace WebGalery.Core.Tests
                         "2018-01-24-Chopok0366.JPG",
                         "2018-01-24-Chopok0366ASDF.JPG"
                     });
+            directoryMethods.GetDirectories(Arg.Any<string>()).Returns(
+                p => new List<string> {
+                    p.ArgAt<string>(0) + @"\TestSubDir1",
+                    p.ArgAt<string>(0) + @"\TestSubDir2" }
+                );
             return directoryMethods;
         }
 

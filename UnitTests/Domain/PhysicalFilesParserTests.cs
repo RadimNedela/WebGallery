@@ -74,6 +74,5 @@ namespace FileImportTests.Domain
             Assert.That(it.Binders.Count(), Is.EqualTo(1));
             Assert.That(it.AttributedBinders.Count(), Is.EqualTo(1));
         }
-
     }
 }

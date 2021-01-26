@@ -1,19 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Domain;
-using WebGalery.Infrastructure.FileServices;
-using WebGalery.IntegrationTests.IoC;
-using WebGalery.Maintenance.Domain;
 using WebGalery.Maintenance.Tests;
 
 namespace FileImportTests.Application
@@ -37,11 +28,11 @@ namespace FileImportTests.Application
             MaintenanceTestData mtd = new();
             FileImportTestData fitd = new();
 
-            var dbInfoProvider = mtd.CreateCurrentDatabaseInfoProvider();
+            var dbInfoProvider = mtd.CreateTestCurrentDatabaseInfoProvider();
 
-            RackInfoBuilder rackInfoBuilder;
+            RackInfoBuilder rackInfoBuilder = fitd.CreateTestRackInfoBuilder();
             PhysicalFilesParser physicalFilesParser = fitd.CreateTestPhysicalFilesParser();
-            IContentEntityRepository contentRepository;
+            IContentEntityRepository contentRepository = Substitute.For<IContentEntityRepository>();
 
             FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentRepository);
 

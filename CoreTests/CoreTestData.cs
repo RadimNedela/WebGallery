@@ -61,17 +61,18 @@ namespace WebGalery.Core.Tests
             return session;
         }
 
-        public const string TestDirectory = "Test directory - chopok";
+        public const string CurentDirectory = @"C:\Temp";
 
         public IDirectoryMethods CreateTestDirectoryMethods()
         {
             var directoryMethods = Substitute.For<IDirectoryMethods>();
-            directoryMethods.GetFileNames(TestDirectory).Returns(new[] {
-                        "2018-01-24-Chopok0335.JPG",
-                        "2018-01-24-Chopok0357.JPG",
-                        "2018-01-24-Chopok0361.JPG",
-                        "2018-01-24-Chopok0366.JPG",
-                        "2018-01-24-Chopok0366ASDF.JPG"
+            directoryMethods.GetCurrentDirectoryName().Returns(CurentDirectory);
+            directoryMethods.GetFileNames(CurentDirectory).Returns(new[] {
+                        CurentDirectory + "\\2018-01-24-Chopok0335.JPG",
+                        CurentDirectory + "\\2018-01-24-Chopok0357.JPG",
+                        CurentDirectory + "\\2018-01-24-Chopok0361.JPG",
+                        CurentDirectory + "\\2018-01-24-Chopok0366.JPG",
+                        CurentDirectory + "\\2018-01-24-Chopok0366ASDF.JPG"
                     });
             directoryMethods.GetDirectories(Arg.Any<string>()).Returns(
                 p => new List<string> {

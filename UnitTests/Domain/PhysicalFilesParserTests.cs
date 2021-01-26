@@ -18,7 +18,7 @@ namespace FileImportTests.Domain
         {
             var physicalFilesParser = new FileImportTestData().CreateTestPhysicalFilesParser();
 
-            var files = physicalFilesParser.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = CoreTestData.TestDirectory });
+            var files = physicalFilesParser.ParsePhysicalFiles(CreateThreadInfo());
 
             Assert.That(files.Count(), Is.EqualTo(5));
         }
@@ -28,7 +28,7 @@ namespace FileImportTests.Domain
         {
             var physicalFilesParser = new FileImportTestData().CreateTestPhysicalFilesParser();
 
-            var content = physicalFilesParser.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = CoreTestData.TestDirectory }).First();
+            var content = physicalFilesParser.ParsePhysicalFiles(CreateThreadInfo()).First();
 
             Assert.That(content.Hash, Contains.Substring("2018-01-24-Chopok0335.JPGHash"));
         }
@@ -38,7 +38,7 @@ namespace FileImportTests.Domain
         {
             var physicalFilesParser = new FileImportTestData().CreateTestPhysicalFilesParser();
 
-            var content = physicalFilesParser.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = CoreTestData.TestDirectory }).First();
+            var content = physicalFilesParser.ParsePhysicalFiles(CreateThreadInfo()).First();
 
             Assert.That(content.Type, Is.EqualTo(ContentTypeEnum.Image));
         }
@@ -48,7 +48,7 @@ namespace FileImportTests.Domain
         {
             var physicalFilesParser = new FileImportTestData().CreateTestPhysicalFilesParser();
 
-            var info = new DirectoryContentThreadInfo { FullPath = CoreTestData.TestDirectory };
+            var info = CreateThreadInfo();
             physicalFilesParser.ParsePhysicalFiles(info).First();
 
             Assert.That(info.Files, Is.EqualTo(5));
@@ -64,7 +64,7 @@ namespace FileImportTests.Domain
         {
             var physicalFilesParser = new FileImportTestData().CreateTestPhysicalFilesParser();
 
-            var it = physicalFilesParser.ParsePhysicalFiles(new DirectoryContentThreadInfo { FullPath = CoreTestData.TestDirectory }).First();
+            var it = physicalFilesParser.ParsePhysicalFiles(CreateThreadInfo()).First();
 
             Assert.That(it, Is.Not.Null);
             Assert.That(it.Hash, Is.EqualTo("asdf"));
@@ -73,6 +73,11 @@ namespace FileImportTests.Domain
 
             Assert.That(it.Binders.Count(), Is.EqualTo(1));
             Assert.That(it.AttributedBinders.Count(), Is.EqualTo(1));
+        }
+
+        private DirectoryContentThreadInfo CreateThreadInfo()
+        {
+            return new DirectoryContentThreadInfo { FullPath = CoreTestData.CurentDirectory };
         }
     }
 }

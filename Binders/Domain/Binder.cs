@@ -1,4 +1,5 @@
-﻿using WebGalery.Core.DbEntities.Contents;
+﻿using WebGalery.Core.BinderInterfaces;
+using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Binders.Domain

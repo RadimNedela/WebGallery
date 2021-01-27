@@ -1,4 +1,5 @@
-﻿using WebGalery.Core.InfrastructureInterfaces;
+﻿using WebGalery.Core.BinderInterfaces;
+using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Domain;
 using WebGalery.Maintenance.Tests;
@@ -16,8 +17,9 @@ namespace FileImportTests
             var mtd = new MaintenanceTestData();
             var cdiProvider = mtd.CreateTestCurrentDatabaseInfoProvider();
             IContentEntityRepository repository = null;
+            IBinder binder = null;
 
-            return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, repository, null);
+            return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, repository, binder);
         }
 
         public RackInfoBuilder CreateTestRackInfoBuilder()

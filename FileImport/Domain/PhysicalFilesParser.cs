@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-using WebGalery.Binders.Domain;
+using WebGalery.Core.BinderInterfaces;
 using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Maintenance.Domain;

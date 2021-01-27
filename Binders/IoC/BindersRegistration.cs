@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using WebGalery.Binders.Domain;
+using WebGalery.Core.BinderInterfaces;
 
 namespace WebGalery.Binders.IoC
 {

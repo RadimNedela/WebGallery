@@ -1,6 +1,6 @@
 ﻿using WebGalery.Core.DbEntities.Contents;
 
-namespace WebGalery.Binders.Domain
+namespace WebGalery.Core.BinderInterfaces
 {
     public interface IBinder
     {

@@ -1,10 +1,9 @@
-﻿using System;
-using WebGalery.Core.DbEntities.Contents;
+﻿using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
 
-namespace WebGalery.FileImport.Domain
+namespace WebGalery.Binders.Domain
 {
-    public class Binder
+    public class Binder : IBinder
     {
         private readonly IHasher hasher;
         private readonly IBinderEntityRepository binderRepository;
@@ -18,7 +17,7 @@ namespace WebGalery.FileImport.Domain
             this.binderRepository = binderRepository;
         }
 
-        internal BinderEntity GetDirectoryBinderForPhysicalFile(PhysicalFile physicalFile)
+        public BinderEntity GetDirectoryBinderForPath(string path)
         {
             return null;
         }

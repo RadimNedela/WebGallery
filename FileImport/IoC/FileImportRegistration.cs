@@ -11,7 +11,6 @@ namespace WebGalery.FileImport.IoC
             services.AddScoped<FileImportApplication>();
             services.AddScoped<PhysicalFilesParser>();
             services.AddScoped<RackInfoBuilder>();
-            services.AddScoped<Binder>();
             //services.AddSingleton<IDatabaseInfoElementRepository, DatabaseInfoMemoryStorage2>();
             //services.AddSingleton<DatabaseInfoBuilder>();
             //services.AddScoped<IPathOptimizer, PathOptimizer>();

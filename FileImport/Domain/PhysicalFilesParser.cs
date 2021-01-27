@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using WebGalery.Binders.Domain;
 using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Maintenance.Domain;
@@ -12,14 +13,14 @@ namespace WebGalery.FileImport.Domain
         private readonly IHasher hasher;
         private readonly CurrentDatabaseInfoProvider dbInfoProvider;
         private readonly IContentEntityRepository contentRepository;
-        private readonly Binder binder;
+        private readonly IBinder binder;
 
         public PhysicalFilesParser(
             IDirectoryMethods directoryMethods,
             IHasher hasher,
             CurrentDatabaseInfoProvider dbInfoProvider,
             IContentEntityRepository contentRepository,
-            Binder binder
+            IBinder binder
             )
         {
             this.directoryMethods = directoryMethods;
@@ -51,7 +52,7 @@ namespace WebGalery.FileImport.Domain
 
         private ContentEntity ToContentEntity(PhysicalFile physicalFile)
         {
-            BinderEntity directoryBinder = binder.GetDirectoryBinderForPhysicalFile(physicalFile);
+            BinderEntity directoryBinder = binder.GetDirectoryBinderForPath(physicalFile.FullPath);
 
             ContentEntity retVal = new()
             {

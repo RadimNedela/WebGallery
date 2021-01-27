@@ -1,12 +1,8 @@
-using NSubstitute;
 using NUnit.Framework;
 using System.Linq;
 using WebGalery.Core.DbEntities.Contents;
-using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Domain;
-using WebGalery.Maintenance.Domain;
-using WebGalery.Maintenance.Tests;
 
 namespace FileImportTests.Domain
 {

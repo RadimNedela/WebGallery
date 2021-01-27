@@ -35,7 +35,7 @@ namespace FileImportTests.Domain
 
             Assert.That(rackInfo.DirectoryInfo, Is.Not.Null);
             Assert.That(rackInfo.DirectoryInfo.SubDirectories, Is.Not.Empty);
-            Assert.That(rackInfo.DirectoryInfo.SubDirectories.First(), Does.StartWith("TestSubDir"));
+            Assert.That(rackInfo.DirectoryInfo.SubDirectories.First(), Contains.Substring("TestSubDir"));
         }
 
         [Test]

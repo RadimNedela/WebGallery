@@ -36,7 +36,7 @@ namespace FileImportTests.Domain
 
             var content = physicalFilesParser.ParsePhysicalFiles(CreateThreadInfo()).First();
 
-            Assert.That(content.Type, Is.EqualTo(ContentTypeEnum.Image));
+            Assert.That(content.Type, Is.EqualTo(ContentTypeEnum.Image.ToString()));
         }
 
         [Test]
@@ -63,11 +63,11 @@ namespace FileImportTests.Domain
             var it = physicalFilesParser.ParsePhysicalFiles(CreateThreadInfo()).First();
 
             Assert.That(it, Is.Not.Null);
-            Assert.That(it.Hash, Is.EqualTo("asdf"));
-            Assert.That(it.Label, Is.EqualTo("asdf.jpg"));
+            Assert.That(it.Hash, Does.StartWith("Hash").And.EndsWith("Hash"));
+            Assert.That(it.Label, Is.EqualTo("2018-01-24-Chopok0335.JPG"));
             Assert.That(it.Type, Is.EqualTo("Image"));
 
-            Assert.That(it.Binders.Count(), Is.EqualTo(1));
+            Assert.That(it.AttributedBinders, Is.Not.Null, "Attributed Binders is null");
             Assert.That(it.AttributedBinders.Count(), Is.EqualTo(1));
         }
 

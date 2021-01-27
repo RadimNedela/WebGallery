@@ -95,7 +95,7 @@ namespace WebGalery.Core.Tests
             var rack = Substitute.For<IRack>();
             rack.Name.Returns("Test database rack name");
             rack.ActiveDirectory.Returns(CurentDirectory);
-            rack.GetSubpath(Arg.Any<string>()).Returns(s => s.ArgAt<string>(0).Substring(CurentDirectory.Length));
+            rack.GetSubpath(Arg.Any<string>()).Returns(s => s.ArgAt<string>(0).Substring(CurentDirectory.Length + 1));
 
             var databaseInfo = Substitute.For<IDatabaseInfo>();
             databaseInfo.CurrentDatabaseInfoName.Returns("Test database info name");

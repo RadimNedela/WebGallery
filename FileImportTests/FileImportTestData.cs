@@ -1,4 +1,5 @@
-﻿using WebGalery.Core.BinderInterfaces;
+﻿using NSubstitute;
+using WebGalery.Core.BinderInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Domain;
@@ -15,7 +16,7 @@ namespace FileImportTests
 
             var cdiProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
             IContentEntityRepository repository = null;
-            IBinder binder = null;
+            IBinder binder = Substitute.For<IBinder>();
 
             return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, repository, binder);
         }

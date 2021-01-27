@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreTests\CoreTests.csproj" />
-    <ProjectReference Include="..\DatabaseEntities\Core.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Maintenance\Maintenance.csproj" />
   </ItemGroup>
 

@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>WebGalery.Maintenance</RootNamespace>
+    <RootNamespace>WebGalery.Binders</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

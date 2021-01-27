@@ -1,4 +1,4 @@
-﻿namespace WebGalery.PictureViewer
+﻿namespace WebGalery.Binders.Dtos
 {
     public class PictureInfoDto
     {

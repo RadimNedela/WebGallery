@@ -2,10 +2,11 @@
 using System.IO;
 using System.Linq;
 using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.DBMaintenanceInterfaces;
 
 namespace WebGalery.Maintenance.Domain
 {
-    public class Rack
+    public class Rack : IRack
     {
         private readonly RackEntity entity;
 

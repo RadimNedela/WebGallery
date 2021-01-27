@@ -2,12 +2,12 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.Application.Helpers;
 using WebGalery.FileImport.Domain;
 using WebGalery.FileImport.Dtos;
-using WebGalery.Maintenance.Domain;
 
 namespace WebGalery.FileImport.Application
 {
@@ -17,11 +17,11 @@ namespace WebGalery.FileImport.Application
         private readonly PhysicalFilesParser physicalFilesParser;
         private readonly IContentEntityRepository contentRepository;
         private readonly RackInfoBuilder rackInfoBuilder;
-        private readonly CurrentDatabaseInfoProvider dbInfoProvider;
+        private readonly ICurrentDatabaseInfoProvider dbInfoProvider;
 
         public FileImportApplication(
             RackInfoBuilder rackInfoBuilder,
-            CurrentDatabaseInfoProvider dbInfoProvider,
+            ICurrentDatabaseInfoProvider dbInfoProvider,
             PhysicalFilesParser physicalFilesParser,
             IContentEntityRepository contentRepository
             )
@@ -64,7 +64,7 @@ namespace WebGalery.FileImport.Application
 
         private string GetFullPath(string subDirectory)
         {
-            var activeDirectory = dbInfoProvider.CurrentInfo.CurrentRack.ActiveDirectory;
+            var activeDirectory = dbInfoProvider.CurrentInfo.ActiveRack.ActiveDirectory;
             var fullPath = Path.Combine(activeDirectory, subDirectory);
             return fullPath;
         }

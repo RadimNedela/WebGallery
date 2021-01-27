@@ -12,11 +12,18 @@ namespace WebGalery.Maintenance.Tests.Domain
         [Test]
         public void GetActiveDirectory_ReturnsExistingPath()
         {
-            var dbInfo = new MaintenanceTestData().CreateTestCurrentDatabaseInfoProvider();
+            var dbInfo = CreateSUT();
 
-            var path = dbInfo.CurrentInfo.CurrentRack.ActiveDirectory;
+            var path = dbInfo.CurrentInfo.ActiveRack.ActiveDirectory;
 
             Assert.That(Directory.Exists(path), $"Path {path} does not exist");
         }
+
+        internal CurrentDatabaseInfoProvider CreateSUT()
+        {
+            CoreTestData mtd = new();
+            return new CurrentDatabaseInfoProvider(mtd.CreateTestDatabaseSession(), mtd.CreateTestDatabaseRepositorySubstitute());
+        }
+
     }
 }

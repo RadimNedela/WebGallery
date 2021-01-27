@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Core.Tests
@@ -87,6 +88,23 @@ namespace WebGalery.Core.Tests
             var hasher = Substitute.For<IHasher>();
             hasher.ComputeFileContentHash(Arg.Any<string>()).Returns(ci => $"Hash{ci.ArgAt<string>(0)}Hash".Replace("ASDF", ""));
             return hasher;
+        }
+
+        public ICurrentDatabaseInfoProvider CreateTestCurrentDatabaseInfoProvider()
+        {
+            var rack = Substitute.For<IRack>();
+            rack.Name.Returns("Test database rack name");
+            rack.ActiveDirectory.Returns(CurentDirectory);
+            rack.GetSubpath(Arg.Any<string>()).Returns(s => s.ArgAt<string>(0).Substring(CurentDirectory.Length));
+
+            var databaseInfo = Substitute.For<IDatabaseInfo>();
+            databaseInfo.CurrentDatabaseInfoName.Returns("Test database info name");
+            databaseInfo.ActiveRack.Returns(rack);
+
+            var infoProvider = Substitute.For<ICurrentDatabaseInfoProvider>();
+            infoProvider.CurrentInfo.Returns(databaseInfo);
+
+            return infoProvider;
         }
     }
 }

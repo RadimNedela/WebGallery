@@ -1,9 +1,10 @@
 ﻿using WebGalery.Core;
+using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Maintenance.Domain
 {
-    public class CurrentDatabaseInfoProvider
+    public class CurrentDatabaseInfoProvider : ICurrentDatabaseInfoProvider
     {
         private readonly IGalerySession session;
         private readonly IDatabaseInfoEntityRepository repository;
@@ -15,6 +16,6 @@ namespace WebGalery.Maintenance.Domain
         }
 
         private DatabaseInfo _databaseInfo;
-        public DatabaseInfo CurrentInfo => _databaseInfo ??= new DatabaseInfo(repository.Get(session.CurrentDatabaseHash), session.CurrentRackHash);
+        public IDatabaseInfo CurrentInfo => _databaseInfo ??= new DatabaseInfo(repository.Get(session.CurrentDatabaseHash), session.CurrentRackHash);
     }
 }

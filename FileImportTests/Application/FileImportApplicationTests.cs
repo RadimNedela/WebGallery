@@ -5,7 +5,6 @@ using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Domain;
-using WebGalery.Maintenance.Tests;
 
 namespace FileImportTests.Application
 {
@@ -25,14 +24,13 @@ namespace FileImportTests.Application
         private FileImportApplication CreateSUT()
         {
             CoreTestData ctd = new();
-            MaintenanceTestData mtd = new();
             FileImportTestData fitd = new();
 
-            var dbInfoProvider = mtd.CreateTestCurrentDatabaseInfoProvider();
+            var dbInfoProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
 
             RackInfoBuilder rackInfoBuilder = fitd.CreateTestRackInfoBuilder();
             PhysicalFilesParser physicalFilesParser = fitd.CreateTestPhysicalFilesParser();
-            IContentEntityRepository contentRepository = Substitute.For<IContentEntityRepository>();
+            IContentEntityRepository contentRepository = null; // Substitute.For<IContentEntityRepository>();
 
             FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentRepository);
 

@@ -1,21 +1,21 @@
 ﻿using System.IO;
 using System.Linq;
 using WebGalery.Core;
+using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.FileImport.Dtos;
-using WebGalery.Maintenance.Domain;
 
 namespace WebGalery.FileImport.Domain
 {
     public class RackInfoBuilder
     {
         private readonly IGalerySession session;
-        private readonly CurrentDatabaseInfoProvider dbInfoProvider;
+        private readonly ICurrentDatabaseInfoProvider dbInfoProvider;
         private readonly IDirectoryMethods directoryMethods;
 
         public RackInfoBuilder(
             IGalerySession session,
-            CurrentDatabaseInfoProvider dbInfoProvider,
+            ICurrentDatabaseInfoProvider dbInfoProvider,
             IDirectoryMethods directoryMethods
             )
         {
@@ -30,9 +30,9 @@ namespace WebGalery.FileImport.Domain
             {
                 ActiveDatabaseName = dbInfoProvider.CurrentInfo.CurrentDatabaseInfoName,
                 ActiveDatabaseHash = session.CurrentDatabaseHash,
-                ActiveRackName = dbInfoProvider.CurrentInfo.CurrentRack.Name,
+                ActiveRackName = dbInfoProvider.CurrentInfo.ActiveRack.Name,
                 ActiveRackHash = session.CurrentRackHash,
-                ActiveDirectory = dbInfoProvider.CurrentInfo.CurrentRack.ActiveDirectory,
+                ActiveDirectory = dbInfoProvider.CurrentInfo.ActiveRack.ActiveDirectory,
                 DirectoryInfo = GetSubDirectoryInfo(".")
             };
 
@@ -41,7 +41,7 @@ namespace WebGalery.FileImport.Domain
 
         public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
-            var rack = dbInfoProvider.CurrentInfo.CurrentRack;
+            var rack = dbInfoProvider.CurrentInfo.ActiveRack;
             var directoryInfo = new DirectoryInfoDto();
             var activeDirectory = rack.ActiveDirectory;
             var fullPath = Path.Combine(activeDirectory, subDirectory);

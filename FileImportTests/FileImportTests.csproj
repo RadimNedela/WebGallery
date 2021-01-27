@@ -17,7 +17,6 @@
     <ProjectReference Include="..\FileImport\FileImport.csproj" />
     <ProjectReference Include="..\CoreTests\CoreTests.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\MaintenanceTests\MaintenanceTests.csproj" />
   </ItemGroup>
 
 </Project>

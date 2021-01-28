@@ -6,7 +6,7 @@ using WebGalery.FileImport.Domain;
 
 namespace FileImportTests
 {
-    public class FileImportTestData
+    internal class FileImportTestData
     {
         public PhysicalFilesParser CreateTestPhysicalFilesParser()
         {

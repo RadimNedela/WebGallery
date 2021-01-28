@@ -68,7 +68,7 @@ namespace WebGalery.Core.Tests
         {
             var directoryMethods = Substitute.For<IDirectoryMethods>();
             directoryMethods.GetCurrentDirectoryName().Returns(CurentDirectory);
-            directoryMethods.GetFileNames(CurentDirectory).Returns(new[] {
+            directoryMethods.GetFileNames(Arg.Any<string>()).Returns(new[] {
                         CurentDirectory + "\\2018-01-24-Chopok0335.JPG",
                         CurentDirectory + "\\2018-01-24-Chopok0357.JPG",
                         CurentDirectory + "\\2018-01-24-Chopok0361.JPG",

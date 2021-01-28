@@ -1,6 +1,4 @@
-﻿using NSubstitute;
-using NUnit.Framework;
-using System.IO;
+﻿using NUnit.Framework;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
@@ -11,13 +9,11 @@ namespace FileImportTests.Application
     [TestFixture]
     public class FileImportApplicationTests
     {
-        public const string TestPicturesPath = @"../../../../TestPictures/Duha";
-
         [Test]
         public void ParseDirectoryContent_ValidTestPath_Returns5Pictures()
         {
             var application = CreateSUT();
-            var content = application.ParseDirectoryContent(Path.Combine(Directory.GetCurrentDirectory(), TestPicturesPath));
+            var content = application.ParseDirectoryContent(".");
             Assert.That(content.Files, Is.EqualTo(5));
         }
 

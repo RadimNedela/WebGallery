@@ -55,11 +55,19 @@ namespace WebGalery.FileImport.Application
             var fullPath = GetFullPath(subDirectory);
             var info = new DirectoryContentThreadInfo { FullPath = fullPath };
             DirectoryContentInfos.ContentInfos.Add(fullPath, info);
-            await Task.Run(() => ParseDirectoryContent(info));
+            await Task.Run(() => DoParseDirectoryContent(info));
 
             var retVal = GetThreadInfo(subDirectory);
             DirectoryContentInfos.ContentInfos.Remove(fullPath);
             return retVal;
+        }
+
+        public DirectoryContentThreadInfoDto ParseDirectoryContent(string subDirectory)
+        {
+            var fullPath = GetFullPath(subDirectory);
+            var info = new DirectoryContentThreadInfo { FullPath = fullPath };
+            DoParseDirectoryContent(info);
+            return info;
         }
 
         private string GetFullPath(string subDirectory)
@@ -69,23 +77,16 @@ namespace WebGalery.FileImport.Application
             return fullPath;
         }
 
-        public DirectoryContentThreadInfoDto ParseDirectoryContent(string path)
+        private void DoParseDirectoryContent(DirectoryContentThreadInfo info)
         {
-            var info = new DirectoryContentThreadInfo {FullPath = path};
-            ParseDirectoryContent(info);
-            return info;
-        }
-
-        private void ParseDirectoryContent(DirectoryContentThreadInfo info)
-        {
-            Log.Begin($"{nameof(ParseDirectoryContent)}.{info.FullPath}");
+            Log.Begin($"{nameof(DoParseDirectoryContent)}.{info.FullPath}");
 
             foreach (ContentEntity entity in physicalFilesParser.ParsePhysicalFiles(info))
             {
                 PersistContentEntity(entity);
             }
 
-            Log.End($"{nameof(ParseDirectoryContent)}.{info.FullPath}");
+            Log.End($"{nameof(DoParseDirectoryContent)}.{info.FullPath}");
         }
 
         private void PersistContentEntity(ContentEntity contentEntity)

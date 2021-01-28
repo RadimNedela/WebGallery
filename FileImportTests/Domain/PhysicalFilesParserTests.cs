@@ -56,7 +56,7 @@ namespace FileImportTests.Domain
         }
 
         [Test]
-        public void Convert_NewFile_ReturnsIt()
+        public void ParsingFile_NewFile_ReturnsValidContentEntity()
         {
             var physicalFilesParser = new FileImportTestData().CreateTestPhysicalFilesParser();
 
@@ -69,6 +69,16 @@ namespace FileImportTests.Domain
 
             Assert.That(it.AttributedBinders, Is.Not.Null, "Attributed Binders is null");
             Assert.That(it.AttributedBinders.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ParsingFile_ReturnsValidDirectoryBinder()
+        {
+            var physicalFilesParser = new FileImportTestData().CreateTestPhysicalFilesParser();
+
+            var ab = physicalFilesParser.ParsePhysicalFiles(CreateThreadInfo()).First().AttributedBinders.First();
+
+            Assert.That(ab.Attribute, Does.Contain("Chopok0335"));
         }
 
         private DirectoryContentThreadInfo CreateThreadInfo()

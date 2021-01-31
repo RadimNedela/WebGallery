@@ -74,5 +74,12 @@ namespace WebGalery.Maintenance.Applications
 
             return new DatabaseInfoDtoConverter().ToDto(infoEntity);
         }
+
+        public void DeleteDatabase(string databaseHash)
+        {
+            var infoEntity = repository.Get(databaseHash);
+            persister.Remove(infoEntity);
+            persister.Save();
+        }
     }
 }

@@ -1,48 +1,100 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
+using System.Linq;
+using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.FileImport.Application;
+using WebGalery.Infrastructure.Databases;
 using WebGalery.IntegrationTests.IoC;
+using WebGalery.Maintenance.Applications;
+using WebGalery.SessionHandling.Applications;
 
 namespace WebGalery.IntegrationTests.Applications
 {
     [TestFixture]
     public class FullRoundtripTest
     {
+        public const string TestDBName = "Test Database";
+        public const string TestRackName = "Test Rack";
+
+        public const string TestPicturesDirectory = @"c:\Source\WebGallery\TestPictures\";
+        public const string TestPicturesSubDirectory1 = "Duha";
+
         [Test]
         public void ParseDirectoryContent_FullTest()
         {
             using var serviceProvider = InitializationHelper.CreateServiceCollection().BuildServiceProvider();
-            CheckDBEmpty(serviceProvider);
-            ParseDirectory(serviceProvider);
-            ClearDBCaches(serviceProvider);
-            CheckDBContent(serviceProvider);
-            DeleteDBContent(serviceProvider);
+            using var scope = serviceProvider.CreateScope();
+
+            bool dbEmpty = false, dbInfoAdded = false, directoryParsed = false, dbCachesCleared = false, 
+                dbContentChecked = false, dbContentDeleted = false;
+            dbEmpty = CheckDBEmpty(serviceProvider);
+            if (dbEmpty)
+            {
+                dbInfoAdded = AddDbInfo(serviceProvider);
+                directoryParsed = ParseDirectory(serviceProvider);
+            }
+            dbCachesCleared = ClearDBCaches(serviceProvider);
+            dbContentChecked = CheckDBContent(serviceProvider);
+            dbContentDeleted = DeleteDBContent(serviceProvider);
+
+            Assert.That(dbEmpty, "DB not empty");
+            Assert.That(dbInfoAdded, "DB info not added");
+            Assert.That(directoryParsed, "Directory not parsed");
+            Assert.That(dbCachesCleared, "Db caches not cleared");
+            Assert.That(dbContentChecked, "DB content not checked");
+            Assert.That(dbContentDeleted, "db content not deleted");
         }
 
-        private void CheckDBEmpty(ServiceProvider serviceProvider)
+        private bool CheckDBEmpty(ServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            var dbInfoRepository = serviceProvider.GetService<IDatabaseInfoEntityRepository>();
+            var binderRepository = serviceProvider.GetService<IBinderEntityRepository>();
+            var contentRepository = serviceProvider.GetService<IContentEntityRepository>();
+
+            var infos = dbInfoRepository.GetAll().Where(db => db.Name == TestDBName);
+            return !infos.Any();
         }
 
-        private void ParseDirectory(ServiceProvider serviceProvider)
+        private bool AddDbInfo(ServiceProvider serviceProvider)
         {
-            var application = serviceProvider.GetService<FileImportApplication>();
+            var dbInfoApplication = serviceProvider.GetService<DatabaseInfoApplication>();
+            var dbInfo = dbInfoApplication.CreateNewDatabase(TestDBName);
+            dbInfo.Racks.First().Name = TestRackName;
+            dbInfo.Racks.First().MountPoints[0] = TestPicturesDirectory;
+            dbInfoApplication.UpdateDatabaseNames(dbInfo);
+
+            var dbInfoInitializer = serviceProvider.GetService<IDatabaseInfoInitializer>();
+            dbInfoInitializer.SetCurrentInfo(dbInfo.Hash, dbInfo.Racks.First().Hash);
+            return true;
         }
 
-        private void ClearDBCaches(ServiceProvider serviceProvider)
+        private bool ParseDirectory(ServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            var fileImportApplication = serviceProvider.GetService<FileImportApplication>();
+            var threadInfoDto = fileImportApplication.ParseDirectoryContent(TestPicturesSubDirectory1);
+
+            return threadInfoDto.FilesDone == 5;
         }
 
-        private void CheckDBContent(ServiceProvider serviceProvider)
+        private bool ClearDBCaches(ServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            var galeryDatabase = serviceProvider.GetService<IGaleryDatabase>();
+            galeryDatabase.DetachAllEntities();
+            return true;
         }
 
-        private void DeleteDBContent(ServiceProvider serviceProvider)
+        private bool CheckDBContent(ServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            return false;
+        }
+
+        private bool DeleteDBContent(ServiceProvider serviceProvider)
+        {
+            var dbInfoApplication = serviceProvider.GetService<DatabaseInfoApplication>();
+            var hash = dbInfoApplication.GetAllDatabases().First(db => db.Name == TestDBName).Hash;
+            dbInfoApplication.DeleteDatabase(hash);
+            return true;
         }
     }
 }

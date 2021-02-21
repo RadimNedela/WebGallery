@@ -66,7 +66,9 @@ namespace WebGalery.FileImport.Domain
             {
                 Attribute = physicalFile.SubPath,
                 Binder = directoryBinder,
-                Content = retVal
+                BinderHash = directoryBinder.Hash,
+                Content = retVal,
+                ContentHash = retVal.Hash
             });
 
             return retVal;

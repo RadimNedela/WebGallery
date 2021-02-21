@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.DBMaintenanceInterfaces;
-using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.InfrastructureInterfaces.Base;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.Application.Helpers;
 using WebGalery.FileImport.Domain;
@@ -15,7 +15,7 @@ namespace WebGalery.FileImport.Application
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly PhysicalFilesParser physicalFilesParser;
-        private readonly IContentEntityRepository contentRepository;
+        private readonly IEntityPersister<ContentEntity> contentEntityPersister;
         private readonly RackInfoBuilder rackInfoBuilder;
         private readonly ICurrentDatabaseInfoProvider dbInfoProvider;
 
@@ -23,13 +23,13 @@ namespace WebGalery.FileImport.Application
             RackInfoBuilder rackInfoBuilder,
             ICurrentDatabaseInfoProvider dbInfoProvider,
             PhysicalFilesParser physicalFilesParser,
-            IContentEntityRepository contentRepository
+            IEntityPersister<ContentEntity> contentEntityPersister
             )
         {
             this.rackInfoBuilder = rackInfoBuilder;
             this.dbInfoProvider = dbInfoProvider;
             this.physicalFilesParser = physicalFilesParser;
-            this.contentRepository = contentRepository;
+            this.contentEntityPersister = contentEntityPersister;
         }
 
         public RackInfoDto GetCurrentRackInfo()
@@ -93,8 +93,8 @@ namespace WebGalery.FileImport.Application
         {
             Log.Begin($"{nameof(PersistContentEntity)}.{contentEntity}");
 
-            //contentRepository.Add(physicalFile.ContentEntity);
-            //contentRepository.Save();
+            contentEntityPersister.Add(contentEntity);
+            contentEntityPersister.Save();
 
             Log.End($"{nameof(PersistContentEntity)}.{contentEntity}");
         }

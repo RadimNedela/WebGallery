@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
+using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.InfrastructureInterfaces.Base;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Domain;
@@ -26,9 +29,9 @@ namespace FileImportTests.Application
 
             RackInfoBuilder rackInfoBuilder = fitd.CreateTestRackInfoBuilder();
             PhysicalFilesParser physicalFilesParser = fitd.CreateTestPhysicalFilesParser();
-            IContentEntityRepository contentRepository = null; // Substitute.For<IContentEntityRepository>();
+            IEntityPersister<ContentEntity> contentEntityPersister = Substitute.For<IEntityPersister<ContentEntity>>();
 
-            FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentRepository);
+            FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentEntityPersister);
 
             return sut;
         }

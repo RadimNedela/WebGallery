@@ -1,4 +1,5 @@
 ﻿
+
 select * from databaseinfo;
 
 select * from rack;

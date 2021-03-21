@@ -8,7 +8,7 @@ namespace WebGalery.Core.Tests
     {
         public const string HashPrefix = "Database Info Test Hash ";
         public const string NamePrefix = "Database Info Test Name ";
-        private static long counter = 0;
+        private static long _counter;
         public string Hash { get; set; }
         public string Name { get; set; }
         public List<RackTestDataBuilder> Racks { get; set; } = new List<RackTestDataBuilder>();
@@ -16,8 +16,8 @@ namespace WebGalery.Core.Tests
         public static DatabaseInfoTestDataBuilder CreateDefault()
         {
             return new DatabaseInfoTestDataBuilder()
-            .WithHash(HashPrefix + counter++)
-            .Named(NamePrefix + counter++);
+            .WithHash(HashPrefix + _counter++)
+            .Named(NamePrefix + _counter++);
         }
 
         public DatabaseInfoTestDataBuilder WithHash(string hash)
@@ -45,7 +45,7 @@ namespace WebGalery.Core.Tests
                 Hash = Hash,
                 Name = Name,
             };
-            entity.Racks = Racks.Select(rTDB => rTDB.Using(entity).Build()).ToList();
+            entity.Racks = Racks.Select(rTdb => rTdb.Using(entity).Build()).ToList();
             return entity;
         }
     }

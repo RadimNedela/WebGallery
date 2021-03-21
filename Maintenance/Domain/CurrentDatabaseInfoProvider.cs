@@ -6,16 +6,16 @@ namespace WebGalery.Maintenance.Domain
 {
     public class CurrentDatabaseInfoProvider : ICurrentDatabaseInfoProvider
     {
-        private readonly IGalerySession session;
-        private readonly IDatabaseInfoEntityRepository repository;
+        private readonly IGalerySession _session;
+        private readonly IDatabaseInfoEntityRepository _repository;
 
         public CurrentDatabaseInfoProvider(IGalerySession session, IDatabaseInfoEntityRepository repository)
         {
-            this.session = session;
-            this.repository = repository;
+            _session = session;
+            _repository = repository;
         }
 
         private DatabaseInfo _databaseInfo;
-        public IDatabaseInfo CurrentInfo => _databaseInfo ??= new DatabaseInfo(repository.Get(session.CurrentDatabaseHash), session.CurrentRackHash);
+        public IDatabaseInfo CurrentInfo => _databaseInfo ??= new DatabaseInfo(_repository.Get(_session.CurrentDatabaseHash), _session.CurrentRackHash);
     }
 }

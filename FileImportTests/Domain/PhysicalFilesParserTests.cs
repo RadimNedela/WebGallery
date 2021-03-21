@@ -1,10 +1,10 @@
-using NUnit.Framework;
 using System.Linq;
+using NUnit.Framework;
 using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Domain;
 
-namespace FileImportTests.Domain
+namespace WebGalery.FileImport.Tests.Domain
 {
     [TestFixture]
     public class PhysicalFilesParserTests

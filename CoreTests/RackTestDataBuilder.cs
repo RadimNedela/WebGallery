@@ -6,7 +6,7 @@ namespace WebGalery.Core.Tests
 {
     public class RackTestDataBuilder
     {
-        private static long counter = 0;
+        private static long _counter;
         public string Hash { get; private set; }
         public string Name { get; private set; }
         public DatabaseInfoEntity Database { get; private set; }
@@ -14,8 +14,8 @@ namespace WebGalery.Core.Tests
         public static RackTestDataBuilder CreateDefault()
         {
             return new RackTestDataBuilder()
-                .WithHash("Rack Test Hash " + counter++)
-                .WithName("Rack Test Name " + counter++);
+                .WithHash("Rack Test Hash " + _counter++)
+                .WithName("Rack Test Name " + _counter++);
         }
 
         public string DatabaseHash { get; private set; }
@@ -55,7 +55,7 @@ namespace WebGalery.Core.Tests
                 Database = Database,
                 DatabaseHash = DatabaseHash
             };
-            entity.MountPoints = MountPoints.Select(mpTDB => mpTDB.Using(entity).Build()).ToList();
+            entity.MountPoints = MountPoints.Select(mpTdb => mpTdb.Using(entity).Build()).ToList();
 
             return entity;
         }

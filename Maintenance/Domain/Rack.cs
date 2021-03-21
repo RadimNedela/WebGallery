@@ -8,21 +8,21 @@ namespace WebGalery.Maintenance.Domain
 {
     public class Rack : IRack
     {
-        private readonly RackEntity entity;
+        private readonly RackEntity _entity;
 
         public Rack(RackEntity entity)
         {
-            this.entity = entity;
+            _entity = entity;
         }
 
-        public string Name => entity.Name;
+        public string Name => _entity.Name;
 
-        public string ActiveDirectory => entity.MountPoints.First(mp => Directory.Exists(mp.Path)).Path;
+        public string ActiveDirectory => _entity.MountPoints.First(mp => Directory.Exists(mp.Path)).Path;
 
         public string GetSubpath(string fullPath)
         {
             var normalizedFullPath = NormalizePath(fullPath);
-            foreach (var mountPoint in entity.MountPoints)
+            foreach (var mountPoint in _entity.MountPoints)
             {
                 var normalizedMountPoint = NormalizePath(mountPoint.Path);
                 if (normalizedFullPath.StartsWith(normalizedMountPoint, StringComparison.InvariantCultureIgnoreCase))

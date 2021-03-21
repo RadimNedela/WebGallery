@@ -9,11 +9,11 @@ namespace WebGalery.FileImport.Domain
 {
     public class PhysicalFilesParser
     {
-        private readonly IDirectoryMethods directoryMethods;
-        private readonly IHasher hasher;
-        private readonly ICurrentDatabaseInfoProvider dbInfoProvider;
-        private readonly IContentEntityRepository contentRepository;
-        private readonly IBinder binder;
+        private readonly IDirectoryMethods _directoryMethods;
+        private readonly IHasher _hasher;
+        private readonly ICurrentDatabaseInfoProvider _dbInfoProvider;
+        private readonly IContentEntityRepository _contentRepository;
+        private readonly IBinder _binder;
 
         public PhysicalFilesParser(
             IDirectoryMethods directoryMethods,
@@ -23,24 +23,24 @@ namespace WebGalery.FileImport.Domain
             IBinder binder
             )
         {
-            this.directoryMethods = directoryMethods;
-            this.hasher = hasher;
-            this.dbInfoProvider = dbInfoProvider;
-            this.contentRepository = contentRepository;
-            this.binder = binder;
+            _directoryMethods = directoryMethods;
+            _hasher = hasher;
+            _dbInfoProvider = dbInfoProvider;
+            _contentRepository = contentRepository;
+            _binder = binder;
         }
 
         public IEnumerable<ContentEntity> ParsePhysicalFiles(DirectoryContentThreadInfo info)
         {
-            var rack = dbInfoProvider.CurrentInfo.ActiveRack;
-            info.FileNames = directoryMethods.GetFileNames(info.FullPath);
+            var rack = _dbInfoProvider.CurrentInfo.ActiveRack;
+            info.FileNames = _directoryMethods.GetFileNames(info.FullPath);
             foreach (var fn in info.FileNames)
             {
                 info.FilesDone++;
 
                 PhysicalFile physicalFile = new()
                 {
-                    Hash = hasher.ComputeFileContentHash(fn),
+                    Hash = _hasher.ComputeFileContentHash(fn),
                     Type = PhysicalFile.GetContentTypeByExtension(fn),
                     FullPath = fn,
                     SubPath = rack.GetSubpath(fn)
@@ -52,7 +52,7 @@ namespace WebGalery.FileImport.Domain
 
         private ContentEntity ToContentEntity(PhysicalFile physicalFile)
         {
-            BinderEntity directoryBinder = binder.GetDirectoryBinderForPath(physicalFile.FullPath);
+            BinderEntity directoryBinder = _binder.GetDirectoryBinderForPath(physicalFile.FullPath);
 
             ContentEntity retVal = new()
             {

@@ -4,7 +4,7 @@ using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Domain;
 
-namespace FileImportTests
+namespace WebGalery.FileImport.Tests
 {
     internal class FileImportTestData
     {

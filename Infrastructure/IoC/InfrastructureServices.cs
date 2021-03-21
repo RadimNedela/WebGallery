@@ -18,7 +18,7 @@ namespace WebGalery.Infrastructure.IoC
         public static void RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IDirectoryMethods, DirectoryMethods>();
-            services.AddSingleton<IHasher, SHA1Hasher>();
+            services.AddSingleton<IHasher, Sha1Hasher>();
 
             services.AddScoped<ContentEntitiesRepository>();
             services.AddScoped<IContentEntityRepository>(x => x.GetRequiredService<ContentEntitiesRepository>());

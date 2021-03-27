@@ -15,9 +15,9 @@ namespace WebGalery.Maintenance.Domain
             _entity = entity;
         }
 
-        public string Hash => entity.Hash;
+        public string Hash => _entity.Hash;
 
-        public string Name => entity.Name;
+        public string Name => _entity.Name;
 
         public string ActiveDirectory => _entity.MountPoints.First(mp => Directory.Exists(mp.Path)).Path;
 

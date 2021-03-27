@@ -9,36 +9,41 @@ namespace WebGalery.Binders.Domain
 {
     public class Binder : IBinder
     {
+        public const string DirectoryBinderType = "DIRECTORY";
+
         private readonly IHasher _hasher;
         private readonly IBinderEntityRepository _binderRepository;
+        private readonly ICurrentDatabaseInfoProvider _dbInfoProvider;
 
         public Binder(
             IHasher hasher,
-            IBinderEntityRepository binderRepository
+            IBinderEntityRepository binderRepository,
+            ICurrentDatabaseInfoProvider dbInfoProvider
             )
         {
             _hasher = hasher;
             _binderRepository = binderRepository;
+            _dbInfoProvider = dbInfoProvider;
         }
 
         public BinderEntity GetDirectoryBinderForPath(string fullPath)
         {
-            var subPath = dbInfoProvider.CurrentInfo.ActiveRack.GetSubpath(fullPath);
+            var subPath = _dbInfoProvider.CurrentInfo.ActiveRack.GetSubpath(fullPath);
             string hash = GetHashForDirectoryBinder(subPath);
-            var binder = binderRepository.Get(hash);
+            var binder = _binderRepository.Get(hash);
             if (binder == null)
             {
                 binder = CreateNew(hash, fullPath, DirectoryBinderType);
-                binder.RackHash = dbInfoProvider.CurrentInfo.ActiveRack.Hash;
+                binder.RackHash = _dbInfoProvider.CurrentInfo.ActiveRack.Hash;
             }
             return binder;
         }
 
         private string GetHashForDirectoryBinder(string subPath)
         {
-            string rackHash = dbInfoProvider.CurrentInfo.ActiveRack.Hash;
+            string rackHash = _dbInfoProvider.CurrentInfo.ActiveRack.Hash;
             string universalSubPath = CreateUniversalSubPath(subPath);
-            string hash = hasher.ComputeStringHash($"{rackHash}.{universalSubPath}");
+            string hash = _hasher.ComputeStringHash($"{rackHash}.{universalSubPath}");
             return hash;
         }
 

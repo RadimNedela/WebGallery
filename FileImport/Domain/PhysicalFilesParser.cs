@@ -62,15 +62,18 @@ namespace WebGalery.FileImport.Domain
                 AttributedBinders = new List<AttributedBinderEntityToContentEntity>()
             };
 
-            retVal.AttributedBinders.Add(new AttributedBinderEntityToContentEntity
+            var attToContent = new AttributedBinderEntityToContentEntity
             {
                 Attribute = physicalFile.SubPath,
                 Binder = directoryBinder,
                 BinderHash = directoryBinder.Hash,
                 Content = retVal,
                 ContentHash = retVal.Hash
-            });
+            };
 
+            retVal.AttributedBinders.Add(attToContent);
+            directoryBinder.AttributedContents.Add(attToContent);
+            
             return retVal;
         }
 

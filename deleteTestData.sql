@@ -14,3 +14,8 @@ delete from rack where DatabaseHash = (select hash from databaseinfo where name 
 
 delete from databaseinfo where name = 'Test Database';
 
+
+
+select * from binder;
+
+select * from bindercontent;

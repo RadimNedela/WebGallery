@@ -20,17 +20,17 @@ namespace WebGalery.Infrastructure.Tests.Databases
         {
             _info = new CoreTestData().TestDatabase;
             _testDatabaseInfoEntityHash = _info.Hash;
-            AddTestDataToDB();
+            AddTestDataToDb();
         }
 
         [TearDown]
         public void TearDown()
         {
-            RemoveTestDataFromDB();
+            RemoveTestDataFromDb();
             _info = null;
         }
 
-        private void RemoveTestDataFromDB()
+        private void RemoveTestDataFromDb()
         {
             using var serviceProvider = InfrastructureTestsUtils.CreateServiceCollection().BuildServiceProvider();
             var database = serviceProvider.GetService<IGaleryDatabase>();
@@ -39,7 +39,7 @@ namespace WebGalery.Infrastructure.Tests.Databases
             database.DetachAllEntities();
         }
 
-        private void AddTestDataToDB()
+        private void AddTestDataToDb()
         {
             using var serviceProvider = InfrastructureTestsUtils.ServiceProvider;
             var database = serviceProvider.GetService<IGaleryDatabase>();

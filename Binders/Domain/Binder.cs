@@ -9,19 +9,16 @@ namespace WebGalery.Binders.Domain
 {
     public class Binder : IBinder
     {
-        public const string DirectoryBinderType = "DIRECTORY";
-
-        private readonly IHasher hasher;
-        private readonly IBinderEntityRepository binderRepository;
-        private readonly ICurrentDatabaseInfoProvider dbInfoProvider;
+        private readonly IHasher _hasher;
+        private readonly IBinderEntityRepository _binderRepository;
 
         public Binder(
             IHasher hasher,
             IBinderEntityRepository binderRepository
             )
         {
-            this.hasher = hasher;
-            this.binderRepository = binderRepository;
+            _hasher = hasher;
+            _binderRepository = binderRepository;
         }
 
         public BinderEntity GetDirectoryBinderForPath(string fullPath)

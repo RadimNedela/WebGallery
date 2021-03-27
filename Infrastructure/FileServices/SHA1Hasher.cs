@@ -10,7 +10,7 @@ using WebGalery.Core.Logging;
 
 namespace WebGalery.Infrastructure.FileServices
 {
-    public class SHA1Hasher : IHasher
+    public class Sha1Hasher : IHasher
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

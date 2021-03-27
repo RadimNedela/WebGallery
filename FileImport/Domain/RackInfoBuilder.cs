@@ -9,9 +9,9 @@ namespace WebGalery.FileImport.Domain
 {
     public class RackInfoBuilder
     {
-        private readonly IGalerySession session;
-        private readonly ICurrentDatabaseInfoProvider dbInfoProvider;
-        private readonly IDirectoryMethods directoryMethods;
+        private readonly IGalerySession _session;
+        private readonly ICurrentDatabaseInfoProvider _dbInfoProvider;
+        private readonly IDirectoryMethods _directoryMethods;
 
         public RackInfoBuilder(
             IGalerySession session,
@@ -19,20 +19,20 @@ namespace WebGalery.FileImport.Domain
             IDirectoryMethods directoryMethods
             )
         {
-            this.session = session;
-            this.dbInfoProvider = dbInfoProvider;
-            this.directoryMethods = directoryMethods;
+            _session = session;
+            _dbInfoProvider = dbInfoProvider;
+            _directoryMethods = directoryMethods;
         }
 
         public RackInfoDto GetCurrentRackInfo()
         {
             var retVal = new RackInfoDto
             {
-                ActiveDatabaseName = dbInfoProvider.CurrentInfo.CurrentDatabaseInfoName,
-                ActiveDatabaseHash = session.CurrentDatabaseHash,
-                ActiveRackName = dbInfoProvider.CurrentInfo.ActiveRack.Name,
-                ActiveRackHash = session.CurrentRackHash,
-                ActiveDirectory = dbInfoProvider.CurrentInfo.ActiveRack.ActiveDirectory,
+                ActiveDatabaseName = _dbInfoProvider.CurrentInfo.CurrentDatabaseInfoName,
+                ActiveDatabaseHash = _session.CurrentDatabaseHash,
+                ActiveRackName = _dbInfoProvider.CurrentInfo.ActiveRack.Name,
+                ActiveRackHash = _session.CurrentRackHash,
+                ActiveDirectory = _dbInfoProvider.CurrentInfo.ActiveRack.ActiveDirectory,
                 DirectoryInfo = GetSubDirectoryInfo(".")
             };
 
@@ -41,13 +41,13 @@ namespace WebGalery.FileImport.Domain
 
         public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
-            var rack = dbInfoProvider.CurrentInfo.ActiveRack;
+            var rack = _dbInfoProvider.CurrentInfo.ActiveRack;
             var directoryInfo = new DirectoryInfoDto();
             var activeDirectory = rack.ActiveDirectory;
             var fullPath = Path.Combine(activeDirectory, subDirectory);
 
-            var fileNames = directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
-            var dirNames = directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
+            var fileNames = _directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
+            var dirNames = _directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
 
             var normSubDir = rack.GetSubpath(fullPath);
             if (normSubDir != ".")

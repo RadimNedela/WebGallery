@@ -18,7 +18,7 @@ namespace WebGalery.Maintenance.Domain
         internal DatabaseInfoEntity BuildNewDatabase(string databaseName)
         {
             string infoHash = _hasher.ComputeRandomStringHash(databaseName);
-            var dbInfo = new DatabaseInfoEntity()
+            var dbInfo = new DatabaseInfoEntity
             {
                 Hash = infoHash,
                 Name = databaseName,

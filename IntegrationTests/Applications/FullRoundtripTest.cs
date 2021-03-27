@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
-using System.Linq;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.FileImport.Application;
 using WebGalery.Infrastructure.Databases;
@@ -14,7 +13,7 @@ namespace WebGalery.IntegrationTests.Applications
     [TestFixture]
     public class FullRoundtripTest
     {
-        public const string TestDBName = "Test Database";
+        public const string TestDbName = "Test Database";
         public const string TestRackName = "Test Rack";
 
         public const string TestPicturesDirectory = @"c:\Source\WebGallery\TestPictures\";
@@ -28,15 +27,15 @@ namespace WebGalery.IntegrationTests.Applications
 
             bool dbEmpty = false, dbInfoAdded = false, directoryParsed = false, dbCachesCleared = false, 
                 dbContentChecked = false, dbContentDeleted = false;
-            dbEmpty = CheckDBEmpty(serviceProvider);
+            dbEmpty = CheckDbEmpty(serviceProvider);
             if (dbEmpty)
             {
                 dbInfoAdded = AddDbInfo(serviceProvider);
                 directoryParsed = ParseDirectory(serviceProvider);
             }
-            dbCachesCleared = ClearDBCaches(serviceProvider);
-            dbContentChecked = CheckDBContent(serviceProvider);
-            dbContentDeleted = DeleteDBContent(serviceProvider);
+            dbCachesCleared = ClearDbCaches(serviceProvider);
+            dbContentChecked = CheckDbContent(serviceProvider);
+            dbContentDeleted = DeleteDbContent(serviceProvider);
 
             Assert.That(dbEmpty, "DB not empty");
             Assert.That(dbInfoAdded, "DB info not added");
@@ -46,20 +45,20 @@ namespace WebGalery.IntegrationTests.Applications
             Assert.That(dbContentDeleted, "db content not deleted");
         }
 
-        private bool CheckDBEmpty(ServiceProvider serviceProvider)
+        private bool CheckDbEmpty(ServiceProvider serviceProvider)
         {
             var dbInfoRepository = serviceProvider.GetService<IDatabaseInfoEntityRepository>();
             var binderRepository = serviceProvider.GetService<IBinderEntityRepository>();
             var contentRepository = serviceProvider.GetService<IContentEntityRepository>();
 
-            var infos = dbInfoRepository.GetAll().Where(db => db.Name == TestDBName);
+            var infos = dbInfoRepository.GetAll().Where(db => db.Name == TestDbName);
             return !infos.Any();
         }
 
         private bool AddDbInfo(ServiceProvider serviceProvider)
         {
             var dbInfoApplication = serviceProvider.GetService<DatabaseInfoApplication>();
-            var dbInfo = dbInfoApplication.CreateNewDatabase(TestDBName);
+            var dbInfo = dbInfoApplication.CreateNewDatabase(TestDbName);
             dbInfo.Racks.First().Name = TestRackName;
             dbInfo.Racks.First().MountPoints[0] = TestPicturesDirectory;
             dbInfoApplication.UpdateDatabaseNames(dbInfo);
@@ -77,22 +76,22 @@ namespace WebGalery.IntegrationTests.Applications
             return threadInfoDto.FilesDone == 5;
         }
 
-        private bool ClearDBCaches(ServiceProvider serviceProvider)
+        private bool ClearDbCaches(ServiceProvider serviceProvider)
         {
             var galeryDatabase = serviceProvider.GetService<IGaleryDatabase>();
             galeryDatabase.DetachAllEntities();
             return true;
         }
 
-        private bool CheckDBContent(ServiceProvider serviceProvider)
+        private bool CheckDbContent(ServiceProvider serviceProvider)
         {
             return false;
         }
 
-        private bool DeleteDBContent(ServiceProvider serviceProvider)
+        private bool DeleteDbContent(ServiceProvider serviceProvider)
         {
             var dbInfoApplication = serviceProvider.GetService<DatabaseInfoApplication>();
-            var hash = dbInfoApplication.GetAllDatabases().First(db => db.Name == TestDBName).Hash;
+            var hash = dbInfoApplication.GetAllDatabases().First(db => db.Name == TestDbName).Hash;
             dbInfoApplication.DeleteDatabase(hash);
             return true;
         }

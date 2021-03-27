@@ -1,13 +1,12 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using WebGalery.Core.DbEntities.Contents;
-using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.InfrastructureInterfaces.Base;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Application;
 using WebGalery.FileImport.Domain;
 
-namespace FileImportTests.Application
+namespace WebGalery.FileImport.Tests.Application
 {
     [TestFixture]
     public class FileImportApplicationTests
@@ -15,12 +14,12 @@ namespace FileImportTests.Application
         [Test]
         public void ParseDirectoryContent_ValidTestPath_Returns5Pictures()
         {
-            var application = CreateSUT();
+            var application = CreateSut();
             var content = application.ParseDirectoryContent(".");
             Assert.That(content.Files, Is.EqualTo(5));
         }
 
-        private FileImportApplication CreateSUT()
+        private FileImportApplication CreateSut()
         {
             CoreTestData ctd = new();
             FileImportTestData fitd = new();

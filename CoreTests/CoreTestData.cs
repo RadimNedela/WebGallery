@@ -1,7 +1,7 @@
-﻿using NSubstitute;
-using NUnit.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
+using NUnit.Framework;
 using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
@@ -22,12 +22,12 @@ namespace WebGalery.Core.Tests
             }
         }
 
-        private DatabaseInfoEntity testDatabase;
+        private DatabaseInfoEntity _testDatabase;
         public DatabaseInfoEntity TestDatabase
         {
             get
             {
-                return testDatabase ??= CreateTestDatabase();
+                return _testDatabase ??= CreateTestDatabase();
             }
         }
 

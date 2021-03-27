@@ -2,7 +2,7 @@
 {
     public class MountPointEntity : IDatabaseEntity
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Path { get; set; }
         public RackEntity Rack { get; set; }
         public string RackHash { get; set; }

@@ -14,10 +14,10 @@ namespace WebGalery.FileImport.Application
     public class FileImportApplication
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private readonly PhysicalFilesParser physicalFilesParser;
-        private readonly IEntityPersister<ContentEntity> contentEntityPersister;
-        private readonly RackInfoBuilder rackInfoBuilder;
-        private readonly ICurrentDatabaseInfoProvider dbInfoProvider;
+        private readonly PhysicalFilesParser _physicalFilesParser;
+        private readonly IEntityPersister<ContentEntity> _contentEntityPersister;
+        private readonly RackInfoBuilder _rackInfoBuilder;
+        private readonly ICurrentDatabaseInfoProvider _dbInfoProvider;
 
         public FileImportApplication(
             RackInfoBuilder rackInfoBuilder,
@@ -26,20 +26,20 @@ namespace WebGalery.FileImport.Application
             IEntityPersister<ContentEntity> contentEntityPersister
             )
         {
-            this.rackInfoBuilder = rackInfoBuilder;
-            this.dbInfoProvider = dbInfoProvider;
-            this.physicalFilesParser = physicalFilesParser;
-            this.contentEntityPersister = contentEntityPersister;
+            _rackInfoBuilder = rackInfoBuilder;
+            _dbInfoProvider = dbInfoProvider;
+            _physicalFilesParser = physicalFilesParser;
+            _contentEntityPersister = contentEntityPersister;
         }
 
         public RackInfoDto GetCurrentRackInfo()
         {
-            return rackInfoBuilder.GetCurrentRackInfo();
+            return _rackInfoBuilder.GetCurrentRackInfo();
         }
 
         public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
-            return rackInfoBuilder.GetSubDirectoryInfo(subDirectory);
+            return _rackInfoBuilder.GetSubDirectoryInfo(subDirectory);
         }
 
         public DirectoryContentThreadInfoDto GetThreadInfo(string subDirectory)
@@ -72,7 +72,7 @@ namespace WebGalery.FileImport.Application
 
         private string GetFullPath(string subDirectory)
         {
-            var activeDirectory = dbInfoProvider.CurrentInfo.ActiveRack.ActiveDirectory;
+            var activeDirectory = _dbInfoProvider.CurrentInfo.ActiveRack.ActiveDirectory;
             var fullPath = Path.Combine(activeDirectory, subDirectory);
             return fullPath;
         }
@@ -81,7 +81,7 @@ namespace WebGalery.FileImport.Application
         {
             Log.Begin($"{nameof(DoParseDirectoryContent)}.{info.FullPath}");
 
-            foreach (ContentEntity entity in physicalFilesParser.ParsePhysicalFiles(info))
+            foreach (ContentEntity entity in _physicalFilesParser.ParsePhysicalFiles(info))
             {
                 PersistContentEntity(entity);
             }
@@ -93,8 +93,8 @@ namespace WebGalery.FileImport.Application
         {
             Log.Begin($"{nameof(PersistContentEntity)}.{contentEntity}");
 
-            contentEntityPersister.Add(contentEntity);
-            contentEntityPersister.Save();
+            _contentEntityPersister.Add(contentEntity);
+            _contentEntityPersister.Save();
 
             Log.End($"{nameof(PersistContentEntity)}.{contentEntity}");
         }

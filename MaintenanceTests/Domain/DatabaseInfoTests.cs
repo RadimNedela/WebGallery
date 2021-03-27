@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using System.IO;
+﻿using System.IO;
+using NUnit.Framework;
 using WebGalery.Core.Tests;
 using WebGalery.Maintenance.Domain;
 
@@ -12,14 +12,14 @@ namespace WebGalery.Maintenance.Tests.Domain
         [Test]
         public void GetActiveDirectory_ReturnsExistingPath()
         {
-            var dbInfo = CreateSUT();
+            var dbInfo = CreateSut();
 
             var path = dbInfo.CurrentInfo.ActiveRack.ActiveDirectory;
 
             Assert.That(Directory.Exists(path), $"Path {path} does not exist");
         }
 
-        internal CurrentDatabaseInfoProvider CreateSUT()
+        internal CurrentDatabaseInfoProvider CreateSut()
         {
             CoreTestData mtd = new();
             return new CurrentDatabaseInfoProvider(mtd.CreateTestDatabaseSession(), mtd.CreateTestDatabaseRepositorySubstitute());

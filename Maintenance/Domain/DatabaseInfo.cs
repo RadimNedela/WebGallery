@@ -6,18 +6,18 @@ namespace WebGalery.Maintenance.Domain
 {
     public class DatabaseInfo : IDatabaseInfo
     {
-        private readonly DatabaseInfoEntity entity;
-        private readonly string currentRackHash;
+        private readonly DatabaseInfoEntity _entity;
+        private readonly string _currentRackHash;
 
-        public string CurrentDatabaseInfoName => entity.Name;
+        public string CurrentDatabaseInfoName => _entity.Name;
 
         private Rack _rack;
-        public IRack ActiveRack => _rack ??= new Rack(entity.Racks.First(r => r.Hash == currentRackHash));
+        public IRack ActiveRack => _rack ??= new Rack(_entity.Racks.First(r => r.Hash == _currentRackHash));
 
         public DatabaseInfo(DatabaseInfoEntity entity, string currentRackHash)
         {
-            this.entity = entity;
-            this.currentRackHash = currentRackHash;
+            _entity = entity;
+            _currentRackHash = currentRackHash;
         }
     }
 }

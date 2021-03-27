@@ -1,11 +1,11 @@
-﻿using NSubstitute;
+﻿using System.Linq;
+using NSubstitute;
 using NUnit.Framework;
-using System.Linq;
-using WebGalery.Core.Tests;
-using WebGalery.Core.InfrastructureInterfaces;
-using WebGalery.Maintenance.Applications;
 using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.InfrastructureInterfaces.Base;
+using WebGalery.Core.Tests;
+using WebGalery.Maintenance.Applications;
 
 namespace WebGalery.Maintenance.Tests.Applications
 {

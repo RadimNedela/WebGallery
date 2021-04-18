@@ -1,15 +1,14 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using WebGalery.Application.FileImport.Helpers;
 using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.DBMaintenanceInterfaces;
+using WebGalery.Core.FileImport;
 using WebGalery.Core.InfrastructureInterfaces.Base;
 using WebGalery.Core.Logging;
-using WebGalery.FileImport.Application.Helpers;
-using WebGalery.FileImport.Domain;
-using WebGalery.FileImport.Dtos;
 
-namespace WebGalery.FileImport.Application
+namespace WebGalery.Application.FileImport
 {
     public class FileImportApplication
     {

@@ -5,7 +5,7 @@ using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 
-namespace WebGalery.Binders.Domain
+namespace WebGalery.Core.Binders
 {
     public class Binder : IBinder
     {

@@ -1,12 +1,13 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using WebGalery.Application.FileImport;
 using WebGalery.Core.DbEntities.Contents;
+using WebGalery.Core.FileImport;
 using WebGalery.Core.InfrastructureInterfaces.Base;
 using WebGalery.Core.Tests;
-using WebGalery.FileImport.Application;
-using WebGalery.FileImport.Domain;
+using WebGalery.Core.Tests.FileImport;
 
-namespace WebGalery.FileImport.Tests.Application
+namespace WebGalery.IntegrationTests.Applications
 {
     [TestFixture]
     public class FileImportApplicationTests

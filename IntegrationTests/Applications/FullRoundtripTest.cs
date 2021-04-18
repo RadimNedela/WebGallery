@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using WebGalery.Application.FileImport;
+using WebGalery.Application.Maintenance;
+using WebGalery.Application.SessionHandling;
 using WebGalery.Core.InfrastructureInterfaces;
-using WebGalery.FileImport.Application;
 using WebGalery.Infrastructure.Databases;
 using WebGalery.IntegrationTests.IoC;
-using WebGalery.Maintenance.Applications;
-using WebGalery.SessionHandling.Applications;
 
 namespace WebGalery.IntegrationTests.Applications
 {

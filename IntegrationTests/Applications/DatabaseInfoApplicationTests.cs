@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
+using WebGalery.Application.Maintenance;
 using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.InfrastructureInterfaces.Base;
 using WebGalery.Core.Tests;
-using WebGalery.Maintenance.Applications;
 
-namespace WebGalery.Maintenance.Tests.Applications
+namespace WebGalery.IntegrationTests.Applications
 {
     [TestFixture]
     public class DatabaseInfoApplicationTests

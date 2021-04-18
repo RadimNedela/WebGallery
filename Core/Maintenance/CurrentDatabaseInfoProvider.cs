@@ -1,8 +1,7 @@
-﻿using WebGalery.Core;
-using WebGalery.Core.DBMaintenanceInterfaces;
+﻿using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 
-namespace WebGalery.Maintenance.Domain
+namespace WebGalery.Core.Maintenance
 {
     public class CurrentDatabaseInfoProvider : ICurrentDatabaseInfoProvider
     {

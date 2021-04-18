@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using WebGalery.Binders.Dtos;
+using WebGalery.Core.Binders;
 
-namespace WebGalery.Binders.Application
+namespace WebGalery.Application.Binders
 {
     public class BinderApp
     {

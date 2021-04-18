@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebGalery.FileImport.Application;
-using WebGalery.FileImport.Dtos;
-using WebGalery.FileImport.Dtos.Directories;
-using WebGalery.SessionHandling.Applications;
+using WebGalery.Application.FileImport;
+using WebGalery.Application.SessionHandling;
+using WebGalery.Core.FileImport;
+using WebGalery.Core.FileImport.Directories;
 
 namespace WebGalery.WebApplication.Controllers
 {

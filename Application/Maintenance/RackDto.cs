@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebGalery.Maintenance.Applications
+namespace WebGalery.Application.Maintenance
 {
     public class RackDto
     {

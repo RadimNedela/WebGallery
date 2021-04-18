@@ -1,4 +1,4 @@
-﻿namespace WebGalery.SessionHandling.Services
+﻿namespace WebGalery.Core.Services
 {
     public class DatabaseInfoMemoryStorage2 //: IDatabaseInfoElementRepository
     {

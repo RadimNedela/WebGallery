@@ -1,11 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
-using WebGalery.Binders.Domain;
 using WebGalery.Core.BinderInterfaces;
+using WebGalery.Core.Binders;
 using WebGalery.Core.DBMaintenanceInterfaces;
-using WebGalery.FileImport.Domain;
-using WebGalery.Maintenance.Domain;
+using WebGalery.Core.FileImport;
+using WebGalery.Core.Maintenance;
 
-namespace WebGalery.Binders.IoC
+namespace WebGalery.Core.IoC
 {
     public static class CoreRegistration
     {

@@ -1,4 +1,4 @@
-﻿namespace WebGalery.FileImport.Dtos.Directories
+﻿namespace WebGalery.Core.FileImport.Directories
 {
     public class DirectoriesCallDto
     {

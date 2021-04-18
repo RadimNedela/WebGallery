@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using WebGalery.Core.Logging;
 
-namespace WebGalery.FileImport.Tests.Domain
+namespace WebGalery.Core.Tests.FileImport
 {
     [TestFixture]
     public class RackInfoBuilderTests

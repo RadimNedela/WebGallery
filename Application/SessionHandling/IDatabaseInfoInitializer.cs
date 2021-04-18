@@ -1,4 +1,4 @@
-﻿namespace WebGalery.SessionHandling.Applications
+﻿namespace WebGalery.Application.SessionHandling
 {
     public interface IDatabaseInfoInitializer
     {

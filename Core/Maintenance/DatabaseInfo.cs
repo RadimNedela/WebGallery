@@ -2,7 +2,7 @@
 using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.DBMaintenanceInterfaces;
 
-namespace WebGalery.Maintenance.Domain
+namespace WebGalery.Core.Maintenance
 {
     public class DatabaseInfo : IDatabaseInfo
     {

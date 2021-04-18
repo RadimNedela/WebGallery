@@ -1,4 +1,4 @@
-﻿namespace WebGalery.PictureViewer.Tests
+﻿namespace WebGalery.Core.Tests.Binders
 {
     public class BinderTestDataBuilder { }
 }

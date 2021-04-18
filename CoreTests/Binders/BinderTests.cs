@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace WebGalery.PictureViewer.Tests.Domain
+namespace WebGalery.Core.Tests.Binders
 {
     [TestFixture]
     public class BinderTests

@@ -1,4 +1,4 @@
-﻿namespace WebGalery.FileImport.Dtos
+﻿namespace WebGalery.Core.FileImport
 {
     public class RackInfoDto
     {

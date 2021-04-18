@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using WebGalery.Application.Maintenance;
 using WebGalery.Core.Logging;
-using WebGalery.Maintenance.Applications;
 
 namespace WebGalery.WebApplication.Controllers
 {

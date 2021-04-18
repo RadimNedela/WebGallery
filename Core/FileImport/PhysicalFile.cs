@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using WebGalery.Core.DbEntities.Contents;
 
-namespace WebGalery.FileImport.Domain
+namespace WebGalery.Core.FileImport
 {
     internal class PhysicalFile
     {

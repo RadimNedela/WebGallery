@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebGalery.FileImport.Dtos
+namespace WebGalery.Core.FileImport
 {
     public class DirectoryInfoDto
     {

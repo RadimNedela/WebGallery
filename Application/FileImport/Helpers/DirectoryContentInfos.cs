@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using WebGalery.FileImport.Domain;
+using WebGalery.Core.FileImport;
 
-namespace WebGalery.FileImport.Application.Helpers
+namespace WebGalery.Application.FileImport.Helpers
 {
     internal static class DirectoryContentInfos
     {

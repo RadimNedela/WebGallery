@@ -5,7 +5,7 @@ using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 
-namespace WebGalery.FileImport.Domain
+namespace WebGalery.Core.FileImport
 {
     public class PhysicalFilesParser
     {

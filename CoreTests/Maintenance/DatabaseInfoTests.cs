@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using WebGalery.Core.Tests;
-using WebGalery.Maintenance.Domain;
+using WebGalery.Core.Maintenance;
 
-namespace WebGalery.Maintenance.Tests.Domain
+namespace WebGalery.Core.Tests.Maintenance
 {
 
     [TestFixture]

@@ -1,11 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
+using WebGalery.Application.FileImport;
+using WebGalery.Application.Maintenance;
+using WebGalery.Application.SessionHandling;
 using WebGalery.Core;
-using WebGalery.FileImport.Application;
-using WebGalery.FileImport.Domain;
-using WebGalery.Maintenance.Applications;
-using WebGalery.SessionHandling.Applications;
 
-namespace WebGalery.FileImport.IoC
+namespace WebGalery.Application.IoC
 {
     public static class ApplicationRegistration
     {

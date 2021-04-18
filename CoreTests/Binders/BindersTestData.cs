@@ -1,11 +1,10 @@
 ﻿using NSubstitute;
-using WebGalery.Binders.Domain;
+using WebGalery.Core.Binders;
 using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
-using WebGalery.Core.Tests;
 
-namespace WebGalery.PictureViewer.Tests
+namespace WebGalery.Core.Tests.Binders
 {
     public class BindersTestData
     {

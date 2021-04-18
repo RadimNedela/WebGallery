@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using WebGalery.Binders.IoC;
+using WebGalery.Application.IoC;
+using WebGalery.Core.IoC;
 using WebGalery.Core.Logging;
-using WebGalery.FileImport.IoC;
 using WebGalery.Infrastructure.IoC;
 
 namespace WebGalery.WebApplication

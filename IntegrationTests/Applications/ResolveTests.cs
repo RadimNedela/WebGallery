@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using WebGalery.FileImport.Application;
+using WebGalery.Application.FileImport;
+using WebGalery.Application.Maintenance;
 using WebGalery.IntegrationTests.IoC;
-using WebGalery.Maintenance.Applications;
 
 namespace WebGalery.IntegrationTests.Applications
 {

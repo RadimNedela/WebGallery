@@ -4,9 +4,8 @@ using System.Linq;
 using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.InfrastructureInterfaces.Base;
-using WebGalery.Maintenance.Domain;
 
-namespace WebGalery.Maintenance.Applications
+namespace WebGalery.Application.Maintenance
 {
     public class DatabaseInfoApplication
     {

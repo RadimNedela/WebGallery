@@ -1,11 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
-using WebGalery.Core;
 using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
-using WebGalery.FileImport.Dtos;
 
-namespace WebGalery.FileImport.Domain
+namespace WebGalery.Core.FileImport
 {
     public class RackInfoBuilder
     {

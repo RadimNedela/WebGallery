@@ -1,9 +1,8 @@
 ﻿using NSubstitute;
 using WebGalery.Core.BinderInterfaces;
-using WebGalery.Core.Tests;
-using WebGalery.FileImport.Domain;
+using WebGalery.Core.FileImport;
 
-namespace WebGalery.FileImport.Tests
+namespace WebGalery.Core.Tests.FileImport
 {
     public class FileImportTestData
     {

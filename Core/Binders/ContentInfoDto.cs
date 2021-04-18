@@ -1,4 +1,4 @@
-﻿namespace WebGalery.Binders.Dtos
+﻿namespace WebGalery.Core.Binders
 {
     public class ContentInfoDto : HashedElementDto
     {

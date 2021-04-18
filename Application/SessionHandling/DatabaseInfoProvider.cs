@@ -1,6 +1,6 @@
 ﻿using WebGalery.Core;
 
-namespace WebGalery.SessionHandling.Applications
+namespace WebGalery.Application.SessionHandling
 {
     public class DatabaseInfoProvider : IGalerySession, IDatabaseInfoInitializer
     {

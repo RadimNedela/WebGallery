@@ -12,21 +12,18 @@ namespace WebGalery.FileImport.Domain
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
         private readonly ICurrentDatabaseInfoProvider _dbInfoProvider;
-        private readonly IContentEntityRepository _contentRepository;
         private readonly IBinder _binder;
 
         public PhysicalFilesParser(
             IDirectoryMethods directoryMethods,
             IHasher hasher,
             ICurrentDatabaseInfoProvider dbInfoProvider,
-            IContentEntityRepository contentRepository,
             IBinder binder
             )
         {
             _directoryMethods = directoryMethods;
             _hasher = hasher;
             _dbInfoProvider = dbInfoProvider;
-            _contentRepository = contentRepository;
             _binder = binder;
         }
 

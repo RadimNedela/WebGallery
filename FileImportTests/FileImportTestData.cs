@@ -18,7 +18,7 @@ namespace WebGalery.FileImport.Tests
             IContentEntityRepository repository = null;
             IBinder binder = Substitute.For<IBinder>();
 
-            return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, repository, binder);
+            return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, binder);
         }
 
         public RackInfoBuilder CreateTestRackInfoBuilder()

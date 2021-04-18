@@ -6,16 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Binders\Binders.csproj" />
-    <ProjectReference Include="..\FileImport\FileImport.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\Maintenance\Maintenance.csproj" />
-    <ProjectReference Include="..\SessionHandling\SessionHandling.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="5.0.0" />
   </ItemGroup>
 

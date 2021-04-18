@@ -9,8 +9,6 @@ using WebGalery.Binders.IoC;
 using WebGalery.Core.Logging;
 using WebGalery.FileImport.IoC;
 using WebGalery.Infrastructure.IoC;
-using WebGalery.Maintenance.IoC;
-using WebGalery.SessionHandling.IoC;
 
 namespace WebGalery.WebApplication
 {
@@ -28,10 +26,8 @@ namespace WebGalery.WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterSessionHandling();
-            services.RegisterMaintenance();
-            services.RegisterFileImportServices();
-            services.RegisterBinderServices();
+            services.RegisterCoreServices();
+            services.RegisterApplicationServices();
             services.RegisterInfrastructureServices(Configuration);
 
             services.AddControllersWithViews();

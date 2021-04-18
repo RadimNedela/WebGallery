@@ -14,16 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FileImport\FileImport.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\CoreTests\CoreTests.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\InfrastructureTests\InfrastructureTests.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\MaintenanceTests\MaintenanceTests.csproj" />
-    <ProjectReference Include="..\Maintenance\Maintenance.csproj" />
-    <ProjectReference Include="..\SessionHandling\SessionHandling.csproj" />
-    <ProjectReference Include="..\FileImportTests\FileImportTests.csproj" />
-    <ProjectReference Include="..\BindersTests\BindersTests.csproj" />
     <ProjectReference Include="..\WebApplication\WebApplication.csproj" />
   </ItemGroup>
 

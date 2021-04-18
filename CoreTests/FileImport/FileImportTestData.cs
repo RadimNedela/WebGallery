@@ -1,12 +1,11 @@
 ﻿using NSubstitute;
 using WebGalery.Core.BinderInterfaces;
-using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.Tests;
 using WebGalery.FileImport.Domain;
 
 namespace WebGalery.FileImport.Tests
 {
-    internal class FileImportTestData
+    public class FileImportTestData
     {
         public PhysicalFilesParser CreateTestPhysicalFilesParser()
         {
@@ -15,7 +14,6 @@ namespace WebGalery.FileImport.Tests
             var hasher = ctd.CreateTestHasher();
 
             var cdiProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
-            IContentEntityRepository repository = null;
             IBinder binder = Substitute.For<IBinder>();
 
             return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, binder);

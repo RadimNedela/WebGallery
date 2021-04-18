@@ -13,7 +13,7 @@ using WebGalery.Infrastructure.Repositories;
 
 namespace WebGalery.Infrastructure.IoC
 {
-    public static class InfrastructureServices
+    public static class InfrastructureRegistration
     {
         public static void RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {

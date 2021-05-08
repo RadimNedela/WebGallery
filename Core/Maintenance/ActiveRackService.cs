@@ -28,6 +28,8 @@ namespace WebGalery.Core.Maintenance
 
         public string ActiveRackHash => ActiveRack.Hash;
 
+        public string ActiveRackName => ActiveRack.Name;
+
         public string GetSubpath(string fullPath)
         {
             return _rackService.GetSubpath(ActiveRack, fullPath);

@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using WebGalery.Core.Binders;
 using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.FileImport;
 using WebGalery.Core.Maintenance;
@@ -10,7 +9,6 @@ namespace WebGalery.Core.IoC
     {
         public static void RegisterCoreServices(this IServiceCollection services)
         {
-            services.AddScoped<IBinder, BinderFactory>();
             services.AddScoped<PhysicalFilesParser>();
             services.AddScoped<RackInfoBuilder>();
             //services.AddSingleton<IDatabaseInfoElementRepository, DatabaseInfoMemoryStorage2>();

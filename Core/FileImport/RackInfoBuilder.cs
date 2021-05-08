@@ -8,17 +8,17 @@ namespace WebGalery.Core.FileImport
     public class RackInfoBuilder
     {
         private readonly IGalerySession _session;
-        private readonly IActiveDatabaseInfoProvider _dbInfoProvider;
+        private readonly IActiveRackService _activeRackService;
         private readonly IDirectoryMethods _directoryMethods;
 
         public RackInfoBuilder(
             IGalerySession session,
-            IActiveDatabaseInfoProvider dbInfoProvider,
+            IActiveRackService activeRackService,
             IDirectoryMethods directoryMethods
             )
         {
             _session = session;
-            _dbInfoProvider = dbInfoProvider;
+            _activeRackService = activeRackService;
             _directoryMethods = directoryMethods;
         }
 
@@ -26,11 +26,11 @@ namespace WebGalery.Core.FileImport
         {
             var retVal = new RackInfoDto
             {
-                ActiveDatabaseName = _dbInfoProvider.CurrentInfo.ActiveDatabaseName,
+                ActiveDatabaseName = _activeRackService.ActiveDatabaseName,
                 ActiveDatabaseHash = _session.ActiveDatabaseHash,
-                ActiveRackName = _dbInfoProvider.CurrentInfo.ActiveRack.Name,
+                ActiveRackName = _activeRackService.ActiveRackName,
                 ActiveRackHash = _session.ActiveRackHash,
-                ActiveDirectory = _dbInfoProvider.CurrentInfo.ActiveRack.ActiveDirectory,
+                ActiveDirectory = _activeRackService.ActiveDirectory,
                 DirectoryInfo = GetSubDirectoryInfo(".")
             };
 
@@ -39,15 +39,14 @@ namespace WebGalery.Core.FileImport
 
         public DirectoryInfoDto GetSubDirectoryInfo(string subDirectory)
         {
-            var rack = _dbInfoProvider.CurrentInfo.ActiveRack;
             var directoryInfo = new DirectoryInfoDto();
-            var activeDirectory = rack.ActiveDirectory;
+            var activeDirectory = _activeRackService.ActiveDirectory;
             var fullPath = Path.Combine(activeDirectory, subDirectory);
 
             var fileNames = _directoryMethods.GetFileNames(fullPath).Select(Path.GetFileName);
-            var dirNames = _directoryMethods.GetDirectories(fullPath).Select(path => rack.GetSubpath(path));
+            var dirNames = _directoryMethods.GetDirectories(fullPath).Select(path => _activeRackService.GetSubpath(path));
 
-            var normSubDir = rack.GetSubpath(fullPath);
+            var normSubDir = _activeRackService.GetSubpath(fullPath);
             if (normSubDir != ".")
                 dirNames = new[] { Path.Combine(normSubDir, @"..") }.Union(dirNames);
 

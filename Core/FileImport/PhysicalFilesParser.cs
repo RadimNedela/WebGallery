@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-using WebGalery.Core.BinderInterfaces;
+using WebGalery.Core.Binders;
 using WebGalery.Core.DbEntities.Contents;
 using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
@@ -11,25 +11,24 @@ namespace WebGalery.Core.FileImport
     {
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
-        private readonly IActiveDatabaseInfoProvider _dbInfoProvider;
-        private readonly IBinder _binder;
+        private readonly IActiveRackService _activeRackService;
+        private readonly BinderFactory _binderFactory;
 
         public PhysicalFilesParser(
             IDirectoryMethods directoryMethods,
             IHasher hasher,
-            IActiveDatabaseInfoProvider dbInfoProvider,
-            IBinder binder
+            IActiveRackService activeRackService,
+            BinderFactory binderFactory
             )
         {
             _directoryMethods = directoryMethods;
             _hasher = hasher;
-            _dbInfoProvider = dbInfoProvider;
-            _binder = binder;
+            _activeRackService = activeRackService;
+            _binderFactory = binderFactory;
         }
 
         public IEnumerable<Content> ParsePhysicalFiles(DirectoryContentThreadInfo info)
         {
-            var rack = _dbInfoProvider.CurrentInfo.ActiveRack;
             info.FileNames = _directoryMethods.GetFileNames(info.FullPath);
             foreach (var fn in info.FileNames)
             {
@@ -40,7 +39,7 @@ namespace WebGalery.Core.FileImport
                     Hash = _hasher.ComputeFileContentHash(fn),
                     Type = PhysicalFile.GetContentTypeByExtension(fn),
                     FullPath = fn,
-                    SubPath = rack.GetSubpath(fn)
+                    SubPath = _activeRackService.GetSubpath(fn)
                 };
 
                 yield return ToContentEntity(physicalFile);
@@ -49,7 +48,7 @@ namespace WebGalery.Core.FileImport
 
         private Content ToContentEntity(PhysicalFile physicalFile)
         {
-            Binder directoryBinder = _binder.GetDirectoryBinderForPath(physicalFile.FullPath);
+            Binder directoryBinder = _binderFactory.GetOrBuildDirectoryBinderForPath(physicalFile.FullPath);
 
             Content retVal = new()
             {

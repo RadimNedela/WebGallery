@@ -38,9 +38,9 @@ namespace WebGalery.Core.Tests
             return this;
         }
 
-        public DatabaseInfoEntity Build()
+        public DatabaseInfo Build()
         {
-            DatabaseInfoEntity entity = new()
+            DatabaseInfo entity = new()
             {
                 Hash = Hash,
                 Name = Name,

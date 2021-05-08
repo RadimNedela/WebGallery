@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Application.Maintenance
 {
@@ -15,35 +15,35 @@ namespace WebGalery.Application.Maintenance
             _hasher = hasher;
         }
 
-        internal DatabaseInfoEntity BuildNewDatabase(string databaseName)
+        internal DatabaseInfo BuildNewDatabase(string databaseName)
         {
             string infoHash = _hasher.ComputeRandomStringHash(databaseName);
-            var dbInfo = new DatabaseInfoEntity
+            var dbInfo = new DatabaseInfo
             {
                 Hash = infoHash,
                 Name = databaseName,
-                Racks = new List<RackEntity>()
+                Racks = new List<Rack>()
             };
             AddNewRack(dbInfo);
             return dbInfo;
         }
 
-        internal void AddNewRack(DatabaseInfoEntity dbInfo)
+        internal void AddNewRack(DatabaseInfo dbInfo)
         {
             string rackHash = _hasher.ComputeRandomStringHash(dbInfo.Hash + "Default");
-            var rackEntity = new RackEntity
+            var rackEntity = new Rack
             {
                 Hash = rackHash,
                 Name = "Default",
-                MountPoints = new List<MountPointEntity>()
+                MountPoints = new List<MountPoint>()
             };
             AddNewMountPoint(rackEntity);
             dbInfo.Racks.Add(rackEntity);
         }
 
-        internal void AddNewMountPoint(RackEntity rackEntity)
+        internal void AddNewMountPoint(Rack rackEntity)
         {
-            var mountPoint = new MountPointEntity
+            var mountPoint = new MountPoint
             {
                 Path = _directoryMethods.GetCurrentDirectoryName()
             };

@@ -18,7 +18,7 @@ namespace WebGalery.IntegrationTests.Applications
             IDirectoryMethods directoryMethods = Substitute.For<IDirectoryMethods>();
             IHasher hasher = Substitute.For<IHasher>();
             hasher.ComputeRandomStringHash(Arg.Any<string>()).Returns(a => a.ArgAt<string>(0) + " Random Hash");
-            IEntityPersister<DatabaseInfoEntity> persister = Substitute.For<IEntityPersister<DatabaseInfoEntity>>();
+            IPersister<DatabaseInfo> persister = Substitute.For<IPersister<DatabaseInfo>>();
 
             return new DatabaseInfoApplication(mtd.CreateTestDatabaseRepositorySubstitute(), persister, directoryMethods, hasher);
         }

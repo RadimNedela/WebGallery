@@ -7,14 +7,14 @@ using WebGalery.Infrastructure.Repositories.Base;
 
 namespace WebGalery.Infrastructure.Repositories
 {
-    public class ContentEntitiesRepository : EntitiesRepository<ContentEntity>, IContentEntityRepository
+    public class ContentEntitiesRepository : EntitiesRepository<Content>, IContentEntityRepository
     {
         public ContentEntitiesRepository(IGaleryDatabase galeryDatabase)
             : base(galeryDatabase) { }
 
-        protected override DbSet<ContentEntity> TheDbSet => GaleryDatabase.Contents;
+        protected override DbSet<Content> TheDbSet => GaleryDatabase.Contents;
 
-        public ContentEntity Get(string hash)
+        public Content Get(string hash)
         {
             return GaleryDatabase.Contents
                 .Where(h => h.Hash == hash)

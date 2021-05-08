@@ -22,15 +22,15 @@ namespace WebGalery.Infrastructure.IoC
 
             services.AddScoped<ContentEntitiesRepository>();
             services.AddScoped<IContentEntityRepository>(x => x.GetRequiredService<ContentEntitiesRepository>());
-            services.AddScoped<IEntityPersister<ContentEntity>>(x => x.GetRequiredService<ContentEntitiesRepository>());
+            services.AddScoped<IPersister<Content>>(x => x.GetRequiredService<ContentEntitiesRepository>());
 
             services.AddScoped<BinderEntitiesRepository>();
-            services.AddScoped<IBinderEntityRepository>(x => x.GetRequiredService<BinderEntitiesRepository>());
-            services.AddScoped<IEntityPersister<BinderEntity>>(x => x.GetRequiredService<BinderEntitiesRepository>());
+            services.AddScoped<IBinderRepository>(x => x.GetRequiredService<BinderEntitiesRepository>());
+            services.AddScoped<IPersister<Binder>>(x => x.GetRequiredService<BinderEntitiesRepository>());
 
             services.AddSingleton<DatabaseInfoRepository>();
-            services.AddSingleton<IDatabaseInfoEntityRepository>(x => x.GetRequiredService<DatabaseInfoRepository>());
-            services.AddSingleton<IEntityPersister<DatabaseInfoEntity>>(x => x.GetRequiredService<DatabaseInfoRepository>());
+            services.AddSingleton<IDatabaseInfoRepository>(x => x.GetRequiredService<DatabaseInfoRepository>());
+            services.AddSingleton<IPersister<DatabaseInfo>>(x => x.GetRequiredService<DatabaseInfoRepository>());
 
             var provider = configuration["GaleryDatabaseProvider"];
             if (provider == "MySql")

@@ -9,13 +9,13 @@ namespace WebGalery.Application.Maintenance
 {
     public class DatabaseInfoApplication
     {
-        private readonly IDatabaseInfoEntityRepository _repository;
-        private readonly IEntityPersister<DatabaseInfoEntity> _persister;
+        private readonly IDatabaseInfoRepository _repository;
+        private readonly IPersister<DatabaseInfo> _persister;
         private readonly DatabaseInfoHelper _databaseInfoHandler;
 
         public DatabaseInfoApplication(
-            IDatabaseInfoEntityRepository repository,
-            IEntityPersister<DatabaseInfoEntity> persister,
+            IDatabaseInfoRepository repository,
+            IPersister<DatabaseInfo> persister,
             IDirectoryMethods directoryMethods,
             IHasher hasher)
         {

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Application.Maintenance
 {
     internal class DatabaseInfoDtoConverter
     {
-        internal DatabaseInfoDto ToDto(DatabaseInfoEntity entity)
+        internal DatabaseInfoDto ToDto(DatabaseInfo entity)
         {
             DatabaseInfoDto dto = new()
             {
@@ -16,7 +16,7 @@ namespace WebGalery.Application.Maintenance
             return dto;
         }
 
-        private RackDto ToDto(RackEntity entity)
+        private RackDto ToDto(Rack entity)
         {
             RackDto dto = new()
             {
@@ -27,7 +27,7 @@ namespace WebGalery.Application.Maintenance
             return dto;
         }
 
-        public void Merge(DatabaseInfoEntity dbEntity, DatabaseInfoDto dto)
+        public void Merge(DatabaseInfo dbEntity, DatabaseInfoDto dto)
         {
             dbEntity.Name = dto.Name;
             foreach (var rack in dbEntity.Racks)

@@ -2,7 +2,7 @@
 {
     public interface IGalerySession
     {
-        string CurrentDatabaseHash { get; }
-        string CurrentRackHash { get; }
+        string ActiveDatabaseHash { get; }
+        string ActiveRackHash { get; }
     }
 }

@@ -11,13 +11,13 @@ namespace WebGalery.Core.FileImport
     {
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
-        private readonly ICurrentDatabaseInfoProvider _dbInfoProvider;
+        private readonly IActiveDatabaseInfoProvider _dbInfoProvider;
         private readonly IBinder _binder;
 
         public PhysicalFilesParser(
             IDirectoryMethods directoryMethods,
             IHasher hasher,
-            ICurrentDatabaseInfoProvider dbInfoProvider,
+            IActiveDatabaseInfoProvider dbInfoProvider,
             IBinder binder
             )
         {
@@ -27,7 +27,7 @@ namespace WebGalery.Core.FileImport
             _binder = binder;
         }
 
-        public IEnumerable<ContentEntity> ParsePhysicalFiles(DirectoryContentThreadInfo info)
+        public IEnumerable<Content> ParsePhysicalFiles(DirectoryContentThreadInfo info)
         {
             var rack = _dbInfoProvider.CurrentInfo.ActiveRack;
             info.FileNames = _directoryMethods.GetFileNames(info.FullPath);
@@ -47,19 +47,19 @@ namespace WebGalery.Core.FileImport
             }
         }
 
-        private ContentEntity ToContentEntity(PhysicalFile physicalFile)
+        private Content ToContentEntity(PhysicalFile physicalFile)
         {
-            BinderEntity directoryBinder = _binder.GetDirectoryBinderForPath(physicalFile.FullPath);
+            Binder directoryBinder = _binder.GetDirectoryBinderForPath(physicalFile.FullPath);
 
-            ContentEntity retVal = new()
+            Content retVal = new()
             {
                 Hash = physicalFile.Hash,
                 Label = Path.GetFileName(physicalFile.FullPath),
                 Type = physicalFile.Type.ToString(),
-                AttributedBinders = new List<AttributedBinderEntityToContentEntity>()
+                AttributedBinders = new List<AttributedBinderToContent>()
             };
 
-            var attToContent = new AttributedBinderEntityToContentEntity
+            var attToContent = new AttributedBinderToContent
             {
                 Attribute = physicalFile.SubPath,
                 Binder = directoryBinder,

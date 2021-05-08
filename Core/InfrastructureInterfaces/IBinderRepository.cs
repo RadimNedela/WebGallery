@@ -3,7 +3,7 @@ using WebGalery.Core.InfrastructureInterfaces.Base;
 
 namespace WebGalery.Core.InfrastructureInterfaces
 {
-    public interface IBinderEntityRepository : IEntityRepository<BinderEntity>
+    public interface IBinderRepository : IRepository<Binder>
     {
     }
 }

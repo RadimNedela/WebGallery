@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Core.Tests
 {
@@ -9,7 +9,7 @@ namespace WebGalery.Core.Tests
         private static long _counter;
         public string Hash { get; private set; }
         public string Name { get; private set; }
-        public DatabaseInfoEntity Database { get; private set; }
+        public DatabaseInfo Database { get; private set; }
 
         public static RackTestDataBuilder CreateDefault()
         {
@@ -33,7 +33,7 @@ namespace WebGalery.Core.Tests
             return this;
         }
 
-        internal RackTestDataBuilder Using(DatabaseInfoEntity database)
+        internal RackTestDataBuilder Using(DatabaseInfo database)
         {
             Database = database;
             DatabaseHash = database.Hash;
@@ -46,9 +46,9 @@ namespace WebGalery.Core.Tests
             return this;
         }
 
-        public RackEntity Build()
+        public Rack Build()
         {
-            RackEntity entity = new()
+            Rack entity = new()
             {
                 Hash = Hash,
                 Name = Name,

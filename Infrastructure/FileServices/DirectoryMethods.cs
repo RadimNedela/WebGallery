@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using WebGalery.Core.InfrastructureInterfaces;
 
@@ -25,9 +26,16 @@ namespace WebGalery.Infrastructure.FileServices
             return directories;
         }
 
-        public bool DirectoryExists(string path)
+        public bool Exists(string path)
         {
             return Directory.Exists(path);
+        }
+
+        public string NormalizePath(string path)
+        {
+            return Path.GetFullPath(new Uri(path).LocalPath)
+                       .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            //.ToUpperInvariant();
         }
     }
 }

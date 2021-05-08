@@ -24,51 +24,51 @@ namespace WebGalery.Infrastructure.Tests.Databases
             RemoveTestHashedEntityFromDb();
         }
 
-        BinderEntity _binder;
-        ContentEntity _content;
-        BinderEntityToContentEntity _binderToContent;
-        BinderEntity _dirBinder;
-        AttributedBinderEntityToContentEntity _dirBinderToContent;
+        Binder _binder;
+        Content _content;
+        BinderToContent _binderToContent;
+        Binder _dirBinder;
+        AttributedBinderToContent _dirBinderToContent;
 
         public const string TestContentElementHash = "ContentEntity01Hash";
 
         private void AddTestHashedEntityToDb()
         {
-            _binder = new BinderEntity
+            _binder = new Binder
             {
                 Hash = "BinderEntity01",
                 Label = "Binder entity",
                 Type = "Nejaky binder type"
             };
-            _content = new ContentEntity
+            _content = new Content
             {
                 Hash = TestContentElementHash,
                 Label = "Content 01",
                 Type = "jakysi content type"
             };
-            _dirBinder = new BinderEntity
+            _dirBinder = new Binder
             {
                 Hash = "directoryBinder01",
                 Label = @"c:\temp",
                 Type = "Directory"
             };
 
-            _binderToContent = new BinderEntityToContentEntity
+            _binderToContent = new BinderToContent
             {
                 Binder = _binder,
                 Content = _content
             };
-            _binder.Contents = new List<BinderEntityToContentEntity> { _binderToContent };
-            _content.Binders = new List<BinderEntityToContentEntity> { _binderToContent };
+            _binder.Contents = new List<BinderToContent> { _binderToContent };
+            _content.Binders = new List<BinderToContent> { _binderToContent };
 
-            _dirBinderToContent = new AttributedBinderEntityToContentEntity
+            _dirBinderToContent = new AttributedBinderToContent
             {
                 Binder = _dirBinder,
                 Content = _content,
                 Attribute = "asdf.txt"
             };
-            _dirBinder.AttributedContents = new List<AttributedBinderEntityToContentEntity> { _dirBinderToContent };
-            _content.AttributedBinders = new List<AttributedBinderEntityToContentEntity> { _dirBinderToContent };
+            _dirBinder.AttributedContents = new List<AttributedBinderToContent> { _dirBinderToContent };
+            _content.AttributedBinders = new List<AttributedBinderToContent> { _dirBinderToContent };
 
             using var serviceProvider = InfrastructureTestsUtils.ServiceProvider;
             var database = serviceProvider.GetService<IGaleryDatabase>();

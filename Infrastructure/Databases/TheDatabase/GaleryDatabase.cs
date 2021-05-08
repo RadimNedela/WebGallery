@@ -1,16 +1,15 @@
 using System.Linq;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WebGalery.Core.DbEntities.Contents;
-using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.Logging;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Infrastructure.Databases.TheDatabase
 {
     public abstract class GaleryDatabase : DbContext
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
         {
             builder.AddFilter("Microsoft", LogLevel.Information)
@@ -18,9 +17,9 @@ namespace WebGalery.Infrastructure.Databases.TheDatabase
                 .AddConsole();
         });
 
-        public DbSet<ContentEntity> Contents { get; set; }
-        public DbSet<BinderEntity> Binders { get; set; }
-        public DbSet<DatabaseInfoEntity> DatabaseInfo { get; set; }
+        public DbSet<Content> Contents { get; set; }
+        public DbSet<Binder> Binders { get; set; }
+        public DbSet<DatabaseInfo> DatabaseInfo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,7 +32,7 @@ namespace WebGalery.Infrastructure.Databases.TheDatabase
 
         private void InitMasterDataTables(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DatabaseInfoEntity>(entity =>
+            modelBuilder.Entity<DatabaseInfo>(entity =>
             {
                 entity.ToTable("DatabaseInfo");
                 entity.HasKey(di => di.Hash);
@@ -41,7 +40,7 @@ namespace WebGalery.Infrastructure.Databases.TheDatabase
                 entity.HasIndex(di => di.Name).IsUnique();
             });
 
-            modelBuilder.Entity<RackEntity>(entity =>
+            modelBuilder.Entity<Rack>(entity =>
             {
                 entity.ToTable("Rack");
                 entity.HasKey(re => re.Hash);
@@ -50,7 +49,7 @@ namespace WebGalery.Infrastructure.Databases.TheDatabase
                 entity.HasMany(re => re.MountPoints).WithOne(mp => mp.Rack).HasForeignKey(re => re.RackHash);
             });
 
-            modelBuilder.Entity<MountPointEntity>(entity =>
+            modelBuilder.Entity<MountPoint>(entity =>
             {
                 entity.ToTable("MountPoint");
                 //entity.HasKey(mpe => new { mpe.RackHash, mpe.Path});
@@ -61,7 +60,7 @@ namespace WebGalery.Infrastructure.Databases.TheDatabase
 
         private void InitContentTables(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BinderEntityToContentEntity>(entity =>
+            modelBuilder.Entity<BinderToContent>(entity =>
             {
                 entity.ToTable("BinderContent");
                 entity.HasOne(bc => bc.Binder).WithMany(b => b.Contents).HasForeignKey(bc => bc.BinderHash);
@@ -69,7 +68,7 @@ namespace WebGalery.Infrastructure.Databases.TheDatabase
                 entity.HasKey(bc => new { bc.BinderHash, bc.ContentHash });
             });
 
-            modelBuilder.Entity<AttributedBinderEntityToContentEntity>(entity =>
+            modelBuilder.Entity<AttributedBinderToContent>(entity =>
             {
                 entity.ToTable("Attribute");
                 entity.HasOne(bc => bc.Binder).WithMany(b => b.AttributedContents).HasForeignKey(bc => bc.BinderHash);
@@ -78,14 +77,14 @@ namespace WebGalery.Infrastructure.Databases.TheDatabase
                 entity.HasKey(attr => new { attr.BinderHash, attr.ContentHash, attr.Attribute });
             });
 
-            modelBuilder.Entity<ContentEntity>(entity =>
+            modelBuilder.Entity<Content>(entity =>
             {
                 entity.HasKey(ce => ce.Hash);
                 entity.Property(e => e.Hash).HasColumnType("Char(40)").IsRequired();
                 entity.ToTable("Content");
             });
 
-            modelBuilder.Entity<BinderEntity>(entity =>
+            modelBuilder.Entity<Binder>(entity =>
             {
                 entity.HasKey(e => e.Hash);
                 entity.Property(e => e.Hash).HasColumnType("Char(40)").IsRequired();

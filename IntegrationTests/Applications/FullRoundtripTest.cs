@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using WebGalery.Application.FileImport;
 using WebGalery.Application.Maintenance;
-using WebGalery.Application.SessionHandling;
+using WebGalery.Core;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Infrastructure.Databases;
 using WebGalery.IntegrationTests.IoC;
@@ -47,8 +47,8 @@ namespace WebGalery.IntegrationTests.Applications
 
         private bool CheckDbEmpty(ServiceProvider serviceProvider)
         {
-            var dbInfoRepository = serviceProvider.GetService<IDatabaseInfoEntityRepository>();
-            var binderRepository = serviceProvider.GetService<IBinderEntityRepository>();
+            var dbInfoRepository = serviceProvider.GetService<IDatabaseInfoRepository>();
+            var binderRepository = serviceProvider.GetService<IBinderRepository>();
             var contentRepository = serviceProvider.GetService<IContentEntityRepository>();
 
             var infos = dbInfoRepository.GetAll().Where(db => db.Name == TestDbName);
@@ -63,7 +63,7 @@ namespace WebGalery.IntegrationTests.Applications
             dbInfo.Racks.First().MountPoints[0] = TestPicturesDirectory;
             dbInfoApplication.UpdateDatabaseNames(dbInfo);
 
-            var dbInfoInitializer = serviceProvider.GetService<IDatabaseInfoInitializer>();
+            var dbInfoInitializer = serviceProvider.GetService<IGalerySessionInitializer>();
             dbInfoInitializer.SetCurrentInfo(dbInfo.Hash, dbInfo.Racks.First().Hash);
             return true;
         }

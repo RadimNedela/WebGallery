@@ -22,8 +22,8 @@ namespace WebGalery.Core.Tests
             }
         }
 
-        private DatabaseInfoEntity _testDatabase;
-        public DatabaseInfoEntity TestDatabase
+        private DatabaseInfo _testDatabase;
+        public DatabaseInfo TestDatabase
         {
             get
             {
@@ -31,7 +31,7 @@ namespace WebGalery.Core.Tests
             }
         }
 
-        private DatabaseInfoEntity CreateTestDatabase()
+        private DatabaseInfo CreateTestDatabase()
         {
             var builder = DatabaseInfoTestDataBuilder.CreateDefault()
                 .Add(RackTestDataBuilder.CreateDefault()
@@ -44,11 +44,11 @@ namespace WebGalery.Core.Tests
             return builder.Build();
         }
 
-        public IDatabaseInfoEntityRepository CreateTestDatabaseRepositorySubstitute()
+        public IDatabaseInfoRepository CreateTestDatabaseRepositorySubstitute()
         {
-            IDatabaseInfoEntityRepository repository = Substitute.For<IDatabaseInfoEntityRepository>();
+            IDatabaseInfoRepository repository = Substitute.For<IDatabaseInfoRepository>();
             var testDatabase = TestDatabase;
-            repository.GetAll().Returns(new List<DatabaseInfoEntity> { testDatabase });
+            repository.GetAll().Returns(new List<DatabaseInfo> { testDatabase });
             repository.Get(testDatabase.Hash).Returns(testDatabase);
 
             return repository;
@@ -57,8 +57,8 @@ namespace WebGalery.Core.Tests
         public IGalerySession CreateTestDatabaseSession()
         {
             IGalerySession session = Substitute.For<IGalerySession>();
-            session.CurrentDatabaseHash.Returns(TestDatabase.Hash);
-            session.CurrentRackHash.Returns(TestDatabase.Racks.First().Hash);
+            session.ActiveDatabaseHash.Returns(TestDatabase.Hash);
+            session.ActiveRackHash.Returns(TestDatabase.Racks.First().Hash);
             return session;
         }
 
@@ -90,18 +90,18 @@ namespace WebGalery.Core.Tests
             return hasher;
         }
 
-        public ICurrentDatabaseInfoProvider CreateTestCurrentDatabaseInfoProvider()
+        public IActiveDatabaseInfoProvider CreateTestCurrentDatabaseInfoProvider()
         {
-            var rack = Substitute.For<IRack>();
+            var rack = Substitute.For<IActiveRackService>();
             rack.Name.Returns("Test database rack name");
             rack.ActiveDirectory.Returns(CurentDirectory);
             rack.GetSubpath(Arg.Any<string>()).Returns(s => s.ArgAt<string>(0).Substring(CurentDirectory.Length + 1));
 
             var databaseInfo = Substitute.For<IDatabaseInfo>();
-            databaseInfo.CurrentDatabaseInfoName.Returns("Test database info name");
+            databaseInfo.CurrentDatabaseName.Returns("Test database info name");
             databaseInfo.ActiveRack.Returns(rack);
 
-            var infoProvider = Substitute.For<ICurrentDatabaseInfoProvider>();
+            var infoProvider = Substitute.For<IActiveDatabaseInfoProvider>();
             infoProvider.CurrentInfo.Returns(databaseInfo);
 
             return infoProvider;

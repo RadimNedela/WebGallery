@@ -12,7 +12,7 @@ namespace WebGalery.Infrastructure.Tests.Databases
     [TestFixture]
     public class DatabaseMaintenaceTests
     {
-        private DatabaseInfoEntity _info;
+        private DatabaseInfo _info;
         private string _testDatabaseInfoEntityHash;
 
         [SetUp]

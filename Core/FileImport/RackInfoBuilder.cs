@@ -8,12 +8,12 @@ namespace WebGalery.Core.FileImport
     public class RackInfoBuilder
     {
         private readonly IGalerySession _session;
-        private readonly ICurrentDatabaseInfoProvider _dbInfoProvider;
+        private readonly IActiveDatabaseInfoProvider _dbInfoProvider;
         private readonly IDirectoryMethods _directoryMethods;
 
         public RackInfoBuilder(
             IGalerySession session,
-            ICurrentDatabaseInfoProvider dbInfoProvider,
+            IActiveDatabaseInfoProvider dbInfoProvider,
             IDirectoryMethods directoryMethods
             )
         {
@@ -26,10 +26,10 @@ namespace WebGalery.Core.FileImport
         {
             var retVal = new RackInfoDto
             {
-                ActiveDatabaseName = _dbInfoProvider.CurrentInfo.CurrentDatabaseInfoName,
-                ActiveDatabaseHash = _session.CurrentDatabaseHash,
+                ActiveDatabaseName = _dbInfoProvider.CurrentInfo.ActiveDatabaseName,
+                ActiveDatabaseHash = _session.ActiveDatabaseHash,
                 ActiveRackName = _dbInfoProvider.CurrentInfo.ActiveRack.Name,
-                ActiveRackHash = _session.CurrentRackHash,
+                ActiveRackHash = _session.ActiveRackHash,
                 ActiveDirectory = _dbInfoProvider.CurrentInfo.ActiveRack.ActiveDirectory,
                 DirectoryInfo = GetSubDirectoryInfo(".")
             };

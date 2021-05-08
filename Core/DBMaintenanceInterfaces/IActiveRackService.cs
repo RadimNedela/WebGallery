@@ -1,10 +1,10 @@
 ﻿namespace WebGalery.Core.DBMaintenanceInterfaces
 {
-    public interface IRack
+    public interface IActiveRackService
     {
-        string Hash { get; }
-        string Name { get; }
         string ActiveDirectory { get; }
         string GetSubpath(string fullPath);
+        string ActiveDatabaseName { get; }
+        string ActiveRackHash { get; }
     }
 }

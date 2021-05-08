@@ -3,7 +3,7 @@ using WebGalery.Core.InfrastructureInterfaces.Base;
 
 namespace WebGalery.Core.InfrastructureInterfaces
 {
-    public interface IContentEntityRepository : IEntityRepository<ContentEntity>
+    public interface IContentEntityRepository : IRepository<Content>
     {
     }
 }

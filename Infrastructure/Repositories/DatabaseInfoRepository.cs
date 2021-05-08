@@ -8,14 +8,14 @@ using WebGalery.Infrastructure.Repositories.Base;
 
 namespace WebGalery.Infrastructure.Repositories
 {
-    public class DatabaseInfoRepository : EntitiesRepository<DatabaseInfoEntity>, IDatabaseInfoEntityRepository
+    public class DatabaseInfoRepository : EntitiesRepository<DatabaseInfo>, IDatabaseInfoRepository
     {
         public DatabaseInfoRepository(IGaleryDatabase galeryDatabase)
             : base(galeryDatabase) { }
 
-        protected override DbSet<DatabaseInfoEntity> TheDbSet => GaleryDatabase.DatabaseInfo;
+        protected override DbSet<DatabaseInfo> TheDbSet => GaleryDatabase.DatabaseInfo;
 
-        public DatabaseInfoEntity Get(string hash)
+        public DatabaseInfo Get(string hash)
         {
             return GaleryDatabase.DatabaseInfo
                 .Where(h => h.Hash == hash)
@@ -24,7 +24,7 @@ namespace WebGalery.Infrastructure.Repositories
                     .FirstOrDefault();
         }
 
-        public IEnumerable<DatabaseInfoEntity> GetAll()
+        public IEnumerable<DatabaseInfo> GetAll()
         {
             return GaleryDatabase.DatabaseInfo
                 .Include(di => di.Racks)

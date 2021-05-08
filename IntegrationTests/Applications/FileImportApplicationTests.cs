@@ -29,7 +29,7 @@ namespace WebGalery.IntegrationTests.Applications
 
             RackInfoBuilder rackInfoBuilder = fitd.CreateTestRackInfoBuilder();
             PhysicalFilesParser physicalFilesParser = fitd.CreateTestPhysicalFilesParser();
-            IEntityPersister<ContentEntity> contentEntityPersister = Substitute.For<IEntityPersister<ContentEntity>>();
+            IPersister<Content> contentEntityPersister = Substitute.For<IPersister<Content>>();
 
             FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentEntityPersister);
 

@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using WebGalery.Application.FileImport;
 using WebGalery.Application.Maintenance;
-using WebGalery.Application.SessionHandling;
 using WebGalery.Core;
 
 namespace WebGalery.Application.IoC
@@ -12,9 +11,9 @@ namespace WebGalery.Application.IoC
         {
             services.AddScoped<FileImportApplication>();
             services.AddScoped<DatabaseInfoApplication>();
-            services.AddScoped<DatabaseInfoProvider>();
-            services.AddScoped<IGalerySession>(s => s.GetService<DatabaseInfoProvider>());
-            services.AddScoped<IDatabaseInfoInitializer>(s => s.GetService<DatabaseInfoProvider>());
+            services.AddScoped<GalerySession>();
+            services.AddScoped<IGalerySession>(s => s.GetService<GalerySession>());
+            services.AddScoped<IGalerySessionInitializer>(s => s.GetService<GalerySession>());
         }
     }
 }

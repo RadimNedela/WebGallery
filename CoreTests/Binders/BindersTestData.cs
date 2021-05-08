@@ -8,22 +8,22 @@ namespace WebGalery.Core.Tests.Binders
 {
     public class BindersTestData
     {
-        public Binder CreateTestBinder()
+        public BinderFactory CreateTestBinder()
         {
             CoreTestData ctd = new();
 
             IHasher hasher = ctd.CreateTestHasher();
-            IBinderEntityRepository binderRepository = CreateTestBinderRepository();
-            ICurrentDatabaseInfoProvider currentDatabaseInfoProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
+            IBinderRepository binderRepository = CreateTestBinderRepository();
+            IActiveDatabaseInfoProvider currentDatabaseInfoProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
 
-            Binder binder = new(hasher, binderRepository, currentDatabaseInfoProvider);
+            BinderFactory binder = new(hasher, binderRepository, currentDatabaseInfoProvider);
             return binder;
         }
 
-        public IBinderEntityRepository CreateTestBinderRepository()
+        public IBinderRepository CreateTestBinderRepository()
         {
-            IBinderEntityRepository repository = Substitute.For<IBinderEntityRepository>();
-            var testBinder = new BinderEntity() { };
+            IBinderRepository repository = Substitute.For<IBinderRepository>();
+            var testBinder = new Binder() { };
             repository.Get(Arg.Any<string>()).Returns(testBinder);
 
             return repository;

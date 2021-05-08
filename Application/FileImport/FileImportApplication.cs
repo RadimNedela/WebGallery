@@ -14,15 +14,15 @@ namespace WebGalery.Application.FileImport
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly PhysicalFilesParser _physicalFilesParser;
-        private readonly IEntityPersister<ContentEntity> _contentEntityPersister;
+        private readonly IPersister<Content> _contentEntityPersister;
         private readonly RackInfoBuilder _rackInfoBuilder;
-        private readonly ICurrentDatabaseInfoProvider _dbInfoProvider;
+        private readonly IActiveDatabaseInfoProvider _dbInfoProvider;
 
         public FileImportApplication(
             RackInfoBuilder rackInfoBuilder,
-            ICurrentDatabaseInfoProvider dbInfoProvider,
+            IActiveDatabaseInfoProvider dbInfoProvider,
             PhysicalFilesParser physicalFilesParser,
-            IEntityPersister<ContentEntity> contentEntityPersister
+            IPersister<Content> contentEntityPersister
             )
         {
             _rackInfoBuilder = rackInfoBuilder;
@@ -80,7 +80,7 @@ namespace WebGalery.Application.FileImport
         {
             Log.Begin($"{nameof(DoParseDirectoryContent)}.{info.FullPath}");
 
-            foreach (ContentEntity entity in _physicalFilesParser.ParsePhysicalFiles(info))
+            foreach (Content entity in _physicalFilesParser.ParsePhysicalFiles(info))
             {
                 PersistContentEntity(entity);
             }
@@ -88,7 +88,7 @@ namespace WebGalery.Application.FileImport
             Log.End($"{nameof(DoParseDirectoryContent)}.{info.FullPath}");
         }
 
-        private void PersistContentEntity(ContentEntity contentEntity)
+        private void PersistContentEntity(Content contentEntity)
         {
             Log.Begin($"{nameof(PersistContentEntity)}.{contentEntity}");
 

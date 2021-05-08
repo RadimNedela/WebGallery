@@ -6,9 +6,9 @@ namespace WebGalery.Infrastructure.Databases
 {
     public interface IGaleryDatabase
     {
-        DbSet<ContentEntity> Contents { get; }
-        DbSet<BinderEntity> Binders { get; }
-        DbSet<DatabaseInfoEntity> DatabaseInfo { get; }
+        DbSet<Content> Contents { get; }
+        DbSet<Binder> Binders { get; }
+        DbSet<DatabaseInfo> DatabaseInfo { get; }
         int SaveChanges();
         void DetachAllEntities();
     }

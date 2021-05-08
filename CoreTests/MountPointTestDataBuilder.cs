@@ -1,11 +1,11 @@
-﻿using WebGalery.Core.DbEntities.Maintenance;
+﻿using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Core.Tests
 {
     public class MountPointTestDataBuilder
     {
         public string Path { get; private set; }
-        public RackEntity Rack { get; private set; }
+        public Rack Rack { get; private set; }
         public string RackHash { get; private set; }
 
         public static MountPointTestDataBuilder CreateWindowsDefault()
@@ -26,16 +26,16 @@ namespace WebGalery.Core.Tests
             return this;
         }
 
-        internal MountPointTestDataBuilder Using(RackEntity rack)
+        internal MountPointTestDataBuilder Using(Rack rack)
         {
             Rack = rack;
             RackHash = rack.Hash;
             return this;
         }
 
-        public MountPointEntity Build()
+        public MountPoint Build()
         {
-            return new MountPointEntity
+            return new MountPoint
             {
                 Path = Path,
                 Rack = Rack,

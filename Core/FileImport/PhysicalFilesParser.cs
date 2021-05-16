@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using WebGalery.Core.Binders;
 using WebGalery.Core.DbEntities.Contents;
-using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Core.FileImport
 {

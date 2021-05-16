@@ -2,9 +2,8 @@
 using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
-using WebGalery.Core.DbEntities.Maintenance;
-using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Core.Tests
 {
@@ -90,21 +89,17 @@ namespace WebGalery.Core.Tests
             return hasher;
         }
 
-        public IActiveDatabaseInfoProvider CreateTestCurrentDatabaseInfoProvider()
+        public IActiveRackService CreateTestCurrentDatabaseInfoProvider()
         {
+            var session = CreateTestDatabaseSession();
             var rack = Substitute.For<IActiveRackService>();
-            rack.Name.Returns("Test database rack name");
+            rack.ActiveRackName.Returns("Test database rack name");
             rack.ActiveDirectory.Returns(CurentDirectory);
             rack.GetSubpath(Arg.Any<string>()).Returns(s => s.ArgAt<string>(0).Substring(CurentDirectory.Length + 1));
+            rack.ActiveDatabaseName.Returns("Test database name");
+            rack.ActiveRackHash.Returns(session.ActiveRackHash);
 
-            var databaseInfo = Substitute.For<IDatabaseInfo>();
-            databaseInfo.CurrentDatabaseName.Returns("Test database info name");
-            databaseInfo.ActiveRack.Returns(rack);
-
-            var infoProvider = Substitute.For<IActiveDatabaseInfoProvider>();
-            infoProvider.CurrentInfo.Returns(databaseInfo);
-
-            return infoProvider;
+            return rack;
         }
     }
 }

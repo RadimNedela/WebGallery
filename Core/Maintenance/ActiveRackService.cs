@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Core.Maintenance

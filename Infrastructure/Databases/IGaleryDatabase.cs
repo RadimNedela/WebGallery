@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebGalery.Core.DbEntities.Contents;
-using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Infrastructure.Databases
 {

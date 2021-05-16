@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
-using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Core.FileImport
 {

@@ -1,5 +1,5 @@
 ﻿using NSubstitute;
-using WebGalery.Core.BinderInterfaces;
+using WebGalery.Core.Binders;
 using WebGalery.Core.FileImport;
 
 namespace WebGalery.Core.Tests.FileImport
@@ -13,9 +13,9 @@ namespace WebGalery.Core.Tests.FileImport
             var hasher = ctd.CreateTestHasher();
 
             var cdiProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
-            IBinder binder = Substitute.For<IBinder>();
+            BinderFactory binderFactory = Substitute.For<BinderFactory>();
 
-            return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, binder);
+            return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, binderFactory);
         }
 
         public RackInfoBuilder CreateTestRackInfoBuilder()

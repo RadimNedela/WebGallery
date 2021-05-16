@@ -1,6 +1,4 @@
-﻿using WebGalery.Core.Maintenance;
-
-namespace WebGalery.Core.DBMaintenanceInterfaces
+﻿namespace WebGalery.Core.Maintenance
 {
     public interface IActiveRackService
     {

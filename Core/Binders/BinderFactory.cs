@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using WebGalery.Core.DbEntities.Contents;
-using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Core.Binders
 {
@@ -14,7 +14,6 @@ namespace WebGalery.Core.Binders
         /// directory path. Do not do that. It will not work, I know it and I will ignore such bugs.
         /// </summary>
         public const char UniversalPathSeparator = '$';
-        #region Construct
         private readonly IHasher _hasher;
         private readonly IBinderRepository _binderRepository;
         private readonly IActiveRackService _activeRackServices;
@@ -29,7 +28,6 @@ namespace WebGalery.Core.Binders
             _binderRepository = binderRepository;
             _activeRackServices = activeRackServices;
         }
-        #endregion
 
         public Binder GetOrBuildDirectoryBinderForPath(string fullPath)
         {

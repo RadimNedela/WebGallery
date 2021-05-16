@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Maintenance;
 using WebGalery.Infrastructure.Databases;
 using WebGalery.Infrastructure.Repositories.Base;
 

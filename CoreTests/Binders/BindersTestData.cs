@@ -1,8 +1,8 @@
 ﻿using NSubstitute;
 using WebGalery.Core.Binders;
 using WebGalery.Core.DbEntities.Contents;
-using WebGalery.Core.DBMaintenanceInterfaces;
 using WebGalery.Core.InfrastructureInterfaces;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Core.Tests.Binders
 {
@@ -14,7 +14,7 @@ namespace WebGalery.Core.Tests.Binders
 
             IHasher hasher = ctd.CreateTestHasher();
             IBinderRepository binderRepository = CreateTestBinderRepository();
-            IActiveDatabaseInfoProvider currentDatabaseInfoProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
+            IActiveRackService currentDatabaseInfoProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
 
             BinderFactory binder = new(hasher, binderRepository, currentDatabaseInfoProvider);
             return binder;

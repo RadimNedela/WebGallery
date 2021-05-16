@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using WebGalery.Core.DbEntities.Maintenance;
+using WebGalery.Core.Maintenance;
 using WebGalery.Core.Tests;
 using WebGalery.Infrastructure.Databases;
 using WebGalery.Infrastructure.Repositories;

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.InfrastructureInterfaces.Base;
+using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Application.Maintenance
 {

@@ -2,9 +2,9 @@
 using NSubstitute;
 using NUnit.Framework;
 using WebGalery.Application.Maintenance;
-using WebGalery.Core.DbEntities.Maintenance;
 using WebGalery.Core.InfrastructureInterfaces;
 using WebGalery.Core.InfrastructureInterfaces.Base;
+using WebGalery.Core.Maintenance;
 using WebGalery.Core.Tests;
 
 namespace WebGalery.IntegrationTests.Applications

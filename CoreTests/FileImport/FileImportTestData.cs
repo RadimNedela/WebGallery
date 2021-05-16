@@ -13,7 +13,7 @@ namespace WebGalery.Core.Tests.FileImport
             var hasher = ctd.CreateTestHasher();
 
             var cdiProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
-            BinderFactory binderFactory = Substitute.For<BinderFactory>();
+            IBinderFactory binderFactory = Substitute.For<IBinderFactory>();
 
             return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, binderFactory);
         }

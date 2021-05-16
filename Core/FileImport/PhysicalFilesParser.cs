@@ -12,13 +12,13 @@ namespace WebGalery.Core.FileImport
         private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
         private readonly IActiveRackService _activeRackService;
-        private readonly BinderFactory _binderFactory;
+        private readonly IBinderFactory _binderFactory;
 
         public PhysicalFilesParser(
             IDirectoryMethods directoryMethods,
             IHasher hasher,
             IActiveRackService activeRackService,
-            BinderFactory binderFactory
+            IBinderFactory binderFactory
             )
         {
             _directoryMethods = directoryMethods;

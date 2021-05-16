@@ -6,7 +6,7 @@ using WebGalery.Core.Maintenance;
 
 namespace WebGalery.Core.Binders
 {
-    public class BinderFactory
+    public class BinderFactory : IBinderFactory
     {
         /// <summary>
         /// Eventhough I know that you can accually write $ into file name, for our purposes it could be sufficient

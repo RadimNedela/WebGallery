@@ -46,12 +46,12 @@ namespace WebGalery.Core.Tests.FileImport
             var info = CreateThreadInfo();
             physicalFilesParser.ParsePhysicalFiles(info).First();
 
-            Assert.That(info.Files, Is.EqualTo(5));
-            Assert.That(info.FilesDone, Is.EqualTo(1));
+            Assert.That(info.ThreadInfoDto.Files, Is.EqualTo(5));
+            Assert.That(info.ThreadInfoDto.FilesDone, Is.EqualTo(1));
 
             physicalFilesParser.ParsePhysicalFiles(info).Last();
-            Assert.That(info.Files, Is.EqualTo(5));
-            Assert.That(info.FilesDone, Is.EqualTo(5));
+            Assert.That(info.ThreadInfoDto.Files, Is.EqualTo(5));
+            Assert.That(info.ThreadInfoDto.FilesDone, Is.EqualTo(5));
         }
 
         [Test]
@@ -82,7 +82,9 @@ namespace WebGalery.Core.Tests.FileImport
 
         private DirectoryContentThreadInfo CreateThreadInfo()
         {
-            return new DirectoryContentThreadInfo { FullPath = CoreTestData.CurentDirectory };
+            var ctd = new CoreTestData();
+            var directoryMethods = ctd.CreateTestDirectoryMethods();
+            return new DirectoryContentThreadInfo(directoryMethods) { FullPath = CoreTestData.CurentDirectory };
         }
     }
 }

@@ -15,7 +15,7 @@ namespace WebGalery.Core.Tests.FileImport
             var cdiProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
             IBinderFactory binderFactory = Substitute.For<IBinderFactory>();
 
-            return new PhysicalFilesParser(directoryMethods, hasher, cdiProvider, binderFactory);
+            return new PhysicalFilesParser(hasher, cdiProvider, binderFactory);
         }
 
         public RackInfoBuilder CreateTestRackInfoBuilder()

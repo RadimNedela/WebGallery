@@ -9,19 +9,16 @@ namespace WebGalery.Core.FileImport
 {
     public class PhysicalFilesParser
     {
-        private readonly IDirectoryMethods _directoryMethods;
         private readonly IHasher _hasher;
         private readonly IActiveRackService _activeRackService;
         private readonly IBinderFactory _binderFactory;
 
         public PhysicalFilesParser(
-            IDirectoryMethods directoryMethods,
             IHasher hasher,
             IActiveRackService activeRackService,
             IBinderFactory binderFactory
             )
         {
-            _directoryMethods = directoryMethods;
             _hasher = hasher;
             _activeRackService = activeRackService;
             _binderFactory = binderFactory;
@@ -29,11 +26,8 @@ namespace WebGalery.Core.FileImport
 
         public IEnumerable<Content> ParsePhysicalFiles(DirectoryContentThreadInfo info)
         {
-            info.FileNames = _directoryMethods.GetFileNames(info.FullPath);
             foreach (var fn in info.FileNames)
             {
-                info.FilesDone++;
-
                 PhysicalFile physicalFile = new()
                 {
                     Hash = _hasher.ComputeFileContentHash(fn),

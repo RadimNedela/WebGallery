@@ -31,7 +31,9 @@ namespace WebGalery.IntegrationTests.Applications
             PhysicalFilesParser physicalFilesParser = fitd.CreateTestPhysicalFilesParser();
             IPersister<Content> contentEntityPersister = Substitute.For<IPersister<Content>>();
 
-            FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentEntityPersister);
+            var directoryMethods = ctd.CreateTestDirectoryMethods();
+
+            FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentEntityPersister, directoryMethods);
 
             return sut;
         }

@@ -15,23 +15,29 @@ namespace WebGalery.Application.FileImport
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly PhysicalFilesParser _physicalFilesParser;
+        private readonly PhysicalFileToContentConverter _physicalFileToContentConverter;
         private readonly IPersister<Content> _contentEntityPersister;
         private readonly RackInfoBuilder _rackInfoBuilder;
         private readonly IActiveRackService _dbInfoProvider;
         private readonly IDirectoryMethods _directoryMethods;
+        private readonly DirectoryContentThreadInfoFactory _directoryContentThreadInfoFactory;
 
         public FileImportApplication(
             RackInfoBuilder rackInfoBuilder,
             IActiveRackService dbInfoProvider,
             PhysicalFilesParser physicalFilesParser,
-            IPersister<Content> contentEntityPersister, 
-            IDirectoryMethods directoryMethods)
+            IPersister<Content> contentEntityPersister,
+            IDirectoryMethods directoryMethods,
+            PhysicalFileToContentConverter physicalFileToContentConverter, 
+            DirectoryContentThreadInfoFactory directoryContentThreadInfoFactory)
         {
             _rackInfoBuilder = rackInfoBuilder;
             _dbInfoProvider = dbInfoProvider;
             _physicalFilesParser = physicalFilesParser;
             _contentEntityPersister = contentEntityPersister;
             _directoryMethods = directoryMethods;
+            _physicalFileToContentConverter = physicalFileToContentConverter;
+            _directoryContentThreadInfoFactory = directoryContentThreadInfoFactory;
         }
 
         public RackInfoDto GetCurrentRackInfo()
@@ -55,7 +61,7 @@ namespace WebGalery.Application.FileImport
         public async Task<DirectoryContentThreadInfoDto> ParseDirectoryContentAsync(string subDirectory)
         {
             var fullPath = GetFullPath(subDirectory);
-            var info = new DirectoryContentThreadInfo(_directoryMethods) { FullPath = fullPath };
+            var info = _directoryContentThreadInfoFactory.Build(fullPath);
             DirectoryContentInfos.ContentInfos.Add(fullPath, info);
             await Task.Run(() => DoParseDirectoryContent(info));
 
@@ -67,7 +73,7 @@ namespace WebGalery.Application.FileImport
         public DirectoryContentThreadInfoDto ParseDirectoryContent(string subDirectory)
         {
             var fullPath = GetFullPath(subDirectory);
-            var info = new DirectoryContentThreadInfo(_directoryMethods) { FullPath = fullPath };
+            var info = _directoryContentThreadInfoFactory.Build(fullPath);
             DoParseDirectoryContent(info);
             return info.ThreadInfoDto;
         }
@@ -83,9 +89,9 @@ namespace WebGalery.Application.FileImport
         {
             Log.Begin($"{nameof(DoParseDirectoryContent)}.{info.FullPath}");
 
-            foreach (Content entity in _physicalFilesParser.ParsePhysicalFiles(info))
+            foreach (var file in _physicalFilesParser.ParsePhysicalFiles(info))
             {
-                PersistContentEntity(entity);
+                PersistContentEntity(_physicalFileToContentConverter.ToContentEntity(file));
             }
 
             Log.End($"{nameof(DoParseDirectoryContent)}.{info.FullPath}");

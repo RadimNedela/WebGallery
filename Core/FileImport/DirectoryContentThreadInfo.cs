@@ -1,33 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using WebGalery.Core.InfrastructureInterfaces;
 
 namespace WebGalery.Core.FileImport
 {
     public class DirectoryContentThreadInfo
     {
-        private readonly IDirectoryMethods _directoryMethods;
         private IEnumerable<string> _fileNames;
-        private string _fullPath;
 
-        public DirectoryContentThreadInfo(IDirectoryMethods directoryMethods)
-        {
-            _directoryMethods = directoryMethods;
-        }
+        public DirectoryContentThreadInfoDto ThreadInfoDto { get; internal set; } 
 
-        public DirectoryContentThreadInfoDto ThreadInfoDto { get; set; } = new DirectoryContentThreadInfoDto();
-
-        public string FullPath
-        {
-            get { return _fullPath; }
-            set
-            {
-                _fullPath = value;
-                _fileNames = _directoryMethods.GetFileNames(_fullPath);
-                ThreadInfoDto.Files = _fileNames.Count();
-                ThreadInfoDto.FilesDone = 0;
-            }
-        }
+        public string FullPath { get; internal set; }
 
         public IEnumerable<string> FileNames
         {
@@ -39,9 +20,12 @@ namespace WebGalery.Core.FileImport
                     yield return fileName;
                 }
             }
+            internal set
+            {
+                _fileNames = value;
+            }
         }
 
-        public IEnumerable<string> DirNames { get; set; }
-
+        public IEnumerable<string> DirNames { get; internal set; }
     }
 }

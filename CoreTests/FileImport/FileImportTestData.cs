@@ -6,18 +6,6 @@ namespace WebGalery.Core.Tests.FileImport
 {
     public class FileImportTestData
     {
-        public PhysicalFilesParser CreateTestPhysicalFilesParser()
-        {
-            var ctd = new CoreTestData();
-            var directoryMethods = ctd.CreateTestDirectoryMethods();
-            var hasher = ctd.CreateTestHasher();
-
-            var cdiProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
-            IBinderFactory binderFactory = Substitute.For<IBinderFactory>();
-
-            return new PhysicalFilesParser(hasher, cdiProvider, binderFactory);
-        }
-
         public RackInfoBuilder CreateTestRackInfoBuilder()
         {
             CoreTestData ctd = new();

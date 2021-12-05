@@ -28,12 +28,20 @@ namespace WebGalery.IntegrationTests.Applications
             var dbInfoProvider = ctd.CreateTestCurrentDatabaseInfoProvider();
 
             RackInfoBuilder rackInfoBuilder = fitd.CreateTestRackInfoBuilder();
-            PhysicalFilesParser physicalFilesParser = fitd.CreateTestPhysicalFilesParser();
+            PhysicalFilesParser physicalFilesParser = Substitute.For<PhysicalFilesParser>();
             IPersister<Content> contentEntityPersister = Substitute.For<IPersister<Content>>();
 
             var directoryMethods = ctd.CreateTestDirectoryMethods();
-
-            FileImportApplication sut = new(rackInfoBuilder, dbInfoProvider, physicalFilesParser, contentEntityPersister, directoryMethods);
+            PhysicalFileToContentConverter physicalFileToContentConverter = Substitute.For<PhysicalFileToContentConverter>();
+            DirectoryContentThreadInfoFactory directoryContentThreadInfoFactory = Substitute.For<DirectoryContentThreadInfoFactory>();
+            FileImportApplication sut = new(
+                rackInfoBuilder, 
+                dbInfoProvider, 
+                physicalFilesParser, 
+                contentEntityPersister, 
+                directoryMethods, 
+                physicalFileToContentConverter,
+                directoryContentThreadInfoFactory);
 
             return sut;
         }

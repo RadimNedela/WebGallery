@@ -1,11 +1,13 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using System.Linq;
 using WebGalery.Domain.Contents.Factories;
 using WebGalery.Domain.FileServices;
 
 namespace DomainTests.Contents
 {
-    internal class BinderFactoryTests
+    [TestFixture]
+    public class BinderFactoryTests
     {
         [Test]
         public void LoadDirectory_TestDirectory_Creates2ChildBinders()
@@ -47,24 +49,13 @@ namespace DomainTests.Contents
             Assert.That(binder.Name, Is.EqualTo("TestPictures"));
         }
 
-        [Test]
-        public void LoadDirectory_Duha383_IsThereTwiceWithSameHash()
-        {
-            BinderFactory binderFactory = BuildSut();
-
-            var binder = binderFactory.LoadDirectory("TestPictures");
-
-            var duhy = binder.ChildBinders.First(b => b.Name == "Duha");
-            Assert.That(duhy, Is.Not.Empty);
-            var duha383_1 = duhy.Displayables.First(d => d.Name == "2017-08-20-Duha0383.JPG");
-            var duha383_2 = duhy.Displayables.First(d => d.Name == "2017-08-20-Duha0383_2.JPG");
-        }
-
         private static BinderFactory BuildSut()
         {
             var directoryReader = new DirectoryMethods();
             var fileReader = new FileMethods();
-            var displayableFactory = new DisplayableFactory(fileReader);
+            var hasherMock = new Mock<IHasher>();
+            hasherMock.Setup(h => h.ComputeFileContentHash(It.IsAny<string>())).Returns<string>(x => x);
+            var displayableFactory = new DisplayableFactory(fileReader, hasherMock.Object);
             var binderFactory = new BinderFactory(directoryReader, displayableFactory);
             return binderFactory;
         }

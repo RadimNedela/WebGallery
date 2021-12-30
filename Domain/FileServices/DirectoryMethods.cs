@@ -37,6 +37,8 @@ namespace WebGalery.Domain.FileServices
 
         public string GetDirectoryName(string path)
         {
+            if (Directory.Exists(path))
+                return Path.GetFileName(path);
             var dirName = Path.GetDirectoryName(path) ?? "ROOT_DIRECTORY";
             if (string.IsNullOrEmpty(dirName))
                 dirName = path;

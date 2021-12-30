@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using WebGalery.Core.InfrastructureInterfaces;
+﻿using WebGalery.Core.InfrastructureInterfaces;
 
-namespace WebGalery.Infrastructure.FileServices
+namespace WebGalery.Domain.FileServices
 {
     public class DirectoryMethods : IDirectoryReader
     {
@@ -36,6 +33,14 @@ namespace WebGalery.Infrastructure.FileServices
             return Path.GetFullPath(new Uri(path).LocalPath)
                        .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             //.ToUpperInvariant();
+        }
+
+        public string GetDirectoryName(string path)
+        {
+            var dirName = Path.GetDirectoryName(path) ?? "ROOT_DIRECTORY";
+            if (string.IsNullOrEmpty(dirName))
+                dirName = path;
+            return dirName;
         }
     }
 }

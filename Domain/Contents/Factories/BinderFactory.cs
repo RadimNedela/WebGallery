@@ -13,16 +13,17 @@ namespace WebGalery.Domain.Contents.Factories
             this.displayableFactory = displayableFactory;
         }
 
-        public Binder LoadDirectory(string directoryName)
+        public Binder LoadDirectory(string localPath)
         {
             Binder retVal = new();
+            retVal.Name = directoryReader.GetDirectoryName(localPath);
 
-            foreach (var innerDirectory in directoryReader.GetDirectories(directoryName))
+            foreach (var innerDirectory in directoryReader.GetDirectories(localPath))
             {
                 retVal.ChildBinders.Add(LoadDirectory(innerDirectory));
             }
 
-            foreach (var file in directoryReader.GetFileNames(directoryName))
+            foreach (var file in directoryReader.GetFileNames(localPath))
             {
                 var displayable = displayableFactory.CreateFromFile(file);
                 if (displayable != null)

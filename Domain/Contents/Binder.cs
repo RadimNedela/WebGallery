@@ -7,5 +7,7 @@
         public IList<IDisplayable> Displayables { get; set; } = new List<IDisplayable>();
 
         public int NumberOfDisplayables => Displayables.Count + ChildBinders.Sum(b => b.NumberOfDisplayables);
+
+        public string Name { get; internal set; } = null!; // null-forgiving operator (!)
     }
 }

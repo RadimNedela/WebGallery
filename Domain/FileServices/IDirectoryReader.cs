@@ -7,5 +7,7 @@ namespace WebGalery.Core.InfrastructureInterfaces
         IEnumerable<string> GetFileNames(string directoryName);
 
         IEnumerable<string> GetDirectories(string directoryName);
+
+        string GetDirectoryName(string directoryName);
     }
 }

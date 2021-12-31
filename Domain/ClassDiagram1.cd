@@ -1,25 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Domain.Displayable">
-    <Position X="2.25" Y="2.25" Width="1.5" />
+  <Class Name="WebGalery.Domain.Contents.Binder">
+    <Position X="4.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDisplayable.cs</FileName>
+      <HashCode>AAAAAQAAAAIAAAAAAAAAAAQAgAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Contents\Binder.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <ShowAsCollectionAssociation>
+      <Property Name="Displayables" />
+      <Property Name="ChildBinders" />
+    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Domain.Binder">
-    <Position X="6" Y="2.25" Width="1.5" />
+  <Class Name="WebGalery.Domain.Databases.Database" Collapsed="true">
+    <Position X="4.75" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Binder.cs</FileName>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Databases\Database.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="Domain.IDisplayable">
-    <Position X="7.5" Y="0.75" Width="1.5" />
+  <Class Name="WebGalery.Domain.Databases.Rack" Collapsed="true">
+    <Position X="4.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDisplayable.cs</FileName>
+      <FileName>Databases\Rack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="WebGalery.Domain.Contents.IDisplayable" Collapsed="true">
+    <Position X="1.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Contents\IDisplayable.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

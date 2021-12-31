@@ -56,7 +56,7 @@ namespace DomainTests.Contents
             var hasherMock = new Mock<IHasher>();
             hasherMock.Setup(h => h.ComputeFileContentHash(It.IsAny<string>())).Returns<string>(x => x);
             var displayableFactory = new DisplayableFactory(fileReader, hasherMock.Object);
-            var binderFactory = new BinderFactory(directoryReader, displayableFactory);
+            var binderFactory = new BinderFactory(directoryReader, displayableFactory, hasherMock.Object);
             return binderFactory;
         }
     }

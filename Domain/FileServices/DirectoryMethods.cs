@@ -1,6 +1,4 @@
-﻿using WebGalery.Core.InfrastructureInterfaces;
-
-namespace WebGalery.Domain.FileServices
+﻿namespace WebGalery.Domain.FileServices
 {
     public class DirectoryMethods : IDirectoryReader
     {

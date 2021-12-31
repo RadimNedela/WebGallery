@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace WebGalery.Core.InfrastructureInterfaces
+namespace WebGalery.Domain.FileServices
 {
     public interface IDirectoryReader
     {

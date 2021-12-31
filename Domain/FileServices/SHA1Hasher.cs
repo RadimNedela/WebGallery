@@ -80,10 +80,10 @@ namespace WebGalery.Domain.FileServices
 
         public string ComputeRandomStringHash(string somePrefix)
         {
-            return ComputeStringHash(somePrefix + CreateRandomString(50, 100));
+            return ComputeStringHash(somePrefix + DateTime.Now.Ticks + CreateRandomString(50, 100));
         }
 
-        private string CreateRandomString(int minLength, int maxLength)
+        public string CreateRandomString(int minLength, int maxLength)
         {
             var random = new Random();
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789=+-_)(*&^%$#@!`~\\|}{][\"';:/?.>,<";

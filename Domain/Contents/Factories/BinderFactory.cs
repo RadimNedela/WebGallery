@@ -1,4 +1,4 @@
-﻿using WebGalery.Core.InfrastructureInterfaces;
+﻿using WebGalery.Domain.FileServices;
 
 namespace WebGalery.Domain.Contents.Factories
 {
@@ -6,17 +6,20 @@ namespace WebGalery.Domain.Contents.Factories
     {
         private readonly IDirectoryReader directoryReader;
         private readonly DisplayableFactory displayableFactory;
+        private readonly IHasher hasher;
 
-        public BinderFactory(IDirectoryReader directoryReader, DisplayableFactory displayableFactory)
+        public BinderFactory(IDirectoryReader directoryReader, DisplayableFactory displayableFactory, IHasher hasher)
         {
             this.directoryReader = directoryReader;
             this.displayableFactory = displayableFactory;
+            this.hasher = hasher;
         }
 
         public Binder LoadDirectory(string localPath)
         {
             Binder retVal = new();
             retVal.Name = directoryReader.GetDirectoryName(localPath);
+            retVal.Hash = hasher.ComputeStringHash(localPath);
 
             foreach (var innerDirectory in directoryReader.GetDirectories(localPath))
             {

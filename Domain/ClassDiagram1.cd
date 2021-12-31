@@ -18,10 +18,10 @@
       <FileName>Databases\Database.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WebGalery.Domain.Databases.Rack" Collapsed="true">
+  <Class Name="WebGalery.Domain.Databases.Rack">
     <Position X="4.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Databases\Rack.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -30,6 +30,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Contents\IDisplayable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WebGalery.Domain.Databases.IRootPath" Collapsed="true">
+    <Position X="1.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Databases\IRootPath.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

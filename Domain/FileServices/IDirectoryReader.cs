@@ -2,10 +2,12 @@ namespace WebGalery.Domain.FileServices
 {
     public interface IDirectoryReader
     {
-        IEnumerable<string> GetFileNames(string directoryName);
+        IEnumerable<string> GetFileNames(string relativePath);
 
-        IEnumerable<string> GetDirectories(string directoryName);
+        IEnumerable<string> GetDirectories(string relativePath);
 
-        string GetDirectoryName(string directoryName);
+        string GetDirectoryName(string fullPath);
+
+        string GetCurrentDirectoryName();
     }
 }

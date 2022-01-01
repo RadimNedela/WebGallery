@@ -10,10 +10,10 @@ namespace DomainTests.Databases
         [Test]
         public void CreateNew_UsesCurrentDirectory()
         {
-            var factory = new RackFactory();
-            var rack = factory.Create();
+            var factory = new RackFactory(new );
+            var rack = factory.CreateFor();
 
-            Assert.That(rack.ActivePath, Is.EqualTo(Directory.GetCurrentDirectory()));
+            Assert.That(rack.ActivePath.RootPath, Is.EqualTo(Directory.GetCurrentDirectory()));
         }
     }
 }

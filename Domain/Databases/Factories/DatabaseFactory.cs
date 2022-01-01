@@ -5,10 +5,12 @@ namespace WebGalery.Domain.Databases.Factories
     internal class DatabaseFactory
     {
         private readonly IHasher hasher;
+        private readonly IRackFactory rackFactory;
 
-        public DatabaseFactory(IHasher hasher)
+        public DatabaseFactory(IHasher hasher, IRackFactory rackFactory)
         {
             this.hasher = hasher;
+            this.rackFactory = rackFactory;
         }
 
         public Database Create()
@@ -18,6 +20,7 @@ namespace WebGalery.Domain.Databases.Factories
                 Name = "Database " + hasher.CreateRandomString(5, 10) + DateTime.Now.ToString("F")
             };
             db.Hash = hasher.ComputeRandomStringHash(db.Name);
+            db.Racks.Add(rackFactory.CreateFor(db));
             return db;
         }
     }

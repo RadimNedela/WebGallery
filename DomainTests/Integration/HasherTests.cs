@@ -12,7 +12,7 @@ namespace DomainTests.Integration
         [Test]
         public void LoadDirectory_HasherIntegrationTests()
         {
-            BinderFactory binderFactory = BuildSut();
+            DirectoryBinderFactory binderFactory = BuildSut();
 
             var binder = binderFactory.LoadDirectory("TestPictures");
 
@@ -33,13 +33,13 @@ namespace DomainTests.Integration
             Assert.That(chopky.Hash, Is.EqualTo(chopky2.Hash), "same directory loaded differently must have same hash");
         }
 
-        private static BinderFactory BuildSut()
+        private static DirectoryBinderFactory BuildSut()
         {
             var directoryReader = new DirectoryMethods();
             var fileReader = new FileMethods();
             var hasher = new Sha1Hasher();
             var displayableFactory = new DisplayableFactory(fileReader, hasher);
-            var binderFactory = new BinderFactory(directoryReader, displayableFactory, hasher);
+            var binderFactory = new DirectoryBinderFactory(directoryReader, displayableFactory, hasher);
             return binderFactory;
         }
     }

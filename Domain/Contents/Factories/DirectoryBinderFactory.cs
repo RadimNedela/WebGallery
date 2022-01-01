@@ -2,22 +2,22 @@
 
 namespace WebGalery.Domain.Contents.Factories
 {
-    internal class BinderFactory : IBinderFactory
+    internal class DirectoryBinderFactory : IDirectoryBinderFactory
     {
         private readonly IDirectoryReader directoryReader;
         private readonly DisplayableFactory displayableFactory;
         private readonly IHasher hasher;
 
-        public BinderFactory(IDirectoryReader directoryReader, DisplayableFactory displayableFactory, IHasher hasher)
+        public DirectoryBinderFactory(IDirectoryReader directoryReader, DisplayableFactory displayableFactory, IHasher hasher)
         {
             this.directoryReader = directoryReader;
             this.displayableFactory = displayableFactory;
             this.hasher = hasher;
         }
 
-        public Binder LoadDirectory(string localPath)
+        public DirectoryBinder LoadDirectory(string localPath)
         {
-            Binder retVal = new();
+            DirectoryBinder retVal = new();
             retVal.Name = directoryReader.GetDirectoryName(localPath);
             retVal.Hash = hasher.ComputeStringHash(localPath);
 

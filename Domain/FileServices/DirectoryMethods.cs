@@ -7,17 +7,17 @@
             return Directory.GetCurrentDirectory();
         }
 
-        public IEnumerable<string> GetFileNames(string directoryName)
+        public IEnumerable<string> GetFileNames(string relativePath)
         {
-            if (string.IsNullOrWhiteSpace(directoryName)) directoryName = Directory.GetCurrentDirectory();
-            var files = Directory.GetFiles(directoryName);
+            if (string.IsNullOrWhiteSpace(relativePath)) relativePath = Directory.GetCurrentDirectory();
+            var files = Directory.GetFiles(relativePath);
             return files;
         }
 
-        public IEnumerable<string> GetDirectories(string directoryName)
+        public IEnumerable<string> GetDirectories(string relativePath)
         {
-            if (string.IsNullOrWhiteSpace(directoryName)) directoryName = Directory.GetCurrentDirectory();
-            var directories = Directory.GetDirectories(directoryName);
+            if (string.IsNullOrWhiteSpace(relativePath)) relativePath = Directory.GetCurrentDirectory();
+            var directories = Directory.GetDirectories(relativePath);
             return directories;
         }
 

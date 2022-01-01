@@ -1,6 +1,6 @@
 ﻿namespace WebGalery.Domain.Contents
 {
-    public class Binder
+    public class Binder : IHashedEntity
     {
         public IList<Binder> ChildBinders { get; set; } = new List<Binder>();
 

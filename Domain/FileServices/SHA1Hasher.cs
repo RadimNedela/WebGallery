@@ -38,6 +38,11 @@ namespace WebGalery.Domain.FileServices
             return ComputeHash(Encoding.UTF8.GetBytes(theString));
         }
 
+        public string ComputeDependentStringHash(IHashedEntity parent, string theString)
+        {
+            return ComputeStringHash(parent.Hash + "_" + theString);
+        }
+
         private string OtherFileHash(Stream stream)
         {
             var hash = ComputeHash(stream);

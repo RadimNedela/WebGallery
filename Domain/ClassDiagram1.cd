@@ -51,7 +51,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="WebGalery.Domain.Databases.IRootPath" Collapsed="true">
-    <Position X="2" Y="2.25" Width="1.5" />
+    <Position X="1" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Databases\IRootPath.cs</FileName>

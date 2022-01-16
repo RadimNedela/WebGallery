@@ -1,4 +1,5 @@
 ﻿using WebGalery.Domain.FileServices;
+using WebGalery.Domain.IoC;
 
 namespace WebGalery.Domain.Databases.Factories
 {
@@ -6,12 +7,12 @@ namespace WebGalery.Domain.Databases.Factories
     {
         private readonly IHasher hasher;
 
-        public RackFactory(IHasher hasher)
+        public RackFactory(IHasher? hasher = null)
         {
-            this.hasher = hasher;
+            this.hasher = hasher ?? IoCDefaults.Hasher;
         }
 
-        public Rack CreateFor(IHashedEntity parent)
+        public Rack CreateFor(Database parent)
         {
             var rack = new Rack();
             var rootPath = new FileSystemRootPath(new DirectoryMethods());

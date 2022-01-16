@@ -2,6 +2,6 @@
 {
     public interface IRackFactory
     {
-        Rack CreateFor(IHashedEntity parent);
+        Rack CreateFor(Database parent);
     }
 }

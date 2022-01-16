@@ -8,7 +8,10 @@ namespace WebGalery.Domain.Contents.Factories
         private readonly DisplayableFactory displayableFactory;
         private readonly IHasher hasher;
 
-        public DirectoryBinderFactory(IDirectoryReader directoryReader, DisplayableFactory displayableFactory, IHasher hasher)
+        public DirectoryBinderFactory(
+            IDirectoryReader directoryReader, 
+            DisplayableFactory displayableFactory, 
+            IHasher hasher)
         {
             this.directoryReader = directoryReader;
             this.displayableFactory = displayableFactory;

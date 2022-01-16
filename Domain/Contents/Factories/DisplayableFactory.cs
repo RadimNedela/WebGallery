@@ -1,19 +1,25 @@
 ﻿using WebGalery.Domain.FileServices;
+using WebGalery.Domain.IoC;
 
 namespace WebGalery.Domain.Contents.Factories
 {
-    internal class DisplayableFactory
+    internal interface IDisplayableFactory
+    {
+        IDisplayable CreateFromFile(string file);
+    }
+
+    internal class DisplayableFactory : IDisplayableFactory
     {
         private readonly IFileReader fileReader;
         private readonly IHasher hasher;
 
-        public DisplayableFactory(IFileReader fileReader, IHasher hasher)
+        public DisplayableFactory(IFileReader? fileReader = null, IHasher? hasher = null)
         {
-            this.fileReader = fileReader;
-            this.hasher = hasher;
+            this.fileReader = fileReader ?? IoCDefaults.FileReader;
+            this.hasher = hasher ?? IoCDefaults.Hasher;
         }
 
-        internal IDisplayable CreateFromFile(string file)
+        public IDisplayable CreateFromFile(string file)
         {
             return new Displayable()
             {

@@ -3,7 +3,12 @@ using WebGalery.Domain.IoC;
 
 namespace WebGalery.Domain.Databases.Factories
 {
-    internal class DatabaseFactory
+    public interface IDatabaseFactory
+    {
+        Database Create();
+    }
+
+    internal class DatabaseFactory : IDatabaseFactory
     {
         private readonly IHasher hasher;
         private readonly IRackFactory rackFactory;
@@ -21,7 +26,7 @@ namespace WebGalery.Domain.Databases.Factories
                 Name = "Database " + hasher.CreateRandomString(5, 10) + DateTime.Now.ToString("F")
             };
             db.Hash = hasher.ComputeRandomStringHash(db.Name);
-            db.Racks.Add(rackFactory.CreateFor(db));
+            db.Racks.Add(rackFactory.CreateDefaultFor(db));
             return db;
         }
     }

@@ -2,6 +2,6 @@
 {
     public interface IDirectoryBinder
     {
-
+        IHashedEntity Parent { get; }
     }
 }

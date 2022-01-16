@@ -10,8 +10,7 @@ namespace DomainTests.Databases
         [Test]
         public void CreateNew_2Different_PropertiesAreDifferent()
         {
-            var fixture = new TestFixture();
-            var factory = fixture.CreateFactory();
+            var factory = new DatabaseFactory();
             var database1 = factory.Create();
             var database2 = factory.Create();
 
@@ -22,20 +21,10 @@ namespace DomainTests.Databases
         [Test]
         public void CreateNew_ContainsDefaultRack()
         {
-            var fixture = new TestFixture();
-            var factory = fixture.CreateFactory();
+            var factory = new DatabaseFactory();
             var database = factory.Create();
 
             Assert.That(database.Racks, Is.Not.Empty);
-        }
-
-        private class TestFixture
-        {
-            public DatabaseFactory CreateFactory()
-            {
-                var hasher = new Sha1Hasher();
-                return new DatabaseFactory(hasher, new RackFactory(hasher));
-            }
         }
     }
 }

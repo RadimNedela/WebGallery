@@ -5,11 +5,26 @@ namespace WebGalery.Domain
 {
     public class Session
     {
-        public Database CurrentDatabase { get; set; }
+        private Database? activeDatabase;
+        private Rack? activeRack;
+        private IRootPath? activeRootPath;
 
-        public Session(Database? currentDatabase = null)
+        public Database ActiveDatabase
         {
-            CurrentDatabase = currentDatabase ?? IoCDefaults.DatabaseFactory.Create();
+            get => activeDatabase ??= IoCDefaults.DatabaseFactory.Create();
+            set => activeDatabase = value;
+        }
+
+        public Rack ActiveRack
+        {
+            get => activeRack ??= ActiveDatabase.DefaultRack;
+            set => activeRack = value;
+        }
+
+        public IRootPath ActiveRootPath
+        {
+            get => activeRootPath ??= ActiveRack.DefaultRootPath;
+            set => activeRootPath = value;
         }
     }
 }

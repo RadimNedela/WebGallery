@@ -6,8 +6,6 @@ namespace WebGalery.Domain.FileServices
 
         IEnumerable<string> GetDirectories(string relativePath);
 
-        string GetDirectoryName(string fullPath);
-
         string GetCurrentDirectoryName();
     }
 }

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using WebGalery.Domain.Contents.Factories;
 using WebGalery.Domain.FileServices;
+using WebGalery.Domain.IoC;
 
 namespace DomainTests.Contents
 {
@@ -50,12 +51,10 @@ namespace DomainTests.Contents
 
         private static DirectoryBinderFactory BuildSut()
         {
-            var directoryReader = new DirectoryMethods();
-            var fileReader = new FileMethods();
             var hasherMock = new Mock<IHasher>();
             hasherMock.Setup(h => h.ComputeFileContentHash(It.IsAny<string>())).Returns<string>(x => x);
-            var displayableFactory = new DisplayableFactory(fileReader, hasherMock.Object);
-            var binderFactory = new DirectoryBinderFactory(directoryReader, displayableFactory, hasherMock.Object);
+            var displayableFactory = new DisplayableFactory(hasher: hasherMock.Object);
+            var binderFactory = new DirectoryBinderFactory(displayableFactory: displayableFactory);
             return binderFactory;
         }
     }

@@ -2,7 +2,7 @@
 
 namespace WebGalery.Domain.Databases
 {
-    public class Rack : IRack, IHashedEntity
+    public class Rack : IHashedEntity
     {
         public string Name { get; set; } = null!;
 
@@ -10,7 +10,7 @@ namespace WebGalery.Domain.Databases
 
         public IList<IRootPath> RootPaths { get; set; } = new List<IRootPath>();
 
-        public IRootPath ActivePath => RootPaths.First();
+        public IRootPath DefaultRootPath => RootPaths.First();
 
         public IList<IDirectoryBinder> DirectoryBinders { get; set; } = new List<IDirectoryBinder>();
     }

@@ -2,6 +2,6 @@
 {
     public interface IRackFactory
     {
-        Rack CreateFor(Database parent);
+        Rack CreateDefaultFor(Database parent);
     }
 }

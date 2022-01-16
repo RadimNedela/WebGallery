@@ -12,10 +12,10 @@ namespace DomainTests.Databases
         [Test]
         public void CreateNew_UsesCurrentDirectory()
         {
-            var factory = new RackFactory(new Sha1Hasher());
-            var rack = factory.CreateFor(new Database());
+            var factory = new RackFactory();
+            var rack = factory.CreateDefaultFor(new Database());
 
-            Assert.That(rack.ActivePath.RootPath, Is.EqualTo(Directory.GetCurrentDirectory()));
+            Assert.That(rack.DefaultRootPath.RootPath, Is.EqualTo(Directory.GetCurrentDirectory()));
         }
     }
 }

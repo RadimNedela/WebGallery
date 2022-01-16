@@ -1,14 +1,12 @@
-﻿using WebGalery.Domain.Databases;
-
-namespace WebGalery.Domain.Contents
+﻿namespace WebGalery.Domain.Contents
 {
     public class DirectoryBinder : Binder, IDirectoryBinder
     {
-        private Rack ParentRack { get; }
+        public IHashedEntity Parent { get; }
 
-        public DirectoryBinder(Rack parentRack)
+        public DirectoryBinder(IHashedEntity parent)
         {
-            ParentRack = parentRack;
+            Parent = parent;
         }
     }
 }

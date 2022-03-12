@@ -10,21 +10,35 @@ namespace WebGalery.Domain.FileServices
 
         public FileSystemRootPath(IDirectoryReader directoryReader)
         {
-            RootPath = directoryReader.GetCurrentDirectoryName();
+            RootPath = NormalizePathSeparators(directoryReader.GetCurrentDirectoryName());
+        }
+
+        private string NormalizePathSeparators(string pathString)
+        {
+            return pathString.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         }
 
         public IEnumerable<string> NormalizePath(string specificPathString)
         {
+            specificPathString = NormalizePathSeparators(specificPathString);
+
             var retVal = new List<string>();
             if (specificPathString.StartsWith(RootPath))
-                specificPathString = specificPathString.Substring(RootPath.Length);
-            string subPath;
-            do
+                specificPathString = specificPathString.Substring(RootPath.Length + 1);
+            while (!string.IsNullOrEmpty(specificPathString))
             {
-                subPath = GetDirectoryName(specificPathString);
-                retVal.Prepend(subPath);
-                specificPathString = specificPathString.Substring(0, specificPathString.Length - subPath.Length);
-            } while (subPath != RootBinderName);
+                int index = specificPathString.IndexOf(Path.DirectorySeparatorChar);
+                var curDir = specificPathString;
+                if (index != -1)
+                    curDir = specificPathString.Substring(0, index);
+                if (!string.IsNullOrEmpty(curDir))
+                    retVal.Add(curDir);
+
+                if (specificPathString.Length > curDir.Length + 1)
+                    specificPathString = specificPathString.Substring(curDir.Length + 1);
+                else
+                    specificPathString = "";
+            }
             return retVal;
         }
 

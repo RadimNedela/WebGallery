@@ -60,14 +60,14 @@ namespace WebGalery.Infrastructure.FileServices
 
         private string ComputeHash(Stream stream)
         {
-            using SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
+            using SHA1 sha1 = SHA1.Create();
             byte[] hash = sha1.ComputeHash(stream);
             return ConvertHashArrayToString(hash);
         }
 
         private string ComputeHash(byte[] buffer)
         {
-            using SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
+            using SHA1 sha1 = SHA1.Create();
             byte[] hash = sha1.ComputeHash(buffer);
             return ConvertHashArrayToString(hash);
         }

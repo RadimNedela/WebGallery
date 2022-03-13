@@ -1,30 +1,20 @@
 ﻿using WebGalery.Domain.Databases;
-using WebGalery.Domain.IoC;
 
 namespace WebGalery.Domain
 {
     public class Session
     {
-        private Database? activeDatabase;
-        private Rack? activeRack;
-        private IRootPath? activeRootPath;
+        public Database ActiveDatabase { get; set; }
 
-        public Database ActiveDatabase
-        {
-            get => activeDatabase ??= IoCDefaults.DatabaseFactory.Create();
-            set => activeDatabase = value;
-        }
+        public Rack ActiveRack { get; set; }
 
-        public Rack ActiveRack
-        {
-            get => activeRack ??= ActiveDatabase.DefaultRack;
-            set => activeRack = value;
-        }
+        public IRootPath ActiveRootPath { get; set; }
 
-        public IRootPath ActiveRootPath
+        public Session(Database database, Rack rack, IRootPath rootPath)
         {
-            get => activeRootPath ??= ActiveRack.DefaultRootPath;
-            set => activeRootPath = value;
+            ActiveDatabase = database;
+            ActiveRack = rack;
+            ActiveRootPath = rootPath;
         }
     }
 }

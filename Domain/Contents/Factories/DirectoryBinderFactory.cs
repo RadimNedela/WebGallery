@@ -1,5 +1,4 @@
 ﻿using WebGalery.Domain.FileServices;
-using WebGalery.Domain.IoC;
 
 namespace WebGalery.Domain.Contents.Factories
 {
@@ -11,37 +10,42 @@ namespace WebGalery.Domain.Contents.Factories
         private readonly ISessionProvider sessionProvider;
 
         public DirectoryBinderFactory(
-            IDirectoryReader? directoryReader = null, 
-            IDisplayableFactory? displayableFactory = null, 
-            IHasher? hasher = null,
-            ISessionProvider? sessionProvider = null)
+            IDirectoryReader directoryReader, 
+            IDisplayableFactory displayableFactory, 
+            IHasher hasher,
+            ISessionProvider sessionProvider)
         {
-            this.directoryReader = directoryReader ?? IoCDefaults.DirectoryReader;
-            this.displayableFactory = displayableFactory ?? IoCDefaults.DisplayableFactory;
-            this.hasher = hasher ?? IoCDefaults.Hasher;
-            this.sessionProvider = sessionProvider ?? IoCDefaults.SessionProvider;
+            this.directoryReader = directoryReader;
+            this.displayableFactory = displayableFactory;
+            this.hasher = hasher;
+            this.sessionProvider = sessionProvider;
         }
 
-        public DirectoryBinder LoadDirectory(string localPath)
+        public Binder LoadDirectory(string localPath)
         {
-            DirectoryBinder retVal = new(sessionProvider.Session.ActiveRack);
-            var names = sessionProvider.Session.ActiveRootPath.NormalizePath(localPath);
-            retVal.Name = names.First();
-            retVal.Hash = hasher.ComputeStringHash(localPath);
-
-            foreach (var innerDirectory in directoryReader.GetDirectories(localPath))
+            var rootPath = sessionProvider.Session.ActiveRootPath;
+            var names = rootPath.SplitPath(localPath);
+            Binder currentBinder = sessionProvider.Session.ActiveRack;
+            foreach (var name in names)
             {
-                retVal.ChildBinders.Add(LoadDirectory(innerDirectory));
+                var child = currentBinder.ChildBinders.FirstOrDefault(x => x.Name == name);
+                if (child == null) child = new DirectoryBinder()
+                        .Initialize(currentBinder, name, hasher.ComputeDependentStringHash(currentBinder, name));
+                currentBinder = child;
             }
 
             foreach (var file in directoryReader.GetFileNames(localPath))
             {
                 var displayable = displayableFactory.CreateFromFile(file);
-                if (displayable != null)
-                    retVal.Displayables.Add(displayable);
+                currentBinder.Displayables.Add(displayable);
             }
 
-            return retVal;
+            foreach (var innerDirectory in directoryReader.GetDirectories(localPath))
+            {
+                LoadDirectory(innerDirectory);
+            }
+
+            return currentBinder;
         }
     }
 }

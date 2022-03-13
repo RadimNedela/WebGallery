@@ -1,5 +1,4 @@
 ﻿using WebGalery.Domain.FileServices;
-using WebGalery.Domain.IoC;
 
 namespace WebGalery.Domain.Contents.Factories
 {
@@ -13,10 +12,10 @@ namespace WebGalery.Domain.Contents.Factories
         private readonly IFileReader fileReader;
         private readonly IHasher hasher;
 
-        public DisplayableFactory(IFileReader? fileReader = null, IHasher? hasher = null)
+        public DisplayableFactory(IFileReader fileReader, IHasher hasher)
         {
-            this.fileReader = fileReader ?? IoCDefaults.FileReader;
-            this.hasher = hasher ?? IoCDefaults.Hasher;
+            this.fileReader = fileReader;
+            this.hasher = hasher;
         }
 
         public IDisplayable CreateFromFile(string file)

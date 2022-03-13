@@ -10,7 +10,8 @@ namespace DomainTests.Databases
         [Test]
         public void CreateNew_2Different_PropertiesAreDifferent()
         {
-            var factory = new DatabaseFactory();
+            var mother = new ObjectMother();
+            var factory = mother.DatabaseFactory;
             var database1 = factory.Create();
             var database2 = factory.Create();
 
@@ -21,7 +22,8 @@ namespace DomainTests.Databases
         [Test]
         public void CreateNew_ContainsDefaultRack()
         {
-            var factory = new DatabaseFactory();
+            var mother = new ObjectMother();
+            var factory = mother.DatabaseFactory;
             var database = factory.Create();
 
             Assert.That(database.Racks, Is.Not.Empty);

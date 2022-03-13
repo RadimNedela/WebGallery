@@ -5,9 +5,15 @@ namespace WebGalery.Domain.FileServices
 {
     internal class FileSystemRootPathFactory : IRootPathFactory
     {
+        private readonly IDirectoryReader _directoryReader;
+
+        public FileSystemRootPathFactory(IDirectoryReader directoryReader)
+        {
+            _directoryReader = directoryReader;
+        }
         public IRootPath Create()
         {
-            return new FileSystemRootPath(new DirectoryMethods());
+            return new FileSystemRootPath(_directoryReader);
         }
     }
 }

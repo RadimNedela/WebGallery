@@ -12,10 +12,11 @@ namespace DomainTests.Databases
         [Test]
         public void CreateNew_UsesCurrentDirectory()
         {
-            var factory = new RackFactory();
+            var mother = new ObjectMother();
+            var factory = mother.RackFactory;
             var rack = factory.CreateDefaultFor(new Database());
 
-            Assert.That(rack.DefaultRootPath.RootPath, Is.EqualTo(Directory.GetCurrentDirectory()));
+            Assert.That(rack.ActiveRootPath.RootPath, Is.EqualTo(Directory.GetCurrentDirectory()));
         }
     }
 }

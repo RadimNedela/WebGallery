@@ -2,16 +2,17 @@
 
 namespace WebGalery.Domain.Databases
 {
-    public class Rack : IHashedEntity
+    public class Rack : Binder
     {
-        public string Name { get; set; } = null!;
-
-        public string Hash { get; set; } = null!;
-
         public IList<IRootPath> RootPaths { get; set; } = new List<IRootPath>();
 
-        public IRootPath DefaultRootPath => RootPaths.First();
+        private IRootPath? _activeRootPath;
+        public IRootPath ActiveRootPath
+        {
+            get => _activeRootPath ??= RootPaths.First();
+            set => _activeRootPath = value;
+        }
 
-        public IList<IDirectoryBinder> DirectoryBinders { get; set; } = new List<IDirectoryBinder>();
+        public IList<DirectoryBinder> DirectoryBinders { get; set; } = new List<DirectoryBinder>();
     }
 }

@@ -35,12 +35,8 @@ namespace DomainTests.Integration
 
         private static DirectoryBinderFactory BuildSut()
         {
-            var directoryReader = new DirectoryMethods();
-            var fileReader = new FileMethods();
-            var hasher = new Sha1Hasher();
-            var displayableFactory = new DisplayableFactory(fileReader, hasher);
-            var binderFactory = new DirectoryBinderFactory(directoryReader, displayableFactory, hasher);
-            return binderFactory;
+            var mother = new ObjectMother();
+            return mother.DirectoryBinderFactory;
         }
     }
 }

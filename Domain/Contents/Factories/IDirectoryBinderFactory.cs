@@ -2,6 +2,6 @@
 {
     public interface IDirectoryBinderFactory
     {
-        DirectoryBinder LoadDirectory(string directoryName);
+        Binder LoadDirectory(string directoryName);
     }
 }

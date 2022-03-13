@@ -4,23 +4,23 @@ namespace WebGalery.Domain.FileServices
 {
     internal class FileSystemRootPath : IRootPath
     {
-        public const string RootBinderName = ".";
+        // public const string RootBinderName = ".";
 
         public string RootPath { get; set; }
 
         public FileSystemRootPath(IDirectoryReader directoryReader)
         {
-            RootPath = NormalizePathSeparators(directoryReader.GetCurrentDirectoryName());
+            RootPath = NormalizePath(directoryReader.GetCurrentDirectoryName());
         }
 
-        private string NormalizePathSeparators(string pathString)
+        private string NormalizePath(string pathString)
         {
             return pathString.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         }
 
-        public IEnumerable<string> NormalizePath(string specificPathString)
+        public IEnumerable<string> SplitPath(string specificPathString)
         {
-            specificPathString = NormalizePathSeparators(specificPathString);
+            specificPathString = NormalizePath(specificPathString);
 
             var retVal = new List<string>();
             if (specificPathString.StartsWith(RootPath))
@@ -40,16 +40,6 @@ namespace WebGalery.Domain.FileServices
                     specificPathString = "";
             }
             return retVal;
-        }
-
-        public string GetDirectoryName(string path)
-        {
-            if (Directory.Exists(path))
-                return Path.GetFileName(path);
-            var dirName = Path.GetDirectoryName(path);
-            if (string.IsNullOrEmpty(dirName))
-                dirName = RootBinderName;
-            return dirName;
         }
     }
 }

@@ -3,7 +3,7 @@
   <Class Name="WebGalery.Domain.Contents.Binder">
     <Position X="3.75" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAAIAAAAAAAAAAAQAgAAAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AAAAAQAAAAIAAQAAAAAAQAQAgAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>Contents\Binder.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -15,7 +15,7 @@
   <Class Name="WebGalery.Domain.Databases.Database">
     <Position X="1" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAIAAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAACAIAAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Databases\Database.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -26,14 +26,13 @@
   <Class Name="WebGalery.Domain.Databases.Rack">
     <Position X="4" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAIAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <HashCode>AAAAAAQAAAAAAAAAAAAIAAEAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Databases\Rack.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="RootPaths" />
       <Property Name="DirectoryBinders" />
     </ShowAsCollectionAssociation>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="WebGalery.Domain.Contents.DirectoryBinder" Collapsed="true">
     <Position X="6.75" Y="4.25" Width="1.5" />
@@ -41,7 +40,6 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Contents\DirectoryBinder.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="WebGalery.Domain.Contents.IDisplayable" Collapsed="true">
     <Position X="1" Y="4.5" Width="1.5" />
@@ -53,22 +51,8 @@
   <Interface Name="WebGalery.Domain.Databases.IRootPath" Collapsed="true">
     <Position X="1" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Databases\IRootPath.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="WebGalery.Domain.Databases.IRack" Collapsed="true">
-    <Position X="4" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Databases\IRack.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="WebGalery.Domain.Contents.IDirectoryBinder" Collapsed="true">
-    <Position X="7.5" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Contents\IDirectoryBinder.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

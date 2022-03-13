@@ -1,8 +1,8 @@
 ﻿using Moq;
 using NUnit.Framework;
+using WebGalery.Domain;
 using WebGalery.Domain.Contents.Factories;
 using WebGalery.Domain.FileServices;
-using WebGalery.Domain.IoC;
 
 namespace DomainTests.Contents
 {
@@ -51,10 +51,12 @@ namespace DomainTests.Contents
 
         private static DirectoryBinderFactory BuildSut()
         {
+            var mother = new ObjectMother();
             var hasherMock = new Mock<IHasher>();
             hasherMock.Setup(h => h.ComputeFileContentHash(It.IsAny<string>())).Returns<string>(x => x);
-            var displayableFactory = new DisplayableFactory(hasher: hasherMock.Object);
-            var binderFactory = new DirectoryBinderFactory(displayableFactory: displayableFactory);
+            var displayableFactory = new DisplayableFactory(new FileMethods(), hasherMock.Object);
+            var binderFactory = new DirectoryBinderFactory(
+                new DirectoryMethods(), displayableFactory, hasherMock.Object, new SessionProvider(mother.Session));
             return binderFactory;
         }
     }

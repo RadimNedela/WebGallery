@@ -2,12 +2,7 @@
 
 namespace WebGalery.Domain.Contents.Factories
 {
-    internal interface IDisplayableFactory
-    {
-        IDisplayable CreateFromFile(string file);
-    }
-
-    internal class DisplayableFactory : IDisplayableFactory
+    internal class DisplayableFactory
     {
         private readonly IFileReader fileReader;
         private readonly IHasher hasher;
@@ -18,13 +13,25 @@ namespace WebGalery.Domain.Contents.Factories
             this.hasher = hasher;
         }
 
-        public IDisplayable CreateFromFile(string file)
+        public void AddDisplayable(IList<IDisplayable> displayables, string file)
         {
-            return new Displayable()
+            var fileName = fileReader.GetFileName(file);
+            var hash = hasher.ComputeFileContentHash(file);
+            var currentDisplayable = displayables.FirstOrDefault(d => d.Name == fileName);
+            if (currentDisplayable != null && currentDisplayable.Hash != hash)
             {
-                Name = fileReader.GetFileName(file),
-                Hash = hasher.ComputeFileContentHash(file),
-            };
+                displayables.Remove(currentDisplayable);
+                currentDisplayable = null;
+            }
+            if (currentDisplayable == null)
+            {
+                currentDisplayable = new Displayable()
+                {
+                    Name = fileName,
+                    Hash = hash
+                };
+                displayables.Add(currentDisplayable);
+            }
         }
     }
 }

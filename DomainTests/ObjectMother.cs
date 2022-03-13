@@ -85,8 +85,8 @@ namespace DomainTests
             set => _sessionProvider = value;
         }
 
-        private IDisplayableFactory? _displayableFactory;
-        public IDisplayableFactory DisplayableFactory
+        private DisplayableFactory? _displayableFactory;
+        public DisplayableFactory DisplayableFactory
         {
             get => _displayableFactory ??= new DisplayableFactory(FileReader, Hasher);
             set => _displayableFactory = value;

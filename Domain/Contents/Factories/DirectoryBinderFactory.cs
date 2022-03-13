@@ -5,13 +5,13 @@ namespace WebGalery.Domain.Contents.Factories
     internal class DirectoryBinderFactory : IDirectoryBinderFactory
     {
         private readonly IDirectoryReader directoryReader;
-        private readonly IDisplayableFactory displayableFactory;
+        private readonly DisplayableFactory displayableFactory;
         private readonly IHasher hasher;
         private readonly ISessionProvider sessionProvider;
 
         public DirectoryBinderFactory(
             IDirectoryReader directoryReader, 
-            IDisplayableFactory displayableFactory, 
+            DisplayableFactory displayableFactory, 
             IHasher hasher,
             ISessionProvider sessionProvider)
         {
@@ -23,6 +23,32 @@ namespace WebGalery.Domain.Contents.Factories
 
         public Binder LoadDirectory(string localPath)
         {
+            Binder currentBinder = GetBinderFromPath(localPath);
+
+            AddDisplayables(localPath, currentBinder);
+            RecurseIntoSubdirectories(localPath);
+
+            return currentBinder;
+        }
+
+        private void RecurseIntoSubdirectories(string localPath)
+        {
+            foreach (var innerDirectory in directoryReader.GetDirectories(localPath))
+            {
+                LoadDirectory(innerDirectory);
+            }
+        }
+
+        private void AddDisplayables(string localPath, Binder currentBinder)
+        {
+            foreach (var file in directoryReader.GetFileNames(localPath))
+            {
+                displayableFactory.AddDisplayable(currentBinder.Displayables, file);
+            }
+        }
+
+        private Binder GetBinderFromPath(string localPath)
+        {
             var rootPath = sessionProvider.Session.ActiveRootPath;
             var names = rootPath.SplitPath(localPath);
             Binder currentBinder = sessionProvider.Session.ActiveRack;
@@ -32,17 +58,6 @@ namespace WebGalery.Domain.Contents.Factories
                 if (child == null) child = new DirectoryBinder()
                         .Initialize(currentBinder, name, hasher.ComputeDependentStringHash(currentBinder, name));
                 currentBinder = child;
-            }
-
-            foreach (var file in directoryReader.GetFileNames(localPath))
-            {
-                var displayable = displayableFactory.CreateFromFile(file);
-                currentBinder.Displayables.Add(displayable);
-            }
-
-            foreach (var innerDirectory in directoryReader.GetDirectories(localPath))
-            {
-                LoadDirectory(innerDirectory);
             }
 
             return currentBinder;

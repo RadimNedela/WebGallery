@@ -4,25 +4,13 @@ using WebGalery.Domain.Logging;
 
 namespace WebGalery.Database.Databases.TheDatabase
 {
-    public abstract class GaleryDatabase : DbContext
+    public abstract class GaleryDatabase : DbContext, IGaleryDatabase
     {
         private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.LogTo((s) =>
-            optionsBuilder.LogTo((eventId, logLevel) => true, LogEventData);
-            base.OnConfiguring(optionsBuilder);
-        }
-
-        private void LogEventData(Microsoft.EntityFrameworkCore.Diagnostics.EventData eventData)
-        {
-            Log.Info(eventData);
-        }
-
         //public DbSet<Content> Contents { get; set; }
         //public DbSet<Binder> Binders { get; set; }
-        public DbSet<DatabaseInfoDB>? DatabaseInfos { get; set; }
+        public DbSet<DatabaseInfoDB> DatabaseInfos { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

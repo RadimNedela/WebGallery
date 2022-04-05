@@ -6,7 +6,7 @@ namespace WebGalery.Domain.Databases
     {
         public IList<IRootPath> RootPaths { get; set; } = new List<IRootPath>();
 
-        private IRootPath? _activeRootPath;
+        private IRootPath _activeRootPath;
         public IRootPath ActiveRootPath
         {
             get => _activeRootPath ??= RootPaths.First();

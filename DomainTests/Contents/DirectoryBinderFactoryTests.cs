@@ -77,7 +77,7 @@ namespace DomainTests.Contents
 
         private class TestFixture
         {
-            public Mock<IHasher>? HasherMock { get; private set; }
+            public Mock<IHasher> HasherMock { get; private set; }
             private int _runningNumber;
 
             public TestFixture GenerateRandomHashes()

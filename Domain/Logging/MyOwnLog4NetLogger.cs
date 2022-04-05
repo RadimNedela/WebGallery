@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using log4net;
+﻿using log4net;
 using log4net.Config;
 using log4net.Repository;
+using System.Reflection;
 
 namespace WebGalery.Domain.Logging
 {
@@ -26,7 +26,7 @@ namespace WebGalery.Domain.Logging
         /// <code>System.Reflection.MethodBase.GetCurrentMethod().DeclaringType</code>
         /// </summary>
         /// <param name="loggerName"><code>System.Reflection.MethodBase.GetCurrentMethod().DeclaringType</code></param>
-        public MyOwnLog4NetLogger(Type? type)
+        public MyOwnLog4NetLogger(Type type)
         {
             _log = LogManager.GetLogger(type);
         }
@@ -154,7 +154,7 @@ namespace WebGalery.Domain.Logging
             string toLog = $"EXCEPTION: {ex}";
             logAction(toLog);
         }
-        private void DoLog(object commonObject, Action<string?> logAction)
+        private void DoLog(object commonObject, Action<string> logAction)
         {
             logAction(commonObject?.ToString());
         }

@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
     <RootNamespace>WebGalery.Domain.Tests</RootNamespace>
   </PropertyGroup>

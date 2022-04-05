@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
     <RootNamespace>WebGalery.Database.Tests</RootNamespace>
   </PropertyGroup>
@@ -32,6 +30,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="log4netConfiguration.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

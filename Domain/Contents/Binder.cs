@@ -2,7 +2,7 @@
 {
     public class Binder : IHashedEntity
     {
-        public Binder? Parent { get; set; }
+        public Binder Parent { get; set; }
 
         public IList<Binder> ChildBinders { get; set; } = new List<Binder>();
 

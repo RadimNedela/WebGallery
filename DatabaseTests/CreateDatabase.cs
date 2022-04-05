@@ -10,7 +10,7 @@ namespace WebGalery.Database.Tests
     public class CeateDatabase
     {
         [Test]
-        //[Ignore("This is only for creating empty DB tables")]
+        [Ignore("This is only for creating empty DB tables")]
         public void JustCreateTheDatabase()
         {
             using var serviceProvider = InfrastructureTestsUtils.CreateServiceCollection().BuildServiceProvider();

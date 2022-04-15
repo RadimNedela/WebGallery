@@ -1,5 +1,5 @@
-using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 // In SDK-style projects such as this one, several assembly attributes that were historically
 // defined in this file are now automatically added during build and populated with
@@ -17,4 +17,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: Guid("f1aae6d6-f22d-4b7c-9eff-ecf8143153f1")]
 
-[assembly: InternalsVisibleTo("DomainTests")]
+[assembly: InternalsVisibleTo("DomainTests")] 

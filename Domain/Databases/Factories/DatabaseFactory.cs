@@ -2,11 +2,6 @@
 
 namespace WebGalery.Domain.Databases.Factories
 {
-    public interface IDatabaseFactory
-    {
-        Database Create();
-    }
-
     internal class DatabaseFactory : IDatabaseFactory
     {
         private readonly IHasher hasher;

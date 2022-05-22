@@ -34,9 +34,9 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UserInterface", "UserInterf
 		SlnRelativePath = "UserInterface\"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{2BD4C912-7AA4-4AD6-B389-D55E509A5796}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{2BD4C912-7AA4-4AD6-B389-D55E509A5796}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationTests", "ApplicationTests\ApplicationTests.csproj", "{AAC62B93-165B-4ED2-9CF2-0E16F8C52CEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationTests", "ApplicationTests\ApplicationTests.csproj", "{AAC62B93-165B-4ED2-9CF2-0E16F8C52CEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

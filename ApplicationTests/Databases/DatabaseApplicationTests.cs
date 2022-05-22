@@ -1,11 +1,9 @@
 ﻿using Application.Databases;
-using Application.IoC;
-using Microsoft.Extensions.Configuration;
+using ApplicationTests.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using NUnit.Framework;
 using WebGalery.Database.Databases;
-using WebGalery.Database.IoC;
 
 namespace ApplicationTests.Databases
 {
@@ -15,39 +13,71 @@ namespace ApplicationTests.Databases
         [Test]
         public void ResolveFromDI_InitializesAllDependencies()
         {
-            var application = new TestFixture().Build();
+            var application = new TestFixture().GetService();
             Assert.NotNull(application);
         }
 
         [Test]
         public void CreateDatabase_ValidDto_CallsSaveChanges()
         {
-            var application = new TestFixture().WithDatabaseMock().Build();
+            var fixture = new TestFixture();
+            var application = fixture.WithDatabaseMock().Build();
 
-            application.CreateDatabase(new DatabaseDto());
+            application.CreateDatabase(fixture.BuildDto());
+
+            fixture.GaleryDatabase.Received().SaveChanges();
+        }
+
+        [Test]
+        public void CreateDatabase_ValidDto_CallsBuildDomain()
+        {
+            var fixture = new TestFixture();
+            var application = fixture.WithDomainBuilderMock().Build();
+            var dto = fixture.BuildDto();
+
+            // act
+            application.CreateDatabase(dto);
+
+            // assert
+            fixture.DomainBuilder.Received().BuildDomain(dto);
         }
 
         private class TestFixture
         {
             public IGaleryDatabase GaleryDatabase { get; private set; }
+            public IDatabaseDomainBuilder DomainBuilder { get; private set; }
+
+            public DatabaseApplication GetService()
+            {
+                var serviceProvider = StaticInitializer.ServiceCollection.BuildServiceProvider();
+                return serviceProvider.GetService<DatabaseApplication>();
+            }
 
             public DatabaseApplication Build()
             {
-                var serviceCollection = new ServiceCollection();
-                serviceCollection.AddApplicationServices();
-                var builder = new ConfigurationBuilder().AddJsonFile(@"appsettings.json", false, false);
-                serviceCollection.RegisterDatabaseServices(builder.Build());
+                var serviceProvider = StaticInitializer.ServiceCollection.BuildServiceProvider();
+                DatabaseApplication application = new(
+                    GaleryDatabase ?? serviceProvider.GetService<IGaleryDatabase>(),
+                    DomainBuilder ?? serviceProvider.GetService<IDatabaseDomainBuilder>()
+                    );
 
-                var serviceProvider = serviceCollection.BuildServiceProvider();
+                return application;
+            }
 
-                var service = serviceProvider.GetService<DatabaseApplication>();
-
-                return service;
+            public DatabaseDto BuildDto()
+            {
+                return new DatabaseDto();
             }
 
             public TestFixture WithDatabaseMock()
             {
                 GaleryDatabase = Substitute.For<IGaleryDatabase>();
+                return this;
+            }
+
+            public TestFixture WithDomainBuilderMock()
+            {
+                DomainBuilder = Substitute.For<IDatabaseDomainBuilder>();
                 return this;
             }
         }

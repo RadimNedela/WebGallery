@@ -8,6 +8,8 @@ namespace Application.IoC
         public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<DatabaseApplication>();
+            serviceCollection.AddScoped<IDatabaseDomainBuilder, DatabaseDomainBuilder>();
+
             return serviceCollection;
         }
     }

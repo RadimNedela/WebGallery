@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{B6560843-84C9-46CF-AFA2-0DA3E4356A21}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{783981EC-FE09-4B47-BC6A-A5657FF1098A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{94BA75BE-652C-43C9-BC3F-F1F0AD21DCA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OldInfrastructure", "Infrastructure\OldInfrastructure.csproj", "{B6560843-84C9-46CF-AFA2-0DA3E4356A21}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{E9EF5746-0B35-440B-AA25-AE11D22D1679}"
 EndProject
@@ -50,14 +46,6 @@ Global
 		{B6560843-84C9-46CF-AFA2-0DA3E4356A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6560843-84C9-46CF-AFA2-0DA3E4356A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6560843-84C9-46CF-AFA2-0DA3E4356A21}.Release|Any CPU.Build.0 = Release|Any CPU
-		{783981EC-FE09-4B47-BC6A-A5657FF1098A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{783981EC-FE09-4B47-BC6A-A5657FF1098A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{783981EC-FE09-4B47-BC6A-A5657FF1098A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{783981EC-FE09-4B47-BC6A-A5657FF1098A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94BA75BE-652C-43C9-BC3F-F1F0AD21DCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94BA75BE-652C-43C9-BC3F-F1F0AD21DCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94BA75BE-652C-43C9-BC3F-F1F0AD21DCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94BA75BE-652C-43C9-BC3F-F1F0AD21DCA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9EF5746-0B35-440B-AA25-AE11D22D1679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9EF5746-0B35-440B-AA25-AE11D22D1679}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9EF5746-0B35-440B-AA25-AE11D22D1679}.Release|Any CPU.ActiveCfg = Release|Any CPU

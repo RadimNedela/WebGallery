@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UserInterface", "UserInterface\", "{1342918D-5228-4196-B953-52D4BCD4DE06}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_55509"
 		Debug.AspNetCompiler.PhysicalPath = "UserInterface\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55509\"

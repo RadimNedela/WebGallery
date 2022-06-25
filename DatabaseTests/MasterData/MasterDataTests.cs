@@ -12,6 +12,7 @@ namespace WebGalery.Database.Tests.MasterData
     {
 
         [Test]
+        [Category("DatabaseTests")]
         public void NewDatabase_CanBeCreated()
         {
             using var serviceProvider = InfrastructureTestsUtils.CreateServiceCollection().BuildServiceProvider();

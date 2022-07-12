@@ -13,11 +13,13 @@ namespace WebGalery.Domain.Databases.Factories
             this.rackFactory = rackFactory;
         }
 
-        public Database Create()
+        public Database Create(string name)
         {
+            if (string.IsNullOrWhiteSpace(name)) name = null;
+
             var db = new Database()
             {
-                Name = "Database " + hasher.CreateRandomString(5, 10) + DateTime.Now.ToString("F")
+                Name = name ?? "Database " + hasher.CreateRandomString(5, 10) + DateTime.Now.ToString("F")
             };
             db.Hash = hasher.ComputeRandomStringHash(db.Name);
             db.Racks.Add(rackFactory.CreateDefaultFor(db));

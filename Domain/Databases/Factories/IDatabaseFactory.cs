@@ -2,6 +2,6 @@
 {
     public interface IDatabaseFactory
     {
-        Database Create();
+        Database Create(string name);
     }
 }

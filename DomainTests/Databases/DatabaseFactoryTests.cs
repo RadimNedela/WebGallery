@@ -1,13 +1,11 @@
-﻿using Application.Databases;
-using ApplicationTests.IoC;
-using Microsoft.Extensions.DependencyInjection;
+﻿using DomainTests;
 using NUnit.Framework;
 using WebGalery.Domain.Databases.Factories;
 
 namespace ApplicationTests.Databases
 {
     [TestFixture]
-    public class DatabaseDomainBuilderTests
+    public class DatabaseFactoryTests
     {
         [Test]
         public void BuildDomain_ValidDto_SetsTheName()
@@ -15,7 +13,7 @@ namespace ApplicationTests.Databases
             var fixture = new TestFixture();
             var builder = fixture.Build();
 
-            var domain = builder.BuildDomain(fixture.BuildDto());
+            var domain = builder.Create("My new builder database");
 
             Assert.That(domain.Name, Is.EqualTo("My new builder database"));
         }
@@ -26,7 +24,7 @@ namespace ApplicationTests.Databases
             var fixture = new TestFixture();
             var builder = fixture.Build();
 
-            var domain = builder.BuildDomain(fixture.BuildDto());
+            var domain = builder.Create("My new builder database");
 
             Assert.That(domain.Hash.Length, Is.EqualTo(40));
         }
@@ -36,26 +34,20 @@ namespace ApplicationTests.Databases
         {
             var fixture = new TestFixture();
             var builder = fixture.Build();
-            var dto = fixture.BuildDto();
 
-            var domain1 = builder.BuildDomain(dto);
-            var domain2 = builder.BuildDomain(dto);
+            var domain1 = builder.Create("My new builder database");
+            var domain2 = builder.Create("My new builder database");
 
             Assert.That(domain1.Hash, Is.Not.EqualTo(domain2.Hash));
         }
 
         private class TestFixture
         {
-            public DatabaseDomainBuilder Build()
+            public DatabaseFactory Build()
             {
-                var builder = new DatabaseDomainBuilder(StaticInitializer.ServiceCollection.BuildServiceProvider().GetService<IDatabaseFactory>());
+                var factory = new ObjectMother().DatabaseFactory;
 
-                return builder;
-            }
-
-            internal DatabaseDto BuildDto()
-            {
-                return new DatabaseDto() { Name = "My new builder database" };
+                return factory;
             }
         }
     }

@@ -5,8 +5,7 @@ namespace WebGalery.Domain.FileServices
     internal class FileSystemRootPath : IRootPath
     {
         // public const string RootBinderName = ".";
-
-        public string RootPath { get; set; }
+        public string RootPath { get; private set; }
 
         public FileSystemRootPath(IDirectoryReader directoryReader)
         {

@@ -67,7 +67,7 @@ namespace DomainTests
         private Database _database;
         public Database Database
         {
-            get => _database ??= DatabaseFactory.Create();
+            get => _database ??= DatabaseFactory.Create(null);
             set => _database = value;
         }
 

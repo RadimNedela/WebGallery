@@ -3,7 +3,11 @@ using ApplicationTests.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using NUnit.Framework;
+using System;
 using WebGalery.Database.Databases;
+using WebGalery.Domain.Databases.Factories;
+using WebGalery.Domain.DBModel;
+using WebGalery.Domain.DBModel.Factories;
 
 namespace ApplicationTests.Databases
 {
@@ -11,54 +15,77 @@ namespace ApplicationTests.Databases
     public class DatabaseApplicationTests
     {
         [Test]
-        public void ResolveFromDI_InitializesAllDependencies()
-        {
-            var application = new TestFixture().GetService();
-            Assert.NotNull(application);
-        }
-
-        [Test]
         public void CreateDatabase_ValidDto_CallsSaveChanges()
         {
             var fixture = new TestFixture();
             var application = fixture.WithDatabaseMock().Build();
 
-            application.CreateDatabase(fixture.BuildDto());
+            application.CreateNewDatabase(fixture.BuildDto());
 
             fixture.GaleryDatabase.Received().SaveChanges();
         }
 
         [Test]
-        public void CreateDatabase_ValidDto_CallsBuildDomain()
+        public void CreateDatabase_ValidDto_AddsDomainObjectToDatabase()
         {
             var fixture = new TestFixture();
-            var application = fixture.WithDomainBuilderMock().Build();
+            var application = fixture.WithDatabaseMock().Build();
+
+            application.CreateNewDatabase(fixture.BuildDto());
+
+            fixture.GaleryDatabase.DatabaseInfos.Received().Add(Arg.Any<DatabaseInfoDB>());
+        }
+
+
+        [Test]
+        public void CreateDatabase_ValidInput_ReturnsDtoWithAllDataFilledIn()
+        {
+            var fixture = new TestFixture().WithDatabaseMock();
+            var application = fixture.Build();
             var dto = fixture.BuildDto();
 
             // act
-            application.CreateDatabase(dto);
+            var returnedDto = application.CreateNewDatabase(dto);
 
             // assert
-            fixture.DomainBuilder.Received().BuildDomain(dto);
+            Assert.That(returnedDto.Name.Length, Is.GreaterThan(10));
+            Assert.That(returnedDto.Hash.Length, Is.EqualTo(40));
         }
+
+        [Test]
+        [Category("DatabaseTests")]
+        public void DatabaseCRUD_Works()
+        {
+            var fixture = new TestFixture().WithRealDatabase();
+            var application = fixture.Build();
+            var dto = fixture.BuildDto();
+
+            // act
+            var returnedDto = application.CreateNewDatabase(dto);
+
+        }
+
 
         private class TestFixture
         {
             public IGaleryDatabase GaleryDatabase { get; private set; }
-            public IDatabaseDomainBuilder DomainBuilder { get; private set; }
+            public IDatabaseFactory DatabaseFactory { get; private set; }
+            public IDatabaseInfoDBFactory DatabaseInfoDBFactory { get; private set; }
 
-            public DatabaseApplication GetService()
+            private ServiceProvider _serviceProvider;
+
+            public TestFixture()
             {
-                var serviceProvider = StaticInitializer.ServiceCollection.BuildServiceProvider();
-                return serviceProvider.GetService<DatabaseApplication>();
+                _serviceProvider = StaticInitializer.ServiceCollection.BuildServiceProvider();
             }
 
             public DatabaseApplication Build()
             {
-                var serviceProvider = StaticInitializer.ServiceCollection.BuildServiceProvider();
+
                 DatabaseApplication application = new(
-                    GaleryDatabase ?? serviceProvider.GetService<IGaleryDatabase>(),
-                    DomainBuilder ?? serviceProvider.GetService<IDatabaseDomainBuilder>()
+                    GaleryDatabase ?? throw new NotImplementedException($"Use {nameof(WithRealDatabase)} or {nameof(WithDatabaseMock)}"),
+                    DatabaseFactory ?? _serviceProvider.GetService<IDatabaseFactory>(),
+                    DatabaseInfoDBFactory ?? _serviceProvider.GetService<IDatabaseInfoDBFactory>()
                     );
 
                 return application;
@@ -75,9 +102,15 @@ namespace ApplicationTests.Databases
                 return this;
             }
 
+            public TestFixture WithRealDatabase()
+            {
+                GaleryDatabase = _serviceProvider.GetService<IGaleryDatabase>();
+                return this;
+            }
+
             public TestFixture WithDomainBuilderMock()
             {
-                DomainBuilder = Substitute.For<IDatabaseDomainBuilder>();
+                DatabaseFactory = Substitute.For<IDatabaseFactory>();
                 return this;
             }
         }

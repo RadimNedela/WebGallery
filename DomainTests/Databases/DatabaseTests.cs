@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using WebGalery.Domain.Databases.Factories;
-using WebGalery.Domain.FileServices;
 
 namespace DomainTests.Databases
 {
@@ -12,8 +10,8 @@ namespace DomainTests.Databases
         {
             var mother = new ObjectMother();
             var factory = mother.DatabaseFactory;
-            var database1 = factory.Create();
-            var database2 = factory.Create();
+            var database1 = factory.Create(null);
+            var database2 = factory.Create(null);
 
             Assert.That(database1.Name, Is.Not.EqualTo(database2.Name));
             Assert.That(database1.Hash, Is.Not.EqualTo(database2.Hash));
@@ -24,7 +22,7 @@ namespace DomainTests.Databases
         {
             var mother = new ObjectMother();
             var factory = mother.DatabaseFactory;
-            var database = factory.Create();
+            var database = factory.Create(null);
 
             Assert.That(database.Racks, Is.Not.Empty);
         }

@@ -28,7 +28,7 @@ namespace WebGalery.Database.Tests.MasterData
 
             var instance = serviceProvider.GetService<IGaleryDatabase>();
 
-            instance.DatabaseInfos.Remove(dbInfo);
+            instance.Depositories.Remove(dbInfo);
 
             instance.SaveChanges();
         }
@@ -39,7 +39,7 @@ namespace WebGalery.Database.Tests.MasterData
 
             var instance = serviceProvider.GetService<IGaleryDatabase>();
 
-            var db = instance.DatabaseInfos.FirstOrDefault(di => di.Hash == "asdf");
+            var db = instance.Depositories.FirstOrDefault(di => di.Hash == "asdf");
 
             return db;
         }
@@ -50,9 +50,9 @@ namespace WebGalery.Database.Tests.MasterData
 
             var instance = serviceProvider.GetService<IGaleryDatabase>();
 
-            Assert.That(instance?.DatabaseInfos != null);
+            Assert.That(instance?.Depositories != null);
 
-            instance.DatabaseInfos.Add(new DatabaseInfoDB() { Hash = "asdf", Name = "Name" });
+            instance.Depositories.Add(new DatabaseInfoDB() { Hash = "asdf", Name = "Name" });
 
             instance.SaveChanges();
         }

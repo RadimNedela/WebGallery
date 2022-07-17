@@ -24,7 +24,7 @@ namespace Application.Databases
         public DatabaseDto CreateNewDatabase(DatabaseDto databaseDto)
         {
             var domain = _databaseFactory.Build(databaseDto.Name);
-            _galeryDatabase.DatabaseInfos.Add(_databaseInfoDBFactory.Build(domain));
+            _galeryDatabase.Depositories.Add(_databaseInfoDBFactory.Build(domain));
             _galeryDatabase.SaveChanges();
             return Convert(domain);
         }

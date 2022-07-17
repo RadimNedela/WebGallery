@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using WebGalery.Domain.DBModel;
 using WebGalery.Domain.Logging;
+using WebGalery.Domain.Warehouses;
 
 namespace WebGalery.Database.Databases.TheDatabase
 {
@@ -10,26 +10,26 @@ namespace WebGalery.Database.Databases.TheDatabase
 
         //public DbSet<Content> Contents { get; set; }
         //public DbSet<Binder> Binders { get; set; }
-        public DbSet<DatabaseInfoDB> DatabaseInfos { get; set; } = default!;
+        public DbSet<Depository> Depositories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            InitMasterDataTables(modelBuilder);
+            InitWarehouseTables(modelBuilder);
 
             //InitContentTables(modelBuilder);
         }
 
-        private void InitMasterDataTables(ModelBuilder modelBuilder)
+        private void InitWarehouseTables(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DatabaseInfoDB>(entity =>
+            modelBuilder.Entity<Depository>(entity =>
             {
-                entity.ToTable("DatabaseInfo");
+                entity.ToTable("Depository");
                 entity.HasKey(di => di.Hash);
                 entity.Property(di => di.Hash).HasColumnType("Char(40)");
                 entity.HasIndex(di => di.Name).IsUnique();
-                entity.HasMany(di => di.Racks).WithOne(ra => ra.Database).HasForeignKey(ra => ra.DatabaseHash);
+                entity.HasMany(di => di.Depots).WithOne(ra => ra.Database).HasForeignKey(ra => ra.DatabaseHash);
             });
 
             modelBuilder.Entity<RackDB>(entity =>

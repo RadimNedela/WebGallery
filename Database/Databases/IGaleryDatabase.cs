@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WebGalery.Domain.Warehouses;
 
 namespace WebGalery.Database.Databases
 {
@@ -6,7 +7,7 @@ namespace WebGalery.Database.Databases
     {
         //DbSet<Content> Contents { get; }
         //DbSet<Binder> Binders { get; }
-        DbSet<DatabaseInfoDB> DatabaseInfos { get; }
+        DbSet<Depository> Depositories { get; }
         int SaveChanges();
         void DetachAllEntities();
     }

@@ -33,7 +33,7 @@ namespace ApplicationTests.Databases
 
             application.CreateNewDatabase(fixture.BuildDto());
 
-            fixture.GaleryDatabase.DatabaseInfos.Received().Add(Arg.Any<DatabaseInfoDB>());
+            fixture.GaleryDatabase.Depositories.Received().Add(Arg.Any<DatabaseInfoDB>());
         }
 
 

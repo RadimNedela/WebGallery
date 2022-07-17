@@ -1,5 +1,4 @@
-﻿using WebGalery.Domain;
-using WebGalery.Domain.Basics;
+﻿using WebGalery.Domain.Basics;
 using WebGalery.Domain.FileServices;
 using WebGalery.Domain.SessionHandling;
 using WebGalery.Domain.Warehouses;
@@ -94,11 +93,11 @@ namespace DomainTests
         //    set => _displayableFactory = value;
         //}
 
-        private FileSystemDirectoryLoader _directoryBinderFactory;
-        public FileSystemDirectoryLoader DirectoryBinderFactory
+        private FileSystemDirectoryLoader _fileSystemDirectoryLoader;
+        public FileSystemDirectoryLoader FileSystemDirectoryLoader
         {
-            get => _directoryBinderFactory ??= new DirectoryBinderFactory(DirectoryReader, Hasher, SessionProvider, FileReader);
-            set => _directoryBinderFactory = value;
+            get => _fileSystemDirectoryLoader ??= new FileSystemDirectoryLoader(DirectoryReader, Hasher, SessionProvider, FileReader);
+            set => _fileSystemDirectoryLoader = value;
         }
     }
 }

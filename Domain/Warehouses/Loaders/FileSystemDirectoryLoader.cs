@@ -23,12 +23,14 @@ namespace WebGalery.Domain.Warehouses.Loaders
             _fileReader = fileReader;
         }
 
-        public void LoadDirectory(string localPath)
+        public Rack LoadDirectory(string localPath)
         {
             Rack currentRack = GetRackFromPath(localPath);
 
             AddStorables(localPath, currentRack);
             RecurseIntoSubdirectories(localPath);
+
+            return currentRack;
         }
 
         private void RecurseIntoSubdirectories(string localPath)

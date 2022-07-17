@@ -1,7 +1,7 @@
 ﻿using WebGalery.Database.Databases;
-using WebGalery.Domain.Databases.Factories;
 using WebGalery.Domain.DBModel.Factories;
 using WebGalery.Domain.Warehouses;
+using WebGalery.Domain.Warehouses.Factories;
 
 namespace Application.Databases
 {

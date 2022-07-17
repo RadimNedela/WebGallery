@@ -1,6 +1,4 @@
-﻿using WebGalery.Domain.Warehouses;
-
-namespace WebGalery.Domain.Databases.Factories
+﻿namespace WebGalery.Domain.Warehouses.Factories
 {
     public interface IDepositoryFactory
     {

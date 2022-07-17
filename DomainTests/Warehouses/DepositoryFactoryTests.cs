@@ -1,11 +1,11 @@
 ﻿using DomainTests;
 using NUnit.Framework;
-using WebGalery.Domain.Databases.Factories;
+using WebGalery.Domain.Warehouses.Factories;
 
-namespace ApplicationTests.Databases
+namespace WebGalery.Domain.Tests.Warehouses
 {
     [TestFixture]
-    public class DatabaseFactoryTests
+    public class DepositoryFactoryTests
     {
         [Test]
         public void BuildDomain_ValidDto_SetsTheName()
@@ -13,7 +13,7 @@ namespace ApplicationTests.Databases
             var fixture = new TestFixture();
             var builder = fixture.Build();
 
-            var domain = builder.Create("My new builder database");
+            var domain = builder.Build("My new builder database");
 
             Assert.That(domain.Name, Is.EqualTo("My new builder database"));
         }
@@ -24,7 +24,7 @@ namespace ApplicationTests.Databases
             var fixture = new TestFixture();
             var builder = fixture.Build();
 
-            var domain = builder.Create("My new builder database");
+            var domain = builder.Build("My new builder database");
 
             Assert.That(domain.Hash.Length, Is.EqualTo(40));
         }
@@ -35,17 +35,16 @@ namespace ApplicationTests.Databases
             var fixture = new TestFixture();
             var builder = fixture.Build();
 
-            var domain1 = builder.Create("My new builder database");
-            var domain2 = builder.Create("My new builder database");
+            var domain1 = builder.Build("My new builder database");
+            var domain2 = builder.Build("My new builder database");
 
             Assert.That(domain1.Hash, Is.Not.EqualTo(domain2.Hash));
         }
-
         private class TestFixture
         {
-            public DatabaseFactory Build()
+            public DepositoryFactory Build()
             {
-                var factory = new ObjectMother().DatabaseFactory;
+                var factory = new ObjectMother().DepositoryFactory;
 
                 return factory;
             }

@@ -1,6 +1,6 @@
 ﻿using WebGalery.Domain.Warehouses;
 
-namespace WebGalery.Domain
+namespace WebGalery.Domain.SessionHandling
 {
     public class Session
     {

@@ -1,9 +1,11 @@
-﻿using Moq;
+﻿using DomainTests;
+using Moq;
 using NUnit.Framework;
-using WebGalery.Domain.Contents.Factories;
-using WebGalery.Domain.FileServices;
+using System.Linq;
+using WebGalery.Domain.Basics;
+using WebGalery.Domain.Warehouses.Loaders;
 
-namespace DomainTests.Contents
+namespace WebGalery.Domain.Tests.Contents
 {
     [TestFixture]
     public class DirectoryBinderFactoryTests
@@ -11,7 +13,7 @@ namespace DomainTests.Contents
         [Test]
         public void LoadDirectory_TestDirectory_Creates2ChildBinders()
         {
-            DirectoryBinderFactory binderFactory = new TestFixture().BuildSut();
+            FileSystemDirectoryLoader binderFactory = new TestFixture().BuildSut();
 
             var binder = binderFactory.LoadDirectory("TestPictures");
 
@@ -21,7 +23,7 @@ namespace DomainTests.Contents
         [Test]
         public void LoadDirectory_TestDirectory_Creates9Displayables()
         {
-            DirectoryBinderFactory binderFactory = new TestFixture().BuildSut();
+            FileSystemDirectoryLoader binderFactory = new TestFixture().BuildSut();
 
             var binder = binderFactory.LoadDirectory("TestPictures");
 
@@ -31,7 +33,7 @@ namespace DomainTests.Contents
         [Test]
         public void LoadDirectory_Twice_DoesNotDoubleDisplayables()
         {
-            DirectoryBinderFactory binderFactory = new TestFixture().BuildSut();
+            FileSystemDirectoryLoader binderFactory = new TestFixture().BuildSut();
 
             var binder = binderFactory.LoadDirectory("TestPictures");
             var binder2 = binderFactory.LoadDirectory("TestPictures");
@@ -44,12 +46,12 @@ namespace DomainTests.Contents
         public void LoadDirectory_TwiceWithDifferentHashes_RemovesOriginals()
         {
             var fixture = new TestFixture().GenerateRandomHashes();
-            DirectoryBinderFactory binderFactory = fixture.BuildSut();
+            FileSystemDirectoryLoader binderFactory = fixture.BuildSut();
 
             var binder = binderFactory.LoadDirectory("TestPictures");
-            var file1 = binder.ChildBinders[0].Displayables[0];
+            var file1 = binder.ChildBinders.First().Displayables.First();
             var binder2 = binderFactory.LoadDirectory("TestPictures");
-            var file2 = binder2.ChildBinders[0].Displayables[0];
+            var file2 = binder2.ChildBinders.First().Displayables.First();
 
             Assert.That(file1.Name, Is.EqualTo(file2.Name));
             Assert.That(file1.Hash, Is.Not.EqualTo(file2.Hash));
@@ -58,7 +60,7 @@ namespace DomainTests.Contents
         [Test]
         public void LoadDirectory_TestDirectory_Has0DirectImages()
         {
-            DirectoryBinderFactory binderFactory = new TestFixture().BuildSut();
+            FileSystemDirectoryLoader binderFactory = new TestFixture().BuildSut();
 
             var binder = binderFactory.LoadDirectory("TestPictures");
 
@@ -68,7 +70,7 @@ namespace DomainTests.Contents
         [Test]
         public void LoadDirectory_RootBinderName_IsTestPictures()
         {
-            DirectoryBinderFactory binderFactory = new TestFixture().BuildSut();
+            FileSystemDirectoryLoader binderFactory = new TestFixture().BuildSut();
 
             var binder = binderFactory.LoadDirectory("TestPictures");
 
@@ -87,7 +89,7 @@ namespace DomainTests.Contents
                 return this;
             }
 
-            public DirectoryBinderFactory BuildSut()
+            public FileSystemDirectoryLoader BuildSut()
             {
                 var mother = new ObjectMother();
                 if (HasherMock == null)

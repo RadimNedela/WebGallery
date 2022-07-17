@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
 using System.IO;
 using System.Linq;
-using WebGalery.Domain.Contents.Factories;
-using WebGalery.Domain.FileServices;
+using WebGalery.Domain.Warehouses.Loaders;
 
 namespace DomainTests.Integration
 {
@@ -12,7 +11,7 @@ namespace DomainTests.Integration
         [Test]
         public void LoadDirectory_HasherIntegrationTests()
         {
-            DirectoryBinderFactory binderFactory = BuildSut();
+            FileSystemDirectoryLoader binderFactory = BuildSut();
 
             var binder = binderFactory.LoadDirectory("TestPictures");
 
@@ -33,7 +32,7 @@ namespace DomainTests.Integration
             Assert.That(chopky.Hash, Is.EqualTo(chopky2.Hash), "same directory loaded differently must have same hash");
         }
 
-        private static DirectoryBinderFactory BuildSut()
+        private static FileSystemDirectoryLoader BuildSut()
         {
             var mother = new ObjectMother();
             return mother.DirectoryBinderFactory;

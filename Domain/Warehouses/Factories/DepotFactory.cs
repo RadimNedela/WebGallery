@@ -1,8 +1,6 @@
-﻿using WebGalery.Domain.Contents;
-using WebGalery.Domain.FileServices;
-using WebGalery.Domain.Warehouses;
+﻿using WebGalery.Domain.Basics;
 
-namespace WebGalery.Domain.Databases.Factories
+namespace WebGalery.Domain.Warehouses.Factories
 {
     internal class DepotFactory : IDepotFactory
     {
@@ -15,17 +13,15 @@ namespace WebGalery.Domain.Databases.Factories
             _locationFactory = locationFactory;
         }
 
-        public Depot BuildDefaultFor(Depository parent)
+        public Depot BuildDefaultFor(Depository depository)
         {
             var location = _locationFactory.CreateDefault();
             string name = "Rack " + location.Name + " " + DateTime.Now.ToString("G");
-            string hash = _hasher.ComputeDependentStringHash(parent, name);
+            string hash = _hasher.ComputeDependentStringHash(depository, name);
 
-            ISet<Binder> childBinders = null;
-            ISet<IDisplayable> displayables = null;
             var locations = new HashSet<ILocation> { location };
 
-            var depot = new Depot(parent, hash, name, childBinders, displayables, locations);
+            var depot = new Depot(depository, hash, name, locations, null);
             return depot;
         }
     }

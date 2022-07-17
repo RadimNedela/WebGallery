@@ -1,7 +1,6 @@
-﻿using WebGalery.Domain.FileServices;
-using WebGalery.Domain.Warehouses;
+﻿using WebGalery.Domain.Basics;
 
-namespace WebGalery.Domain.Databases.Factories
+namespace WebGalery.Domain.Warehouses.Factories
 {
     internal class DepositoryFactory : IDepositoryFactory
     {

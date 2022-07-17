@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using WebGalery.Domain.Databases.Factories;
+using WebGalery.Domain.Basics;
 using WebGalery.Domain.FileServices;
+using WebGalery.Domain.Warehouses.Factories;
 
 namespace WebGalery.Domain.IoC
 {

@@ -3,7 +3,6 @@ using NUnit.Framework;
 using System.Linq;
 using WebGalery.Database.Databases;
 using WebGalery.Database.Tests.IoC;
-using WebGalery.Domain.DBModel;
 
 namespace WebGalery.Database.Tests.MasterData
 {

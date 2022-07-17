@@ -5,9 +5,9 @@ using NSubstitute;
 using NUnit.Framework;
 using System;
 using WebGalery.Database.Databases;
-using WebGalery.Domain.Databases.Factories;
 using WebGalery.Domain.DBModel;
 using WebGalery.Domain.DBModel.Factories;
+using WebGalery.Domain.Warehouses.Factories;
 
 namespace ApplicationTests.Databases
 {

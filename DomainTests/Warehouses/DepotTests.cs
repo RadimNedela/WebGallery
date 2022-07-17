@@ -1,18 +1,18 @@
-﻿using NUnit.Framework;
+﻿using DomainTests;
+using NUnit.Framework;
 using System.IO;
-using WebGalery.Domain.Databases;
 
-namespace DomainTests.Databases
+namespace WebGalery.Domain.Tests.Warehouses
 {
     [TestFixture]
-    public class RackTests
+    public class DepotTests
     {
         [Test]
         public void CreateNew_UsesCurrentDirectory()
         {
             var mother = new ObjectMother();
-            var factory = mother.RackFactory;
-            var rack = factory.CreateDefaultFor(new Depository());
+            var factory = mother.DepotFactory;
+            var rack = factory.BuildDefaultFor(mother.Depository);
 
             Assert.That(rack.ActiveLocation.Name, Is.EqualTo(Directory.GetCurrentDirectory()));
         }

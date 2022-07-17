@@ -1,8 +1,10 @@
 ﻿using WebGalery.Domain;
-using WebGalery.Domain.Contents.Factories;
-using WebGalery.Domain.Databases.Factories;
+using WebGalery.Domain.Basics;
 using WebGalery.Domain.FileServices;
+using WebGalery.Domain.SessionHandling;
 using WebGalery.Domain.Warehouses;
+using WebGalery.Domain.Warehouses.Factories;
+using WebGalery.Domain.Warehouses.Loaders;
 
 namespace DomainTests
 {
@@ -29,52 +31,52 @@ namespace DomainTests
             set => _fileReader = value;
         }
 
-        private ILocationFactory _rootPathFactory;
-        public ILocationFactory RootPathFactory
+        private ILocationFactory _locationFactory;
+        public ILocationFactory LocationFactory
         {
-            get => _rootPathFactory ??= new FileSystemRootPathFactory(DirectoryReader);
-            set => _rootPathFactory = value;
+            get => _locationFactory ??= new FileSystemLocationFactory(DirectoryReader);
+            set => _locationFactory = value;
         }
 
         private ILocation _rootPath;
         public ILocation RootPath
         {
-            get => _rootPath ??= RootPathFactory.CreateDefault();
+            get => _rootPath ??= LocationFactory.CreateDefault();
             set => _rootPath = value;
         }
 
-        private IDepotFactory _rackFactory;
-        public IDepotFactory RackFactory
+        private IDepotFactory _depotFactory;
+        public IDepotFactory DepotFactory
         {
-            get => _rackFactory ??= new RackFactory(Hasher, RootPathFactory);
-            set => _rackFactory = value;
+            get => _depotFactory ??= new DepotFactory(Hasher, LocationFactory);
+            set => _depotFactory = value;
         }
 
         private Depot _rack;
         public Depot Rack
         {
-            get => _rack ??= Database.DefaultDepot;
+            get => _rack ??= Depository.DefaultDepot;
             set => _rack = value;
         }
 
-        private DatabaseFactory _databaseFactory;
-        public DatabaseFactory DatabaseFactory
+        private DepositoryFactory _depositoryFactory;
+        public DepositoryFactory DepositoryFactory
         {
-            get => _databaseFactory ??= new DatabaseFactory(Hasher, RackFactory);
-            set => _databaseFactory = value;
+            get => _depositoryFactory ??= new DepositoryFactory(Hasher, DepotFactory);
+            set => _depositoryFactory = value;
         }
 
-        private Depository _database;
-        public Depository Database
+        private Depository _depository;
+        public Depository Depository
         {
-            get => _database ??= DatabaseFactory.Create(null);
-            set => _database = value;
+            get => _depository ??= DepositoryFactory.Build(null);
+            set => _depository = value;
         }
 
         private Session _session;
         public Session Session
         {
-            get => _session ??= new Session(Database, Rack, RootPath);
+            get => _session ??= new Session(Depository, Rack, RootPath);
             set => _session = value;
         }
 
@@ -85,17 +87,17 @@ namespace DomainTests
             set => _sessionProvider = value;
         }
 
-        private DisplayableFactory _displayableFactory;
-        public DisplayableFactory DisplayableFactory
-        {
-            get => _displayableFactory ??= new DisplayableFactory(FileReader, Hasher);
-            set => _displayableFactory = value;
-        }
+        //private DisplayableFactory _displayableFactory;
+        //public DisplayableFactory DisplayableFactory
+        //{
+        //    get => _displayableFactory ??= new DisplayableFactory(FileReader, Hasher);
+        //    set => _displayableFactory = value;
+        //}
 
-        private DirectoryBinderFactory _directoryBinderFactory;
-        public DirectoryBinderFactory DirectoryBinderFactory
+        private FileSystemDirectoryLoader _directoryBinderFactory;
+        public FileSystemDirectoryLoader DirectoryBinderFactory
         {
-            get => _directoryBinderFactory ??= new DirectoryBinderFactory(DirectoryReader, DisplayableFactory, Hasher, SessionProvider);
+            get => _directoryBinderFactory ??= new DirectoryBinderFactory(DirectoryReader, Hasher, SessionProvider, FileReader);
             set => _directoryBinderFactory = value;
         }
     }

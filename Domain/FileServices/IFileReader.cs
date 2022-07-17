@@ -1,6 +1,6 @@
 ﻿namespace WebGalery.Domain.FileServices
 {
-    internal interface IFileReader
+    public interface IFileReader
     {
         string GetFileName(string file);
     }

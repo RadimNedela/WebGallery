@@ -1,4 +1,6 @@
-﻿namespace WebGalery.Domain.Warehouses
+﻿using WebGalery.Domain.Basics;
+
+namespace WebGalery.Domain.Warehouses
 {
     public class Depository : Entity
     {

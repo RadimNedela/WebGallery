@@ -1,4 +1,4 @@
-﻿namespace WebGalery.Domain
+﻿namespace WebGalery.Domain.Basics
 {
     public interface IEntity
     {

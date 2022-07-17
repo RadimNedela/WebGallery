@@ -2,6 +2,7 @@ using SixLabors.ImageSharp;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using WebGalery.Domain.Basics;
 using WebGalery.Domain.Logging;
 
 namespace WebGalery.Domain.FileServices
@@ -56,6 +57,7 @@ namespace WebGalery.Domain.FileServices
             {
                 using var memoryStream = new MemoryStream();
                 image.SaveAsBmp(memoryStream);
+                memoryStream.Position = 0;
                 hash = ComputeHash(memoryStream);
                 memoryStream.Close();
             }

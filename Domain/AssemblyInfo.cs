@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // In SDK-style projects such as this one, several assembly attributes that were historically
@@ -16,4 +17,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("f1aae6d6-f22d-4b7c-9eff-ecf8143153f1")]
 
-// [assembly: InternalsVisibleTo("DomainTests")] 
+[assembly: InternalsVisibleTo("DomainTests")]

@@ -1,4 +1,4 @@
-namespace WebGalery.Domain.FileServices
+namespace WebGalery.Domain.Basics
 {
     public interface IHasher
     {

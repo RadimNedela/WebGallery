@@ -1,6 +1,6 @@
 ﻿namespace WebGalery.Domain
 {
-    public interface IHashedEntity
+    public interface IEntity
     {
         string Hash { get; }
     }

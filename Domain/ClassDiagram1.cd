@@ -8,42 +8,40 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAAIAAQAAAAAAQAQAgAAAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AAAAAQAACBAAAAAAAAAAQBQggAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>Contents\Binder.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="ChildBinders" />
       <Property Name="Displayables" />
     </ShowAsCollectionAssociation>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="WebGalery.Domain.Databases.Database">
-    <Position X="1" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAACAIAAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Databases\Database.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="Racks" />
-    </ShowAsCollectionAssociation>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="WebGalery.Domain.Databases.Rack">
-    <Position X="4" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAAAAAAAIAAEAAAAAAAAAAAAAAAAAAgA=</HashCode>
-      <FileName>Databases\Rack.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="RootPaths" />
-      <Property Name="DirectoryBinders" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WebGalery.Domain.Contents.DirectoryBinder" Collapsed="true">
-    <Position X="6.5" Y="3.75" Width="1.5" />
+    <Position X="6.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Contents\DirectoryBinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebGalery.Domain.Warehouses.Depository">
+    <Position X="17" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAgARAIAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Warehouses\Depository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebGalery.Domain.Warehouses.Depot" Collapsed="true">
+    <Position X="8.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAIAAEAAAgAAAAAAAIAAAAAAAAE=</HashCode>
+      <FileName>Warehouses\Depot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebGalery.Domain.Warehouses.Rack" Collapsed="true">
+    <Position X="14.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Warehouses\Rack.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="WebGalery.Domain.Contents.IDisplayable" Collapsed="true">
@@ -53,11 +51,11 @@
       <FileName>Contents\IDisplayable.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WebGalery.Domain.Databases.IRootPath" Collapsed="true">
-    <Position X="1" Y="2.25" Width="1.5" />
+  <Interface Name="WebGalery.Domain.Warehouses.ILocation" Collapsed="true">
+    <Position X="13.75" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAgA=</HashCode>
-      <FileName>Databases\IRootPath.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Warehouses\ILocation.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

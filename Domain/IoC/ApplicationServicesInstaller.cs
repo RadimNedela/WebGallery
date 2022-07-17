@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using WebGalery.Domain.Databases.Factories;
-using WebGalery.Domain.DBModel.Factories;
 using WebGalery.Domain.FileServices;
 
 namespace WebGalery.Domain.IoC
@@ -9,10 +8,9 @@ namespace WebGalery.Domain.IoC
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IDatabaseFactory, DatabaseFactory>();
-            serviceCollection.AddSingleton<IDatabaseInfoDBFactory, DatabaseInfoDBFactory>();
-            serviceCollection.AddSingleton<IRackFactory, RackFactory>();
-            serviceCollection.AddSingleton<IRootPathFactory, FileSystemRootPathFactory>();
+            serviceCollection.AddSingleton<IDepositoryFactory, DepositoryFactory>();
+            serviceCollection.AddSingleton<IDepotFactory, DepotFactory>();
+            serviceCollection.AddSingleton<ILocationFactory, FileSystemLocationFactory>();
             serviceCollection.AddSingleton<IDirectoryReader, DirectoryMethods>();
             serviceCollection.AddSingleton<IFileReader, FileMethods>();
             serviceCollection.AddSingleton<IHasher, Sha1Hasher>();

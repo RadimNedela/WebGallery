@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using WebGalery.Domain.DBModel;
 
 namespace WebGalery.Database.Databases
 {

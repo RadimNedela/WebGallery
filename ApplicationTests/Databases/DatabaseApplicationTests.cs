@@ -69,7 +69,7 @@ namespace ApplicationTests.Databases
         private class TestFixture
         {
             public IGaleryDatabase GaleryDatabase { get; private set; }
-            public IDatabaseFactory DatabaseFactory { get; private set; }
+            public IDepositoryFactory DatabaseFactory { get; private set; }
             public IDatabaseInfoDBFactory DatabaseInfoDBFactory { get; private set; }
 
             private ServiceProvider _serviceProvider;
@@ -84,7 +84,7 @@ namespace ApplicationTests.Databases
 
                 DatabaseApplication application = new(
                     GaleryDatabase ?? throw new NotImplementedException($"Use {nameof(WithRealDatabase)} or {nameof(WithDatabaseMock)}"),
-                    DatabaseFactory ?? _serviceProvider.GetService<IDatabaseFactory>(),
+                    DatabaseFactory ?? _serviceProvider.GetService<IDepositoryFactory>(),
                     DatabaseInfoDBFactory ?? _serviceProvider.GetService<IDatabaseInfoDBFactory>()
                     );
 
@@ -110,7 +110,7 @@ namespace ApplicationTests.Databases
 
             public TestFixture WithDomainBuilderMock()
             {
-                DatabaseFactory = Substitute.For<IDatabaseFactory>();
+                DatabaseFactory = Substitute.For<IDepositoryFactory>();
                 return this;
             }
         }

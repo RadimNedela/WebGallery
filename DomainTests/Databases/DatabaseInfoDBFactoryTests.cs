@@ -5,6 +5,7 @@ using System.Linq;
 using WebGalery.Domain.Databases;
 using WebGalery.Domain.DBModel.Factories;
 using WebGalery.Domain.FileServices;
+using WebGalery.Domain.Warehouses;
 
 namespace ApplicationTests.Databases
 {
@@ -15,7 +16,7 @@ namespace ApplicationTests.Databases
         public void Build_ValidDomain_FillsTheValues()
         {
             var factory = new DatabaseInfoDBFactory(new Sha1Hasher());
-            var domainEntity = new Database() { Hash = "Test Hash", Name = "Test Name" };
+            var domainEntity = new Depository() { Hash = "Test Hash", Name = "Test Name" };
 
             var database = factory.Build(domainEntity);
 
@@ -27,13 +28,13 @@ namespace ApplicationTests.Databases
         public void Build_DomainWithRacks_NumberOfDifferentRacksSits()
         {
             var factory = new DatabaseInfoDBFactory(new Sha1Hasher());
-            var domainEntity = new Database()
+            var domainEntity = new Depository()
             {
-                Racks = new List<Rack>
+                Racks = new List<Depot>
                 {
-                    new Rack { Hash = "1234"},
-                    new Rack { Hash = "1234"},
-                    new Rack { Hash = "5678"},
+                    new Depot { Hash = "1234"},
+                    new Depot { Hash = "1234"},
+                    new Depot { Hash = "5678"},
                 }
             };
 
@@ -46,12 +47,12 @@ namespace ApplicationTests.Databases
         public void Build_DomainWithRack_FillsRackValues()
         {
             var factory = new DatabaseInfoDBFactory(new Sha1Hasher());
-            var domainEntity = new Database()
+            var domainEntity = new Depository()
             {
                 Hash = "Database Test Hash",
-                Racks = new List<Rack>
+                Racks = new List<Depot>
                 {
-                    new Rack { Hash = "1234",
+                    new Depot { Hash = "1234",
                     Name = "Rack Test Name",
                     },
                 }
@@ -69,17 +70,17 @@ namespace ApplicationTests.Databases
         {
             var factory = new DatabaseInfoDBFactory(new Sha1Hasher());
             IDirectoryReader directoryReader = Substitute.For<IDirectoryReader>();
-            var rootPaths = new List<IRootPath>();
+            var rootPaths = new List<ILocation>();
             directoryReader.GetCurrentDirectoryName().Returns("DirectoryName1");
             rootPaths.Add(new FileSystemRootPath(directoryReader));
             rootPaths.Add(new FileSystemRootPath(directoryReader));
             directoryReader.GetCurrentDirectoryName().Returns("DirectoryName2");
             rootPaths.Add(new FileSystemRootPath(directoryReader));
-            var domainEntity = new Database()
+            var domainEntity = new Depository()
             {
-                Racks = new List<Rack>
+                Racks = new List<Depot>
                 {
-                    new Rack
+                    new Depot
                     {
                         Hash = "1234",
                         RootPaths = rootPaths
@@ -96,14 +97,14 @@ namespace ApplicationTests.Databases
         public void Build_DomainWithRackAndMountPoint_MountPointSetsTheValues()
         {
             var factory = new DatabaseInfoDBFactory(new Sha1Hasher());
-            var domainEntity = new Database()
+            var domainEntity = new Depository()
             {
-                Racks = new List<Rack>
+                Racks = new List<Depot>
                 {
-                    new Rack
+                    new Depot
                     {
                         Hash = "1234",
-                        RootPaths = new List<IRootPath>{ new FileSystemRootPath(new DirectoryMethods()) }
+                        RootPaths = new List<ILocation>{ new FileSystemRootPath(new DirectoryMethods()) }
                     }
                 }
             };

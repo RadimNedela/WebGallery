@@ -12,9 +12,9 @@ namespace DomainTests.Databases
         {
             var mother = new ObjectMother();
             var factory = mother.RackFactory;
-            var rack = factory.CreateDefaultFor(new Database());
+            var rack = factory.CreateDefaultFor(new Depository());
 
-            Assert.That(rack.ActiveRootPath.RootPath, Is.EqualTo(Directory.GetCurrentDirectory()));
+            Assert.That(rack.ActiveLocation.Name, Is.EqualTo(Directory.GetCurrentDirectory()));
         }
     }
 }

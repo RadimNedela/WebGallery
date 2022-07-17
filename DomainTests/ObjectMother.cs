@@ -1,8 +1,8 @@
 ﻿using WebGalery.Domain;
 using WebGalery.Domain.Contents.Factories;
-using WebGalery.Domain.Databases;
 using WebGalery.Domain.Databases.Factories;
 using WebGalery.Domain.FileServices;
+using WebGalery.Domain.Warehouses;
 
 namespace DomainTests
 {
@@ -29,31 +29,31 @@ namespace DomainTests
             set => _fileReader = value;
         }
 
-        private IRootPathFactory _rootPathFactory;
-        public IRootPathFactory RootPathFactory
+        private ILocationFactory _rootPathFactory;
+        public ILocationFactory RootPathFactory
         {
             get => _rootPathFactory ??= new FileSystemRootPathFactory(DirectoryReader);
             set => _rootPathFactory = value;
         }
 
-        private IRootPath _rootPath;
-        public IRootPath RootPath
+        private ILocation _rootPath;
+        public ILocation RootPath
         {
-            get => _rootPath ??= RootPathFactory.Create();
+            get => _rootPath ??= RootPathFactory.CreateDefault();
             set => _rootPath = value;
         }
 
-        private IRackFactory _rackFactory;
-        public IRackFactory RackFactory
+        private IDepotFactory _rackFactory;
+        public IDepotFactory RackFactory
         {
             get => _rackFactory ??= new RackFactory(Hasher, RootPathFactory);
             set => _rackFactory = value;
         }
 
-        private Rack _rack;
-        public Rack Rack
+        private Depot _rack;
+        public Depot Rack
         {
-            get => _rack ??= Database.DefaultRack;
+            get => _rack ??= Database.DefaultDepot;
             set => _rack = value;
         }
 
@@ -64,8 +64,8 @@ namespace DomainTests
             set => _databaseFactory = value;
         }
 
-        private Database _database;
-        public Database Database
+        private Depository _database;
+        public Depository Database
         {
             get => _database ??= DatabaseFactory.Create(null);
             set => _database = value;

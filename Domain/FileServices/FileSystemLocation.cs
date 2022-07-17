@@ -1,15 +1,19 @@
-﻿using WebGalery.Domain.Databases;
+﻿using WebGalery.Domain.Warehouses;
 
 namespace WebGalery.Domain.FileServices
 {
-    internal class FileSystemRootPath : IRootPath
+    internal class FileSystemLocation : ILocation
     {
-        // public const string RootBinderName = ".";
-        public string RootPath { get; private set; }
+        public string Name { get; private set; }
 
-        public FileSystemRootPath(IDirectoryReader directoryReader)
+        public FileSystemLocation(IDirectoryReader directoryReader)
         {
-            RootPath = NormalizePath(directoryReader.GetCurrentDirectoryName());
+            Name = NormalizePath(directoryReader.GetCurrentDirectoryName());
+        }
+
+        public FileSystemLocation(string name)
+        {
+            Name = name;
         }
 
         private string NormalizePath(string pathString)
@@ -17,13 +21,13 @@ namespace WebGalery.Domain.FileServices
             return pathString.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         }
 
-        public IEnumerable<string> SplitPath(string specificPathString)
+        public IEnumerable<string> SplitJourneyToLegs(string specificPathString)
         {
             specificPathString = NormalizePath(specificPathString);
 
             var retVal = new List<string>();
-            if (specificPathString.StartsWith(RootPath))
-                specificPathString = specificPathString.Substring(RootPath.Length + 1);
+            if (specificPathString.StartsWith(Name))
+                specificPathString = specificPathString.Substring(Name.Length + 1);
             while (!string.IsNullOrEmpty(specificPathString))
             {
                 int index = specificPathString.IndexOf(Path.DirectorySeparatorChar);

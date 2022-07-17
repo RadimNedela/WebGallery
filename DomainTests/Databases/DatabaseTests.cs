@@ -24,7 +24,7 @@ namespace DomainTests.Databases
             var factory = mother.DatabaseFactory;
             var database = factory.Create(null);
 
-            Assert.That(database.Racks, Is.Not.Empty);
+            Assert.That(database.Depots, Is.Not.Empty);
         }
     }
 }

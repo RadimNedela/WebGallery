@@ -13,7 +13,7 @@ namespace DomainTests.FileServices
         {
             var sut = new FileSystemRootPath(new DirectoryMethods());
 
-            var toTest = sut.SplitPath(@"a\b\c\d");
+            var toTest = sut.SplitLocationToJourney(@"a\b\c\d");
 
             Assert.That(toTest.Count(), Is.EqualTo(4));
         }
@@ -23,7 +23,7 @@ namespace DomainTests.FileServices
         {
             var sut = new FileSystemRootPath(new DirectoryMethods());
 
-            var toTest = sut.SplitPath(@"a\b\c\d\");
+            var toTest = sut.SplitLocationToJourney(@"a\b\c\d\");
 
             Assert.That(toTest.Count(), Is.EqualTo(4));
         }
@@ -33,7 +33,7 @@ namespace DomainTests.FileServices
         {
             var sut = new FileSystemRootPath(new DirectoryMethods());
 
-            var toTest = sut.SplitPath(Directory.GetCurrentDirectory() + @"\a\b\c\d");
+            var toTest = sut.SplitLocationToJourney(Directory.GetCurrentDirectory() + @"\a\b\c\d");
 
             Assert.That(toTest.Count(), Is.EqualTo(4));
         }
@@ -43,7 +43,7 @@ namespace DomainTests.FileServices
         {
             var sut = new FileSystemRootPath(new DirectoryMethods());
 
-            var toTest = sut.SplitPath(@"a\b").ToList();
+            var toTest = sut.SplitLocationToJourney(@"a\b").ToList();
 
             Assert.That(toTest[0], Is.EqualTo("a"));
             Assert.That(toTest[1], Is.EqualTo("b"));

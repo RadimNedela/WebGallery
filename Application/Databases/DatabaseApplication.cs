@@ -1,19 +1,19 @@
 ﻿using WebGalery.Database.Databases;
-using WebGalery.Domain.Databases;
 using WebGalery.Domain.Databases.Factories;
 using WebGalery.Domain.DBModel.Factories;
+using WebGalery.Domain.Warehouses;
 
 namespace Application.Databases
 {
     public class DatabaseApplication
     {
         private readonly IGaleryDatabase _galeryDatabase;
-        private readonly IDatabaseFactory _databaseFactory;
+        private readonly IDepositoryFactory _databaseFactory;
         private readonly IDatabaseInfoDBFactory _databaseInfoDBFactory;
 
         public DatabaseApplication(
             IGaleryDatabase galeryDatabase,
-            IDatabaseFactory databaseFactory,
+            IDepositoryFactory databaseFactory,
             IDatabaseInfoDBFactory databaseInfoDBFactory)
         {
             _galeryDatabase = galeryDatabase;
@@ -23,7 +23,7 @@ namespace Application.Databases
 
         public DatabaseDto CreateNewDatabase(DatabaseDto databaseDto)
         {
-            var domain = _databaseFactory.Create(databaseDto.Name);
+            var domain = _databaseFactory.Build(databaseDto.Name);
             _galeryDatabase.DatabaseInfos.Add(_databaseInfoDBFactory.Build(domain));
             _galeryDatabase.SaveChanges();
             return Convert(domain);
@@ -34,7 +34,7 @@ namespace Application.Databases
         //    _galeryDatabase
         //}
 
-        private DatabaseDto Convert(Database domain)
+        private DatabaseDto Convert(Depository domain)
         {
             var dto = new DatabaseDto
             {

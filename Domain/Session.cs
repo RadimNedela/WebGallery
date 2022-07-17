@@ -1,20 +1,20 @@
-﻿using WebGalery.Domain.Databases;
+﻿using WebGalery.Domain.Warehouses;
 
 namespace WebGalery.Domain
 {
     public class Session
     {
-        public Database ActiveDatabase { get; set; }
+        public Depository ActiveDepository { get; set; }
 
-        public Rack ActiveRack { get; set; }
+        public Depot ActiveDepot { get; set; }
 
-        public IRootPath ActiveRootPath { get; set; }
+        public ILocation ActiveLocation { get; set; }
 
-        public Session(Database database, Rack rack, IRootPath rootPath)
+        public Session(Depository activeDepository, Depot activeDepot, ILocation activeLocation)
         {
-            ActiveDatabase = database;
-            ActiveRack = rack;
-            ActiveRootPath = rootPath;
+            ActiveDepository = activeDepository;
+            ActiveDepot = activeDepot;
+            ActiveLocation = activeLocation;
         }
     }
 }

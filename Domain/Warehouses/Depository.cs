@@ -6,7 +6,8 @@ namespace WebGalery.Domain.Warehouses
     {
         public virtual string Name { get; protected set; }
 
-        protected ISet<Depot> _depots;
+        private ISet<Depot> _depots;
+        public const string DepotsFieldName = nameof(_depots);
         public virtual IReadOnlySet<Depot> Depots => _depots.AsReadonlySet(nameof(Depots));
 
         private Depot _defaultDepot;

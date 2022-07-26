@@ -13,7 +13,7 @@ namespace ApplicationTests.IoC
         static StaticInitializer()
         {
             ServiceCollection = new ServiceCollection();
-            ServiceCollection.AddDomainServices();
+            ServiceCollection.RegisterDomainServices();
             ServiceCollection.AddApplicationServices();
             var builder = new ConfigurationBuilder().AddJsonFile(@"appsettings.json", false, false);
             ServiceCollection.RegisterDatabaseServices(builder.Build());

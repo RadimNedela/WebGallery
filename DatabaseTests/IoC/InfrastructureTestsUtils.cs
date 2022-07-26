@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebGalery.Database.IoC;
+using WebGalery.Domain.IoC;
 
 namespace WebGalery.Database.Tests.IoC
 {
@@ -15,6 +16,7 @@ namespace WebGalery.Database.Tests.IoC
                 .Build();
 
             services.RegisterDatabaseServices(configuration);
+            services.RegisterDomainServices();
 
             return services;
         }

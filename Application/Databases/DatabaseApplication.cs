@@ -1,5 +1,4 @@
 ﻿using WebGalery.Database.Databases;
-using WebGalery.Domain.DBModel.Factories;
 using WebGalery.Domain.Warehouses;
 using WebGalery.Domain.Warehouses.Factories;
 
@@ -8,31 +7,23 @@ namespace Application.Databases
     public class DatabaseApplication
     {
         private readonly IGaleryDatabase _galeryDatabase;
-        private readonly IDepositoryFactory _databaseFactory;
-        private readonly IDatabaseInfoDBFactory _databaseInfoDBFactory;
+        private readonly IDepositoryFactory _depositoryFactory;
 
         public DatabaseApplication(
             IGaleryDatabase galeryDatabase,
-            IDepositoryFactory databaseFactory,
-            IDatabaseInfoDBFactory databaseInfoDBFactory)
+            IDepositoryFactory depositoryFactory)
         {
             _galeryDatabase = galeryDatabase;
-            _databaseFactory = databaseFactory;
-            _databaseInfoDBFactory = databaseInfoDBFactory;
+            _depositoryFactory = depositoryFactory;
         }
 
         public DatabaseDto CreateNewDatabase(DatabaseDto databaseDto)
         {
-            var domain = _databaseFactory.Build(databaseDto.Name);
-            _galeryDatabase.Depositories.Add(_databaseInfoDBFactory.Build(domain));
+            var domain = _depositoryFactory.Build(databaseDto.Name);
+            _galeryDatabase.Depositories.Add(domain);
             _galeryDatabase.SaveChanges();
             return Convert(domain);
         }
-
-        //public IEnumerable<DatabaseDto> GetAllDatabases()
-        //{
-        //    _galeryDatabase
-        //}
 
         private DatabaseDto Convert(Depository domain)
         {

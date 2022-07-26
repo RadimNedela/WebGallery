@@ -29,26 +29,27 @@ namespace WebGalery.Database.Databases.TheDatabase
                 entity.HasKey(di => di.Hash);
                 entity.Property(di => di.Hash).HasColumnType("Char(40)");
                 entity.HasIndex(di => di.Name).IsUnique();
-                entity.HasMany(di => di.Depots).WithOne(ra => ra.Database).HasForeignKey(ra => ra.DatabaseHash);
+                entity.HasMany(Depository.DepotsFieldName).WithOne(nameof(Depot.Depository)).HasForeignKey("DepositoryHash");
             });
 
-            modelBuilder.Entity<RackDB>(entity =>
+            modelBuilder.Entity<Depot>(entity =>
             {
-                entity.ToTable("Rack");
-                entity.HasKey(re => re.Hash);
-                entity.Property(re => re.Hash).HasColumnType("Char(40)");
-                entity.Property(re => re.DatabaseHash).IsRequired();
-                entity.HasMany(re => re.MountPoints).WithOne(mp => mp.Rack).HasForeignKey(re => re.RackHash);
+                entity.ToTable("Depot");
+                entity.HasKey(de => de.Hash);
+                entity.Property(de => de.Hash).HasColumnType("Char(40)");
+                entity.Property(de => de.Name);
+                entity.Property("DepositoryHash").IsRequired();
+                //entity.HasMany(re => re.MountPoints).WithOne(mp => mp.Rack).HasForeignKey(re => re.RackHash);
             });
 
-            modelBuilder.Entity<MountPointDB>(entity =>
-            {
-                entity.ToTable("MountPoint");
-                entity.HasKey(re => re.Hash);
-                entity.Property(re => re.Hash).HasColumnType("Char(40)");
-                entity.Property(re => re.Path).HasMaxLength(200);
-                entity.Property(re => re.RackHash).IsRequired();
-            });
+            //modelBuilder.Entity<MountPointDB>(entity =>
+            //{
+            //    entity.ToTable("MountPoint");
+            //    entity.HasKey(re => re.Hash);
+            //    entity.Property(re => re.Hash).HasColumnType("Char(40)");
+            //    entity.Property(re => re.Path).HasMaxLength(200);
+            //    entity.Property(re => re.RackHash).IsRequired();
+            //});
         }
 
         //private void InitContentTables(ModelBuilder modelBuilder)

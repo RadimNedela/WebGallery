@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Contents\**" />
+    <EmbeddedResource Remove="Contents\**" />
+    <None Remove="Contents\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="NSubstitute" Version="4.3.0" />
@@ -23,10 +29,6 @@
     <None Update="**\*.JPG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Contents\" />
   </ItemGroup>
 
 </Project>

@@ -5,8 +5,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System;
 using WebGalery.Database.Databases;
-using WebGalery.Domain.DBModel;
-using WebGalery.Domain.DBModel.Factories;
+using WebGalery.Domain.Warehouses;
 using WebGalery.Domain.Warehouses.Factories;
 
 namespace ApplicationTests.Databases
@@ -33,7 +32,7 @@ namespace ApplicationTests.Databases
 
             application.CreateNewDatabase(fixture.BuildDto());
 
-            fixture.GaleryDatabase.Depositories.Received().Add(Arg.Any<DatabaseInfoDB>());
+            fixture.GaleryDatabase.Depositories.Received().Add(Arg.Any<Depository>());
         }
 
 
@@ -70,7 +69,6 @@ namespace ApplicationTests.Databases
         {
             public IGaleryDatabase GaleryDatabase { get; private set; }
             public IDepositoryFactory DatabaseFactory { get; private set; }
-            public IDatabaseInfoDBFactory DatabaseInfoDBFactory { get; private set; }
 
             private ServiceProvider _serviceProvider;
 
@@ -84,8 +82,7 @@ namespace ApplicationTests.Databases
 
                 DatabaseApplication application = new(
                     GaleryDatabase ?? throw new NotImplementedException($"Use {nameof(WithRealDatabase)} or {nameof(WithDatabaseMock)}"),
-                    DatabaseFactory ?? _serviceProvider.GetService<IDepositoryFactory>(),
-                    DatabaseInfoDBFactory ?? _serviceProvider.GetService<IDatabaseInfoDBFactory>()
+                    DatabaseFactory ?? _serviceProvider.GetService<IDepositoryFactory>()
                     );
 
                 return application;

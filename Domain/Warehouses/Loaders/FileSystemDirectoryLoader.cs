@@ -27,9 +27,9 @@ namespace WebGalery.Domain.Warehouses.Loaders
             _rackFactory = rackFactory;
         }
 
-        public RackBase? LoadDirectory(string localPath)
+        public RackBase LoadDirectory(string localPath)
         {
-            RackBase? currentRack = GetRackFromPath(localPath);
+            RackBase currentRack = GetRackFromPath(localPath);
 
             if (currentRack != null)
             {
@@ -57,7 +57,7 @@ namespace WebGalery.Domain.Warehouses.Loaders
             }
         }
 
-        private RackBase? GetRackFromPath(string localPath)
+        private RackBase GetRackFromPath(string localPath)
         {
             var activeLocation = _sessionProvider.Session.ActiveLocation;
             if (activeLocation is not FileSystemLocation location)
@@ -66,7 +66,7 @@ namespace WebGalery.Domain.Warehouses.Loaders
             var depot = _sessionProvider.Session.ActiveDepot;
             IRacksHolder parentRacksHolder = depot;
             Entity parentEntity = depot;
-            RackBase? rack = null;
+            RackBase rack = null;
             foreach (var directoryName in directoryNames)
             {
                 rack = parentRacksHolder.Racks.FirstOrDefault(x => x.Name == directoryName);

@@ -6,7 +6,8 @@ namespace WebGalery.Database.Databases.TheDatabase
 {
     public abstract class GaleryDatabase : DbContext, IGaleryDatabase
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
+        private ISimpleLogger _log;
+        private ISimpleLogger Log => _log ??= new MyOwnLog4NetLogger(GetType());
 
         //public DbSet<Content> Contents { get; set; }
         //public DbSet<Binder> Binders { get; set; }

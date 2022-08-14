@@ -151,7 +151,7 @@ namespace WebGalery.Domain.Logging
             string toLog = $"EXCEPTION: {ex}";
             logAction(toLog);
         }
-        private void DoLog(object? commonObject, Action<string> logAction)
+        private void DoLog(object commonObject, Action<string> logAction)
         {
             logAction(commonObject?.ToString() ?? "null");
         }

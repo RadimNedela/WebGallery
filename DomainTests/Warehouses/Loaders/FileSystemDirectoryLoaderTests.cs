@@ -97,7 +97,7 @@ namespace WebGalery.Domain.Tests.Warehouses.Loaders
                 else
                     hasherMock.Setup(h => h.ComputeFileContentHash(It.IsAny<string>())).Returns<string>(x => x);
                 hasherMock.Setup(h => h.ComputeRandomStringHash(It.IsAny<string>())).Returns<string>(x => x);
-                hasherMock.Setup(h => h.ComputeDependentStringHash(It.IsAny<IEntity>(), It.IsAny<string>())).Returns<IEntity, string>((e, x) => x);
+                hasherMock.Setup(h => h.ComputeDependentStringHash(It.IsAny<Entity>(), It.IsAny<string>())).Returns<Entity, string>((e, x) => e.Hash + x);
                 mother.Hasher = hasherMock.Object;
 
                 return mother.FileSystemDirectoryLoader;

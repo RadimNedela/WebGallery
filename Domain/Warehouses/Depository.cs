@@ -10,10 +10,10 @@ namespace WebGalery.Domain.Warehouses
         public const string DepotsFieldName = nameof(_depots);
         public virtual IReadOnlySet<Depot> Depots => _depots.AsReadonlySet(nameof(Depots));
 
-        private Depot? _defaultDepot;
+        private Depot _defaultDepot;
         public Depot DefaultDepot => _defaultDepot ??= Depots.First();
 
-        public Depository(string hash, string name, ISet<Depot>? depots)
+        public Depository(string hash, string name, ISet<Depot> depots)
             : base(hash)
         {
             Name = ParamAssert.NotEmtpy(name, nameof(name));

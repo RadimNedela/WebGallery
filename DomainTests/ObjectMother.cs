@@ -30,8 +30,8 @@ namespace DomainTests
             set => _fileReader = value;
         }
 
-        private ILocationFactory _locationFactory;
-        public ILocationFactory LocationFactory
+        private FileSystemLocationFactory _locationFactory;
+        public FileSystemLocationFactory LocationFactory
         {
             get => _locationFactory ??= new FileSystemLocationFactory(DirectoryReader);
             set => _locationFactory = value;
@@ -93,10 +93,17 @@ namespace DomainTests
         //    set => _displayableFactory = value;
         //}
 
+        private RackFactory _rackFactory;
+        public RackFactory RackFactory
+        {
+            get => _rackFactory ??= new RackFactory(Hasher);
+            set => _rackFactory = value;
+        }
+
         private FileSystemDirectoryLoader _fileSystemDirectoryLoader;
         public FileSystemDirectoryLoader FileSystemDirectoryLoader
         {
-            get => _fileSystemDirectoryLoader ??= new FileSystemDirectoryLoader(DirectoryReader, Hasher, SessionProvider, FileReader);
+            get => _fileSystemDirectoryLoader ??= new FileSystemDirectoryLoader(DirectoryReader, Hasher, SessionProvider, FileReader, RackFactory);
             set => _fileSystemDirectoryLoader = value;
         }
     }

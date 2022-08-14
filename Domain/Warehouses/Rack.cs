@@ -16,7 +16,7 @@ namespace WebGalery.Domain.Warehouses
         private ISet<RackBase> _racks;
         public virtual IEnumerable<RackBase> Racks => _racks.AsReadonlySet(nameof(Racks));
 
-        protected RackBase(string hash, string name, ISet<Storable>? storables, ISet<RackBase>? racks)
+        protected RackBase(string hash, string name, ISet<Storable> storables, ISet<RackBase> racks)
             : base(hash)
         {
             Name = ParamAssert.NotEmtpy(name, nameof(name));

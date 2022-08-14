@@ -13,7 +13,7 @@ namespace WebGalery.Domain.Warehouses.Factories
             _depotFactory = rackFactory;
         }
 
-        public Depository Build(string? name)
+        public Depository Build(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) name = null;
             name ??= "Database " + _hasher.CreateRandomString(5, 10) + DateTime.Now.ToString("F");

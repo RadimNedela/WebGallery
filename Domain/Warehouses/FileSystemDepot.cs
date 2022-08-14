@@ -15,7 +15,7 @@ namespace WebGalery.Domain.Warehouses
             string hash,
             string name,
             ISet<FileSystemLocation> locations,
-            ISet<FileSystemRootRack>? racks)
+            ISet<FileSystemRootRack> racks)
             : base(depository, hash, name, racks)
         {
             _locations = locations ?? new HashSet<FileSystemLocation>();

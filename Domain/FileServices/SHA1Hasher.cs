@@ -8,7 +8,7 @@ namespace WebGalery.Domain.FileServices
 {
     public class Sha1Hasher : IHasher
     {
-        private ISimpleLogger? _log;
+        private ISimpleLogger _log;
         private ISimpleLogger Log => _log ??= new MyOwnLog4NetLogger(GetType());
 
         private bool IsSupportedImage(string path)

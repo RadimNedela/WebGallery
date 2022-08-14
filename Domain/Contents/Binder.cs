@@ -4,14 +4,14 @@ namespace WebGalery.Domain.Contents
 {
     public class Binder : Entity
     {
-        public Binder? Parent { get; private set; }
+        public Binder Parent { get; private set; }
 
         public string Name { get; set; }
 
         protected ISet<Binder> _childBinders;
         public IReadOnlySet<Binder> ChildBinders => _childBinders.AsReadonlySet(nameof(ChildBinders));
 
-        public Binder(string hash, Binder? parent, string name, ISet<Binder>? childBinders)
+        public Binder(string hash, Binder parent, string name, ISet<Binder> childBinders)
             : base(hash)
         {
             Parent = parent;

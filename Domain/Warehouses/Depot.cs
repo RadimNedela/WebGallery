@@ -9,14 +9,14 @@ namespace WebGalery.Domain.Warehouses
         public string Name { get; set; }
 
         protected abstract IEnumerable<ILocation> Locations { get; }
-        private ILocation? _activeLocation;
+        private ILocation _activeLocation;
         public ILocation ActiveLocation => _activeLocation ??= Locations.First();
 
         private ISet<FileSystemRootRack> _racks;
         public IReadOnlySet<FileSystemRootRack> Racks => _racks.AsReadonlySet(nameof(Racks));
         IEnumerable<RackBase> IRacksHolder.Racks => Racks;
 
-        protected Depot(Depository depository, string hash, string name, ISet<FileSystemRootRack>? racks)
+        protected Depot(Depository depository, string hash, string name, ISet<FileSystemRootRack> racks)
             : base(hash)
         {
             Depository = ParamAssert.NotNull(depository, nameof(depository));

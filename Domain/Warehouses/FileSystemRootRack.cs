@@ -12,8 +12,8 @@ namespace WebGalery.Domain.Warehouses
             Depot parentDepot,
             string hash,
             string name,
-            ISet<Storable>? storables,
-            ISet<RackBase>? racks)
+            ISet<Storable> storables,
+            ISet<RackBase> racks)
             : base(hash, name, storables, racks)
         {
             ParentDepot = parentDepot;

@@ -12,8 +12,6 @@ namespace WebGalery.Domain.Warehouses
 
         public string Name { get; protected set; }
 
-        protected Storable() { }
-
         public Storable(string hash, string name, string entityHash)
             : base(hash)
         {

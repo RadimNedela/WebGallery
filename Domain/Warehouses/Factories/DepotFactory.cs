@@ -1,13 +1,14 @@
 ﻿using WebGalery.Domain.Basics;
+using WebGalery.Domain.FileServices;
 
 namespace WebGalery.Domain.Warehouses.Factories
 {
-    internal class DepotFactory : IDepotFactory
+    internal class FileSystemDepotFactory : IDepotFactory
     {
         private readonly IHasher _hasher;
-        private readonly ILocationFactory _locationFactory;
+        private readonly FileSystemLocationFactory _locationFactory;
 
-        public DepotFactory(IHasher hasher, ILocationFactory locationFactory)
+        public FileSystemDepotFactory(IHasher hasher, FileSystemLocationFactory locationFactory)
         {
             _hasher = hasher;
             _locationFactory = locationFactory;
@@ -16,12 +17,12 @@ namespace WebGalery.Domain.Warehouses.Factories
         public Depot BuildDefaultFor(Depository depository)
         {
             var location = _locationFactory.CreateDefault();
-            string name = "Rack " + location.Name + " " + DateTime.Now.ToString("G");
+            string name = "RackBase " + location.Name + " " + DateTime.Now.ToString("G");
             string hash = _hasher.ComputeDependentStringHash(depository, name);
 
-            var locations = new HashSet<ILocation> { location };
+            var locations = new HashSet<FileSystemLocation> { location };
 
-            var depot = new Depot(depository, hash, name, locations, null);
+            var depot = new FileSystemDepot(depository, hash, name, locations, null);
             return depot;
         }
     }

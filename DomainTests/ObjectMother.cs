@@ -47,7 +47,7 @@ namespace DomainTests
         private IDepotFactory _depotFactory;
         public IDepotFactory DepotFactory
         {
-            get => _depotFactory ??= new DepotFactory(Hasher, LocationFactory);
+            get => _depotFactory ??= new FileSystemDepotFactory(Hasher, LocationFactory);
             set => _depotFactory = value;
         }
 

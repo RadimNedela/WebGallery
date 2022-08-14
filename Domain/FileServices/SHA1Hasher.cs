@@ -1,5 +1,4 @@
 using SixLabors.ImageSharp;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using WebGalery.Domain.Basics;
@@ -9,7 +8,8 @@ namespace WebGalery.Domain.FileServices
 {
     public class Sha1Hasher : IHasher
     {
-        private static readonly ISimpleLogger Log = new MyOwnLog4NetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+        private ISimpleLogger? _log;
+        private ISimpleLogger Log => _log ??= new MyOwnLog4NetLogger(GetType());
 
         private bool IsSupportedImage(string path)
         {
@@ -39,7 +39,7 @@ namespace WebGalery.Domain.FileServices
             return ComputeHash(Encoding.UTF8.GetBytes(theString));
         }
 
-        public string ComputeDependentStringHash(IEntity parent, string theString)
+        public string ComputeDependentStringHash(Entity parent, string theString)
         {
             return ComputeStringHash(parent.Hash + "_" + theString);
         }

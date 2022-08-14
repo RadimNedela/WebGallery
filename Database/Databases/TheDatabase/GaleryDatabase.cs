@@ -39,7 +39,7 @@ namespace WebGalery.Database.Databases.TheDatabase
                 entity.Property(de => de.Hash).HasColumnType("Char(40)");
                 entity.Property(de => de.Name);
                 entity.Property("DepositoryHash").IsRequired();
-                //entity.HasMany(re => re.MountPoints).WithOne(mp => mp.Rack).HasForeignKey(re => re.RackHash);
+                //entity.HasMany(re => re.MountPoints).WithOne(mp => mp.RackBase).HasForeignKey(re => re.RackHash);
             });
 
             //modelBuilder.Entity<MountPointDB>(entity =>

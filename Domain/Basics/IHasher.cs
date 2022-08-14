@@ -4,7 +4,7 @@ namespace WebGalery.Domain.Basics
     {
         string ComputeFileContentHash(string path);
         string ComputeStringHash(string theString);
-        string ComputeDependentStringHash(IEntity parent, string theString);
+        string ComputeDependentStringHash(Entity parent, string theString);
         string ComputeRandomStringHash(string somePrefix);
         string CreateRandomString(int minLength, int maxLength);
     }

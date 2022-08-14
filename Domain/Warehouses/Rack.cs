@@ -2,29 +2,26 @@
 
 namespace WebGalery.Domain.Warehouses
 {
-    public class Rack : Entity, IRacksHolder
+    public abstract class RackBase : Entity, IRacksHolder
     {
-        public Entity Parent { get; protected set; }
+        public abstract Entity Parent { get; }
 
-        public string Name { get; protected set; }
+        public string Name { get; set; }
 
         protected ISet<Storable> _storables;
         public IReadOnlySet<Storable> Storables => _storables.AsReadonlySet(nameof(Storables));
 
         public int NumberOfStorables => Storables.Count + Racks.Sum(b => b.NumberOfStorables);
 
-        private ISet<Rack> _racks;
-        public virtual IReadOnlySet<Rack> Racks => _racks.AsReadonlySet(nameof(Racks));
+        private ISet<RackBase> _racks;
+        public virtual IEnumerable<RackBase> Racks => _racks.AsReadonlySet(nameof(Racks));
 
-        protected Rack() { }
-
-        public Rack(Entity parent, string hash, string name, ISet<Storable> storables, ISet<Rack> racks)
+        protected RackBase(string hash, string name, ISet<Storable>? storables, ISet<RackBase>? racks)
             : base(hash)
         {
-            Parent = ParamAssert.NotNull(parent, nameof(parent));
             Name = ParamAssert.NotEmtpy(name, nameof(name));
             _storables = storables ?? new HashSet<Storable>();
-            _racks = racks ?? new HashSet<Rack>();
+            _racks = racks ?? new HashSet<RackBase>();
         }
 
         public virtual void AddOrReplaceStorable(string hash, string name, string entityHash)
@@ -42,7 +39,7 @@ namespace WebGalery.Domain.Warehouses
             }
         }
 
-        public virtual void AddRack(Rack rack)
+        public virtual void AddRack(RackBase rack)
         {
             ParamAssert.IsTrue(rack.Parent == this, nameof(rack));
             _racks.Add(rack);

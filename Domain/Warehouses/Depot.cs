@@ -2,37 +2,34 @@
 
 namespace WebGalery.Domain.Warehouses
 {
-    public class Depot : Entity, IRacksHolder
+    public abstract class Depot : Entity, IRacksHolder
     {
-        public virtual Depository Depository { get; protected set; }
+        public Depository Depository { get; private set; }
 
-        public string Name { get; protected set; }
+        public string Name { get; set; }
 
-        protected ISet<ILocation> _locations;
-        public virtual IReadOnlySet<ILocation> Locations => _locations.AsReadonlySet(nameof(Locations));
+        protected abstract IEnumerable<ILocation> Locations { get; }
+        private ILocation? _activeLocation;
+        public ILocation ActiveLocation => _activeLocation ??= Locations.First();
 
-        private ILocation _activeLocation;
-        public virtual ILocation ActiveLocation => _activeLocation ??= Locations.First();
+        private ISet<FileSystemRootRack> _racks;
+        public IReadOnlySet<FileSystemRootRack> Racks => _racks.AsReadonlySet(nameof(Racks));
+        IEnumerable<RackBase> IRacksHolder.Racks => Racks;
 
-        private ISet<Rack> _racks;
-        public virtual IReadOnlySet<Rack> Racks => _racks.AsReadonlySet(nameof(Racks));
-
-        protected Depot() { }
-
-        public Depot(Depository depository, string hash, string name,
-            ISet<ILocation> locations, ISet<Rack> racks)
+        protected Depot(Depository depository, string hash, string name, ISet<FileSystemRootRack>? racks)
             : base(hash)
         {
             Depository = ParamAssert.NotNull(depository, nameof(depository));
             Name = ParamAssert.NotNull(name, nameof(name));
-            _locations = locations ?? new HashSet<ILocation>();
-            _racks = racks ?? new HashSet<Rack>();
+            _racks = racks ?? new HashSet<FileSystemRootRack>();
         }
 
-        public virtual void AddRack(Rack rack)
+        public void AddRack(RackBase rack)
         {
             ParamAssert.IsTrue(rack.Parent == this, nameof(rack));
-            _racks.Add(rack);
+            var rootRack = rack as FileSystemRootRack;
+            ParamAssert.NotNull(rootRack, nameof(rootRack));
+            _racks.Add(rootRack);
         }
     }
 }

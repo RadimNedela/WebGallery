@@ -1,24 +1,26 @@
-﻿namespace WebGalery.Domain
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace WebGalery.Domain
 {
     public static class ParamAssert
     {
-        public static void IsTrue(bool assertion, string paramName)
+        public static void IsTrue([DoesNotReturnIf(false)] bool assertion, string paramName)
         {
             IsTrue(assertion, paramName, $"The parameter {paramName} must be given");
         }
-        public static void IsTrue(bool assertion, string paramName, string message)
+        public static void IsTrue([DoesNotReturnIf(false)] bool assertion, string paramName, string message)
         {
             if (!assertion)
                 throw new ArgumentException(message, paramName);
         }
 
-        public static T NotNull<T>(T obj, string paramName)
+        public static T NotNull<T>([NotNull] T obj, string paramName)
         {
             IsTrue(obj != null, paramName);
             return obj;
         }
 
-        public static string NotEmtpy(string str, string paramName)
+        public static string NotEmtpy([NotNull] string str, string paramName)
         {
             IsTrue(!string.IsNullOrEmpty(str), paramName);
             return str;

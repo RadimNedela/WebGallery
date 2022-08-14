@@ -2,7 +2,7 @@
 {
     public interface IRacksHolder
     {
-        IReadOnlySet<Rack> Racks { get; }
-        void AddRack(Rack rack);
+        IEnumerable<RackBase> Racks { get; }
+        void AddRack(RackBase rack);
     }
 }

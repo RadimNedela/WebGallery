@@ -7,7 +7,6 @@ namespace WebGalery.Domain.Logging
 {
     public class MyOwnLog4NetLogger : ISimpleLogger
     {
-        #region Construct
         static MyOwnLog4NetLogger()
         {
             try
@@ -33,7 +32,6 @@ namespace WebGalery.Domain.Logging
 
         private readonly ILog _log;
         readonly IDictionary<string, DateTime> _beginTimes = new Dictionary<string, DateTime>();
-        #endregion
 
         public void Begin(string name)
         {
@@ -140,7 +138,6 @@ namespace WebGalery.Domain.Logging
                 DoLog(commonObject, _log.Info);
         }
 
-        #region Private = the logging
         private void DoLog(string theMessage, Action<string> logAction)
         {
             logAction(theMessage);
@@ -154,10 +151,9 @@ namespace WebGalery.Domain.Logging
             string toLog = $"EXCEPTION: {ex}";
             logAction(toLog);
         }
-        private void DoLog(object commonObject, Action<string> logAction)
+        private void DoLog(object? commonObject, Action<string> logAction)
         {
-            logAction(commonObject?.ToString());
+            logAction(commonObject?.ToString() ?? "null");
         }
-        #endregion
     }
 }

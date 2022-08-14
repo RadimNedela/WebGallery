@@ -1,12 +1,8 @@
 ﻿namespace WebGalery.Domain.Basics
 {
-    public class Entity : IEntity
+    public class Entity
     {
-        public virtual string Hash { get; protected set; }
-
-        protected Entity()
-        {
-        }
+        public virtual string Hash { get; private set; }
 
         protected Entity(string hash)
         {
@@ -18,7 +14,7 @@
             return Hash.GetHashCode();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Entity entityObj)
                 return Hash == entityObj.Hash;

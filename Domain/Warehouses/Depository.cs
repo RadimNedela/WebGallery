@@ -4,18 +4,16 @@ namespace WebGalery.Domain.Warehouses
 {
     public class Depository : Entity
     {
-        public virtual string Name { get; protected set; }
+        public virtual string Name { get; set; }
 
-        private ISet<Depot> _depots;
+        private readonly ISet<Depot> _depots;
         public const string DepotsFieldName = nameof(_depots);
         public virtual IReadOnlySet<Depot> Depots => _depots.AsReadonlySet(nameof(Depots));
 
-        private Depot _defaultDepot;
+        private Depot? _defaultDepot;
         public Depot DefaultDepot => _defaultDepot ??= Depots.First();
 
-        protected Depository() { }
-
-        public Depository(string hash, string name, ISet<Depot> depots)
+        public Depository(string hash, string name, ISet<Depot>? depots)
             : base(hash)
         {
             Name = ParamAssert.NotEmtpy(name, nameof(name));

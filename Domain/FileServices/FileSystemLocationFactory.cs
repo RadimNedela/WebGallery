@@ -1,9 +1,6 @@
-﻿using WebGalery.Domain.Warehouses;
-using WebGalery.Domain.Warehouses.Factories;
-
-namespace WebGalery.Domain.FileServices
+﻿namespace WebGalery.Domain.FileServices
 {
-    public class FileSystemLocationFactory : ILocationFactory
+    public class FileSystemLocationFactory
     {
         private readonly IDirectoryReader _directoryReader;
 
@@ -12,7 +9,7 @@ namespace WebGalery.Domain.FileServices
             _directoryReader = directoryReader;
         }
 
-        public ILocation CreateDefault()
+        public FileSystemLocation CreateDefault()
         {
             return new FileSystemLocation(_directoryReader);
         }

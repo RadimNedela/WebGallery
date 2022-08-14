@@ -2,7 +2,7 @@
 
 namespace WebGalery.Domain.FileServices
 {
-    internal class FileSystemLocation : ILocation
+    public class FileSystemLocation : ILocation
     {
         public string Name { get; private set; }
 

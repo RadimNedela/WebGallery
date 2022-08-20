@@ -1,4 +1,5 @@
-﻿using WebGalery.Domain.Basics;
+﻿using System.Collections.ObjectModel;
+using WebGalery.Domain.Basics;
 
 namespace WebGalery.Domain.Warehouses
 {
@@ -6,18 +7,25 @@ namespace WebGalery.Domain.Warehouses
     {
         public virtual string Name { get; set; }
 
-        private readonly ISet<Depot> _depots;
+        private readonly List<Depot> _depots;
         public const string DepotsFieldName = nameof(_depots);
-        public virtual IReadOnlySet<Depot> Depots => _depots.AsReadonlySet(nameof(Depots));
+        public virtual ReadOnlyCollection<Depot> Depots => _depots.AsReadOnly();
 
         private Depot _defaultDepot;
         public Depot DefaultDepot => _defaultDepot ??= Depots.First();
 
-        public Depository(string hash, string name, ISet<Depot> depots)
+        private Depository(string hash, string name)
             : base(hash)
         {
             Name = ParamAssert.NotEmtpy(name, nameof(name));
-            _depots = depots ?? new HashSet<Depot>();
+            _depots = new List<Depot>();
+        }
+
+        public Depository(string hash, string name, List<Depot> depots)
+            : base(hash)
+        {
+            Name = ParamAssert.NotEmtpy(name, nameof(name));
+            _depots = depots ?? new List<Depot>();
         }
 
         public void AddDepot(Depot depot)

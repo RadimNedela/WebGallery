@@ -1,22 +1,28 @@
-﻿using WebGalery.Domain.Warehouses;
+﻿using WebGalery.Domain.Basics;
+using WebGalery.Domain.Warehouses;
 
 namespace WebGalery.Domain.FileServices
 {
-    public class FileSystemLocation : ILocation
+    public class FileSystemLocation : Entity
     {
-        public string Name { get; private set; }
+        public FileSystemDepot ParentDepot { get; private set; }
 
-        public FileSystemLocation(IDirectoryReader directoryReader)
+        public string LocationString { get; private set; }
+
+        public FileSystemLocation(FileSystemDepot parent, string hash, string locationString)
+            : base(hash)
         {
-            Name = NormalizePath(directoryReader.GetCurrentDirectoryName());
+            ParentDepot = ParamAssert.NotNull(parent, nameof(parent));
+            LocationString = ParamAssert.NotEmpty(locationString, nameof(locationString));
         }
 
-        public FileSystemLocation(string name)
+        private FileSystemLocation(string hash, string locationString)
+            : base(hash)
         {
-            Name = name;
+            LocationString = locationString;
         }
 
-        private string NormalizePath(string pathString)
+        public static string NormalizePath(string pathString)
         {
             return pathString.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         }
@@ -26,8 +32,8 @@ namespace WebGalery.Domain.FileServices
             specificPathString = NormalizePath(specificPathString);
 
             var retVal = new List<string>();
-            if (specificPathString.StartsWith(Name))
-                specificPathString = specificPathString.Substring(Name.Length + 1);
+            if (specificPathString.StartsWith(LocationString))
+                specificPathString = specificPathString.Substring(LocationString.Length + 1);
             while (!string.IsNullOrEmpty(specificPathString))
             {
                 int index = specificPathString.IndexOf(Path.DirectorySeparatorChar);

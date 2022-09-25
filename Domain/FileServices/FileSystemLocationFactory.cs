@@ -1,17 +1,24 @@
-﻿namespace WebGalery.Domain.FileServices
+﻿using WebGalery.Domain.Basics;
+using WebGalery.Domain.Warehouses;
+
+namespace WebGalery.Domain.FileServices
 {
     public class FileSystemLocationFactory
     {
         private readonly IDirectoryReader _directoryReader;
+        private readonly IHasher _hasher;
 
-        public FileSystemLocationFactory(IDirectoryReader directoryReader)
+        public FileSystemLocationFactory(IDirectoryReader directoryReader, IHasher hasher)
         {
             _directoryReader = directoryReader;
+            _hasher = hasher;
         }
 
-        public FileSystemLocation CreateDefault()
+        public FileSystemLocation CreateDefaultFor(FileSystemDepot parentDepot)
         {
-            return new FileSystemLocation(_directoryReader);
+            string name = FileSystemLocation.NormalizePath(_directoryReader.GetCurrentDirectoryName());
+            string hash = _hasher.ComputeDependentStringHash(parentDepot, name);
+            return new FileSystemLocation(parentDepot, hash, name);
         }
     }
 }

@@ -6,7 +6,7 @@
 
         protected Entity(string hash)
         {
-            Hash = ParamAssert.NotEmtpy(hash, nameof(hash));
+            Hash = ParamAssert.NotEmpty(hash, nameof(hash));
         }
 
         public override int GetHashCode()

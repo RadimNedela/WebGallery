@@ -8,16 +8,18 @@ namespace WebGalery.Domain.Warehouses
 
         public override Entity Parent => ParentRack;
 
+        private FileSystemRack(string hash, string name)
+            : base(hash, name) { }
+
         public FileSystemRack(
             RackBase parentRack,
             string hash,
             string name,
-            ISet<Storable> storables,
-            ISet<RackBase> racks)
+            List<Storable> storables,
+            List<RackBase> racks)
             : base(hash, name, storables, racks)
         {
-            ParentRack = parentRack;
+            ParentRack = ParamAssert.NotNull(parentRack, nameof(parentRack));
         }
-
     }
 }

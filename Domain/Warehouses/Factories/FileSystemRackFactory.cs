@@ -2,11 +2,11 @@
 
 namespace WebGalery.Domain.Warehouses.Factories
 {
-    public class RackFactory
+    public class FileSystemRackFactory
     {
         private readonly IHasher _hasher;
 
-        public RackFactory(IHasher hasher)
+        public FileSystemRackFactory(IHasher hasher)
         {
             _hasher = hasher;
         }
@@ -16,7 +16,7 @@ namespace WebGalery.Domain.Warehouses.Factories
             string hash = _hasher.ComputeDependentStringHash(parentEntity, name);
 
             RackBase newRack;
-            if (parentEntity is Depot parentDepot)
+            if (parentEntity is FileSystemDepot parentDepot)
             {
                 newRack = new FileSystemRootRack(parentDepot, hash, name, null, null);
             }

@@ -93,10 +93,10 @@ namespace DomainTests
         //    set => _displayableFactory = value;
         //}
 
-        private RackFactory _rackFactory;
-        public RackFactory RackFactory
+        private FileSystemRackFactory _rackFactory;
+        public FileSystemRackFactory RackFactory
         {
-            get => _rackFactory ??= new RackFactory(Hasher);
+            get => _rackFactory ??= new FileSystemRackFactory(Hasher);
             set => _rackFactory = value;
         }
 

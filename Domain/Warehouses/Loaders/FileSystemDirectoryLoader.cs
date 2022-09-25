@@ -11,14 +11,14 @@ namespace WebGalery.Domain.Warehouses.Loaders
         private readonly IHasher _hasher;
         private readonly ISessionProvider _sessionProvider;
         private readonly IFileReader _fileReader;
-        private readonly RackFactory _rackFactory;
+        private readonly FileSystemRackFactory _rackFactory;
 
         public FileSystemDirectoryLoader(
             IDirectoryReader directoryReader,
             IHasher hasher,
             ISessionProvider sessionProvider,
             IFileReader fileReader,
-            RackFactory rackFactory)
+            FileSystemRackFactory rackFactory)
         {
             _directoryReader = directoryReader;
             _hasher = hasher;
@@ -59,9 +59,7 @@ namespace WebGalery.Domain.Warehouses.Loaders
 
         private RackBase GetRackFromPath(string localPath)
         {
-            var activeLocation = _sessionProvider.Session.ActiveLocation;
-            if (activeLocation is not FileSystemLocation location)
-                throw new ArgumentException($"Location is not {nameof(FileSystemLocation)}, but {activeLocation.GetType().FullName}", nameof(Session.ActiveLocation));
+            var location = _sessionProvider.Session.ActiveLocation;
             var directoryNames = location.SplitJourneyToLegs(localPath);
             var depot = _sessionProvider.Session.ActiveDepot;
             IRacksHolder parentRacksHolder = depot;

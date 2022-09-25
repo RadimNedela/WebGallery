@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WebGalery.Domain.FileServices;
 using WebGalery.Domain.Logging;
 using WebGalery.Domain.Warehouses;
 
@@ -30,27 +31,40 @@ namespace WebGalery.Database.Databases.TheDatabase
                 entity.HasKey(di => di.Hash);
                 entity.Property(di => di.Hash).HasColumnType("Char(40)");
                 entity.HasIndex(di => di.Name).IsUnique();
-                entity.HasMany(Depository.DepotsFieldName).WithOne(nameof(Depot.Depository)).HasForeignKey("DepositoryHash");
+                entity.HasMany(Depository.FileSystemDepotsFieldName)
+                    .WithOne(nameof(FileSystemDepot.ParentDepository)).HasForeignKey("DepositoryHash");
             });
 
-            modelBuilder.Entity<Depot>(entity =>
+            modelBuilder.Entity<FileSystemDepot>(entity =>
             {
-                entity.ToTable("Depot");
+                entity.ToTable("FSDepot");
                 entity.HasKey(de => de.Hash);
                 entity.Property(de => de.Hash).HasColumnType("Char(40)");
                 entity.Property(de => de.Name);
                 entity.Property("DepositoryHash").IsRequired();
-                //entity.HasMany(re => re.MountPoints).WithOne(mp => mp.RackBase).HasForeignKey(re => re.RackHash);
+                entity.HasMany(FileSystemDepot.MountPointsFieldName)
+                    .WithOne(nameof(FileSystemLocation.ParentDepot)).HasForeignKey("DepotHash");
+                entity.HasMany(FileSystemDepot.RacksFieldName)
+                    .WithOne(nameof(FileSystemRootRack.ParentDepot)).HasForeignKey("DepotHash");
             });
 
-            //modelBuilder.Entity<MountPointDB>(entity =>
-            //{
-            //    entity.ToTable("MountPoint");
-            //    entity.HasKey(re => re.Hash);
-            //    entity.Property(re => re.Hash).HasColumnType("Char(40)");
-            //    entity.Property(re => re.Path).HasMaxLength(200);
-            //    entity.Property(re => re.RackHash).IsRequired();
-            //});
+            modelBuilder.Entity<FileSystemLocation>(entity =>
+            {
+                entity.ToTable("FSLocation");
+                entity.HasKey(lo => lo.Hash);
+                entity.Property(lo => lo.Hash).HasColumnType("Char(40)");
+                entity.Property(lo => lo.LocationString).HasMaxLength(200);
+                entity.Property("DepotHash").IsRequired();
+            });
+
+            modelBuilder.Entity<FileSystemRootRack>(entity =>
+            {
+                entity.ToTable("FSRootRack");
+                entity.HasKey(ra => ra.Hash);
+                entity.Property(ra => ra.Hash).HasColumnType("Char(40)");
+                entity.Property(lo => lo.LocationString).HasMaxLength(200);
+                entity.Property("DepotHash").IsRequired();
+            });
         }
 
         //private void InitContentTables(ModelBuilder modelBuilder)

@@ -25,7 +25,7 @@ namespace WebGalery.Domain.Tests.Warehouses
             var factory = mother.DepositoryFactory;
             var database = factory.Build(null);
 
-            Assert.That(database.Depots, Is.Not.Empty);
+            Assert.That(database.FileSystemDepots, Is.Not.Empty);
         }
     }
 }

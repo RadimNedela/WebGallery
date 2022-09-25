@@ -1,4 +1,5 @@
-﻿using WebGalery.Domain.Warehouses;
+﻿using WebGalery.Domain.FileServices;
+using WebGalery.Domain.Warehouses;
 
 namespace WebGalery.Domain.SessionHandling
 {
@@ -6,11 +7,11 @@ namespace WebGalery.Domain.SessionHandling
     {
         public Depository ActiveDepository { get; set; }
 
-        public Depot ActiveDepot { get; set; }
+        public FileSystemDepot ActiveDepot { get; set; }
 
-        public ILocation ActiveLocation { get; set; }
+        public FileSystemLocation ActiveLocation { get; set; }
 
-        public Session(Depository activeDepository, Depot activeDepot, ILocation activeLocation)
+        public Session(Depository activeDepository, FileSystemDepot activeDepot, FileSystemLocation activeLocation)
         {
             ActiveDepository = activeDepository;
             ActiveDepot = activeDepot;

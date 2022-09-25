@@ -15,8 +15,8 @@ namespace WebGalery.Domain.Warehouses
         public Storable(string hash, string name, string entityHash)
             : base(hash)
         {
-            Name = ParamAssert.NotEmtpy(name, nameof(name));
-            EntityHash = ParamAssert.NotEmtpy(entityHash, nameof(entityHash));
+            Name = ParamAssert.NotEmpty(name, nameof(name));
+            EntityHash = ParamAssert.NotEmpty(entityHash, nameof(entityHash));
         }
     }
 }

@@ -4,19 +4,22 @@ namespace WebGalery.Domain.Warehouses
 {
     public class FileSystemRootRack : RackBase
     {
-        public Depot ParentDepot { get; private set; }
+        public FileSystemDepot ParentDepot { get; private set; }
 
         public override Entity Parent => ParentDepot;
 
+        private FileSystemRootRack(string hash, string name)
+            : base(hash, name) { }
+
         public FileSystemRootRack(
-            Depot parentDepot,
+            FileSystemDepot parentDepot,
             string hash,
             string name,
-            ISet<Storable> storables,
-            ISet<RackBase> racks)
+            List<Storable> storables,
+            List<RackBase> racks)
             : base(hash, name, storables, racks)
         {
-            ParentDepot = parentDepot;
+            ParentDepot = ParamAssert.NotNull(parentDepot, nameof(parentDepot));
         }
     }
 }

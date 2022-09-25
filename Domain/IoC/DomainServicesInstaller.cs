@@ -9,8 +9,8 @@ namespace WebGalery.Domain.IoC
     {
         public static IServiceCollection RegisterDomainServices(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IDepositoryFactory, DepositoryFactory>();
-            serviceCollection.AddSingleton<IDepotFactory, FileSystemDepotFactory>();
+            serviceCollection.AddSingleton<DepositoryFactory>();
+            serviceCollection.AddSingleton<FileSystemDepotFactory>();
             serviceCollection.AddSingleton<IDirectoryReader, DirectoryMethods>();
             serviceCollection.AddSingleton<IFileReader, FileMethods>();
             serviceCollection.AddSingleton<IHasher, Sha1Hasher>();

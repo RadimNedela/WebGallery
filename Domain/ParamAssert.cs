@@ -20,17 +20,17 @@ namespace WebGalery.Domain
             return obj;
         }
 
-        public static string NotEmtpy([NotNull] string str, string paramName)
+        public static string NotEmpty([NotNull] string str, string paramName)
         {
             IsTrue(!string.IsNullOrEmpty(str), paramName);
             return str;
         }
 
-        public static IReadOnlySet<T> AsReadonlySet<T>(this ISet<T> set, string paramName)
-        {
-            if (set is IReadOnlySet<T> readonlySet)
-                return readonlySet;
-            throw new ArgumentException($"The parameter {paramName} cannot be transfered to readonly set, original class name = {set.GetType().FullName}", paramName);
-        }
+        //public static IReadOnlySet<T> AsReadonlySet<T>(this ISet<T> set, string paramName)
+        //{
+        //    if (set is IReadOnlySet<T> readonlySet)
+        //        return readonlySet;
+        //    throw new ArgumentException($"The parameter {paramName} cannot be transfered to readonly set, original class name = {set.GetType().FullName}", paramName);
+        //}
     }
 }

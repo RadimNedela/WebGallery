@@ -2,15 +2,15 @@
 
 namespace WebGalery.Domain.Warehouses.Factories
 {
-    internal class DepositoryFactory : IDepositoryFactory
+    internal class DepositoryFactory
     {
         private readonly IHasher _hasher;
-        private readonly IDepotFactory _depotFactory;
+        private readonly FileSystemDepotFactory _fileSystemDepotFactory;
 
-        public DepositoryFactory(IHasher hasher, IDepotFactory rackFactory)
+        public DepositoryFactory(IHasher hasher, FileSystemDepotFactory fileSystemDepotFactory)
         {
             _hasher = hasher;
-            _depotFactory = rackFactory;
+            _fileSystemDepotFactory = fileSystemDepotFactory;
         }
 
         public Depository Build(string name)
@@ -20,7 +20,7 @@ namespace WebGalery.Domain.Warehouses.Factories
             string hash = _hasher.ComputeRandomStringHash(name);
 
             var db = new Depository(hash, name, null);
-            db.AddDepot(_depotFactory.BuildDefaultFor(db));
+            db.AddDepot(_fileSystemDepotFactory.BuildDefaultFor(db));
 
             return db;
         }

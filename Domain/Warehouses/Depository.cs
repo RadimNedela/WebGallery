@@ -1,37 +1,37 @@
-﻿using System.Collections.ObjectModel;
-using WebGalery.Domain.Basics;
+﻿using WebGalery.Domain.Basics;
 
 namespace WebGalery.Domain.Warehouses
 {
     public class Depository : Entity
     {
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        private readonly List<Depot> _depots;
-        public const string DepotsFieldName = nameof(_depots);
-        public virtual ReadOnlyCollection<Depot> Depots => _depots.AsReadOnly();
+        private List<FileSystemDepot> _fileSystemDepots;
+        public const string FileSystemDepotsFieldName = nameof(_fileSystemDepots);
+        public IEnumerable<FileSystemDepot> FileSystemDepots => _fileSystemDepots;
 
-        private Depot _defaultDepot;
-        public Depot DefaultDepot => _defaultDepot ??= Depots.First();
+        private FileSystemDepot _defaultDepot;
+        public FileSystemDepot DefaultDepot => _defaultDepot ??= FileSystemDepots.First();
 
         private Depository(string hash, string name)
             : base(hash)
         {
-            Name = ParamAssert.NotEmtpy(name, nameof(name));
-            _depots = new List<Depot>();
+            Name = ParamAssert.NotEmpty(name, nameof(name));
+            _fileSystemDepots = new List<FileSystemDepot>();
         }
 
-        public Depository(string hash, string name, List<Depot> depots)
+        public Depository(string hash, string name, List<FileSystemDepot> fileSystemDepots)
             : base(hash)
         {
-            Name = ParamAssert.NotEmtpy(name, nameof(name));
-            _depots = depots ?? new List<Depot>();
+            Name = ParamAssert.NotEmpty(name, nameof(name));
+            _fileSystemDepots = fileSystemDepots ?? new List<FileSystemDepot>();
         }
 
-        public void AddDepot(Depot depot)
+        public void AddDepot(FileSystemDepot fileSystemDepot)
         {
-            ParamAssert.IsTrue(depot.Depository == this, nameof(depot), "When adding new depot to depository, its parent must be the depot self");
-            _depots.Add(depot);
+            ParamAssert.IsTrue(fileSystemDepot.ParentDepository == this, nameof(fileSystemDepot),
+                "When adding new fileSystemDepot to depository, its parent must be this depository self");
+            _fileSystemDepots.Add(fileSystemDepot);
         }
     }
 }

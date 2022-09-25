@@ -8,16 +8,16 @@ namespace WebGalery.Domain.Contents
 
         public string Name { get; set; }
 
-        protected ISet<Binder> _childBinders;
-        public IReadOnlySet<Binder> ChildBinders => _childBinders.AsReadonlySet(nameof(ChildBinders));
+        protected List<Binder> _childBinders;
+        public IEnumerable<Binder> ChildBinders => _childBinders;
 
-        public Binder(string hash, Binder parent, string name, ISet<Binder> childBinders)
+        public Binder(string hash, Binder parent, string name, List<Binder> childBinders)
             : base(hash)
         {
             Parent = parent;
             Parent?._childBinders.Add(this);
-            Name = ParamAssert.NotEmtpy(name, nameof(name));
-            _childBinders = childBinders ?? new HashSet<Binder>();
+            Name = ParamAssert.NotEmpty(name, nameof(name));
+            _childBinders = childBinders ?? new List<Binder>();
         }
 
         public virtual void AddChildBinder(Binder childBinder)
